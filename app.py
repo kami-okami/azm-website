@@ -47,17 +47,16 @@ if os.environ.get("SQLITE_PATH") and not os.path.exists(DB_PATH):
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
         shutil.copyfile(local_db, DB_PATH)
 
-
 # --- Env / Social ---
-FACEBOOK_URL = os.getenv("FACEBOOK_URL", "").strip() or None
+FACEBOOK_URL = (os.getenv("FACEBOOK_URL", "").strip() or None)
 WHATSAPP_NUMBER = (os.getenv("WHATSAPP_NUMBER", "").strip() or "").lstrip('+') or None
 WHATSAPP_MESSAGE = os.getenv("WHATSAPP_MESSAGE", "مرحباً، أود الاستفسار عن المنتجات.")
 COMPANY_NAME = "عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور"
 
-# --- Auth ---
-ADMIN_USER = os.getenv("ADMIN_USER", "admin")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")          # plaintext fallback
-ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH", "") # takes precedence if present
+# --- Auth (strip to avoid hidden spaces/newlines) ---
+ADMIN_USER = (os.getenv("ADMIN_USER", "admin") or "").strip()
+ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD", "") or "").strip()  # plaintext fallback (optional)
+ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()  # preferred
 
 # --- reCAPTCHA (dev keys OK for localhost) ---
 RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
@@ -145,10 +144,16 @@ def _rate(ip, bucket, window, max_posts):
 def rate_limited_contact(ip): return _rate(ip, _rate_bucket, RATE_WINDOW_SEC, RATE_MAX_POSTS)
 def rate_limited_login(ip):   return _rate(ip, _login_bucket, LOGIN_WINDOW_SEC, LOGIN_MAX_POSTS)
 
-def check_admin_password(provided):
+def check_admin_password(provided: str) -> bool:
+    """Prefer hash; fallback to plaintext if set."""
     if ADMIN_PASSWORD_HASH:
-        return check_password_hash(ADMIN_PASSWORD_HASH, provided)
-    return provided == ADMIN_PASSWORD
+        try:
+            return bool(provided) and check_password_hash(ADMIN_PASSWORD_HASH, provided)
+        except Exception:
+            return False
+    if ADMIN_PASSWORD:
+        return provided == ADMIN_PASSWORD
+    return False
 
 # CSRF (simple, per-session token)
 def get_csrf_token():
@@ -371,13 +376,31 @@ def login():
             flash("محاولات تسجيل كثيرة. الرجاء الانتظار قليلاً.", "error")
             return redirect(url_for('login'))
 
-        user = request.form.get('username', '')
-        pw = request.form.get('password', '')
-        if user == ADMIN_USER and check_admin_password(pw):
+        user = (request.form.get('username') or '').strip()
+        pw = request.form.get('password') or ''
+
+        # Evaluate password validity (hash preferred, plaintext fallback)
+        ok = False
+        if ADMIN_PASSWORD_HASH and pw:
+            try:
+                ok = check_password_hash(ADMIN_PASSWORD_HASH, pw)
+            except Exception:
+                ok = False
+        if not ok and ADMIN_PASSWORD:
+            ok = (pw == ADMIN_PASSWORD)
+
+        # Debug line: visible in Render logs
+        app.logger.info(
+            "LOGIN_DEBUG user=%r len_pw=%d env_user=%r hash_set=%s ok=%s",
+            user, len(pw), ADMIN_USER, bool(ADMIN_PASSWORD_HASH), ok
+        )
+
+        if user == ADMIN_USER and ok:
             session['logged_in'] = True
             session.permanent = True
             flash("تم تسجيل الدخول بنجاح.", "success")
             return redirect(url_for('admin_messages'))
+
         flash("بيانات الدخول غير صحيحة.", "error")
         return redirect(url_for('login'))
 
@@ -429,6 +452,7 @@ def admin_messages():
                            active_page=None, messages=rows, page=page, has_next=has_next,
                            facebook_url=FACEBOOK_URL, whatsapp_number=WHATSAPP_NUMBER,
                            whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')))
+
     # Extra safety (already set in after_request, but here too)
     resp.headers["Cache-Control"] = "no-store"
     resp.headers["X-Robots-Tag"] = "noindex, nofollow"
@@ -464,5 +488,3 @@ def favicon():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
-
