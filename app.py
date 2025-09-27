@@ -207,11 +207,14 @@ def normalize_iraq_phone(raw: str):
         digits = digits[3:]
     if digits.startswith("0"):
         digits = digits[1:]
+    # now we expect 10 digits starting with 7xxxxxxxxx
     if len(digits) != 10 or not digits.startswith("7"):
         return None
-    if digits[1:3] not in IRAQ_ALLOWED_PREFIXES:
+    # check first TWO digits (operator code): 75/77/78/79
+    if digits[:2] not in IRAQ_ALLOWED_PREFIXES:
         return None
     return "0" + digits
+
 
 def verify_recaptcha(token):
     if not RECAPTCHA_SECRET_KEY:
