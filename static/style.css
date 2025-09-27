@@ -1,0 +1,372 @@
+/* =========================
+   Azm Site – style.css (v12)
+   ========================= */
+
+/* ===== Design tokens ===== */
+:root{
+  --primary:#267FDD;      /* main brand blue */
+  --primary-600:#1f6bb8;  /* hover/darker */
+  --primary-50:#eaf3fe;   /* soft tint background */
+
+  --text:#0f172a;
+  --muted:#475569;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --border:#e5e9f1;
+
+  --shadow:0 6px 18px rgba(2,19,51,.08);
+  --wa:#25D366;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.85;
+  font-size:16px;
+}
+
+/* ===== Layout ===== */
+.container{max-width:1120px;margin:0 auto;padding:0 18px}
+main.container{padding-top:28px}
+
+/* ===== Header ===== */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  background:var(--primary);
+  box-shadow:0 2px 16px rgba(38,127,221,.22);
+}
+.nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:18px 0}
+
+/* Brand (logo + name) */
+.brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:#fff}
+.brand-logo{height:68px; width:auto; display:block}
+.brand-text{display:flex; flex-direction:column}
+.site-title{font-family:"Changa", sans-serif; font-weight:800; font-size:24px; color:#fff}
+.site-subtitle{color:rgba(255,255,255,.82); font-size:12px}
+
+/* ===== Nav ===== */
+.nav{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+.nav a{color:#fff; text-decoration:none; font-weight:700; position:relative}
+.nav a:hover{opacity:.9}
+.nav .btn.small{
+  padding:10px 14px; font-weight:800;
+  background:#fff; color:var(--primary)!important; border:none; box-shadow:var(--shadow);
+}
+.nav .btn.small:hover{background:#f8fbff; color:var(--primary-600)!important}
+
+/* Active page underline */
+.nav a.active::after{
+  content:''; position:absolute; bottom:-6px; left:0; right:0; height:3px;
+  background:#fff; border-radius:2px;
+}
+
+/* Social (Facebook icon) */
+.social{display:flex; align-items:center; gap:10px; margin-inline-start:6px}
+.icon-link{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:40px; height:40px; border-radius:50%;
+  background:transparent; border:1px solid rgba(255,255,255,.65);
+  color:#fff; text-decoration:none;
+  transition:transform .15s ease, border-color .15s ease, background .15s ease;
+}
+.icon-link:hover{transform:translateY(-1px); border-color:#fff; background:rgba(255,255,255,.14)}
+
+/* ===== Buttons (general) ===== */
+.btn{
+  display:inline-block; padding:12px 18px; border-radius:14px;
+  border:1px solid var(--primary); background:var(--primary);
+  color:#fff; text-decoration:none; font-weight:800; box-shadow:var(--shadow)
+}
+.btn:hover{background:var(--primary-600); border-color:var(--primary-600)}
+.btn.outline{background:transparent; color:var(--primary); border-color:var(--primary)}
+.btn.tiny{padding:6px 10px; font-size:13px; border-radius:10px}
+
+/* ===== Hero / Titles ===== */
+.hero{
+  margin:32px 0; padding:36px 28px;
+  background:linear-gradient(180deg, var(--primary-50) 0%, rgba(245,249,255,.4) 100%);
+  border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow)
+}
+.hero h2{
+  font-family:"Changa", sans-serif;
+  font-weight:800; font-size:38px; margin:0 0 10px 0; letter-spacing:.2px
+}
+.hero p{margin:0 0 16px 0; color:var(--muted); font-size:18px}
+.page-title{font-family:"Changa", sans-serif; font-weight:800; font-size:30px; margin:8px 0 16px}
+
+/* ===== Cards (Products page) ===== */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-top:18px}
+.card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+.card h3{font-family:"Changa", sans-serif; font-weight:700; margin:0 0 6px 0}
+.card p{margin:0; color:var(--muted)}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px}
+.chip{display:inline-block; padding:4px 10px; border-radius:999px; border:1px solid var(--border); background:var(--primary-50); font-weight:700; font-size:12px; color:var(--primary-600)}
+
+/* ===== Forms ===== */
+.form{display:grid; gap:12px; max-width:560px}
+.form input,.form textarea{padding:12px 14px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text)}
+.form button{margin-top:8px}
+.captcha{margin-top:6px}
+
+/* ===== Tables (Admin inbox) ===== */
+.table-wrap{overflow:auto; border:1px solid var(--border); border-radius:14px; background:var(--card); box-shadow:var(--shadow)}
+.table{width:100%; border-collapse:collapse; min-width:720px}
+.table th,.table td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:right; vertical-align:top}
+.table thead th{background:var(--primary-50)}
+.table td.wrap{white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere; max-width:640px}
+.pager{display:flex; gap:10px; margin-top:12px}
+
+/* ===== Modal (Admin viewer) ===== */
+.modal[hidden]{display:none}
+.modal{position:fixed; inset:0; z-index:100}
+.modal__overlay{position:absolute; inset:0; background:rgba(2,19,51,.45); backdrop-filter:saturate(140%) blur(2px)}
+.modal__content{
+  position:relative; margin:6vh auto; width:min(840px, calc(100% - 32px));
+  background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+  padding:16px;
+}
+.modal__header{display:flex; align-items:center; justify-content:space-between; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--border)}
+.modal__header h3{font-family:"Changa", sans-serif; margin:0}
+.modal__close{background:transparent; border:none; font-size:26px; line-height:1; cursor:pointer}
+.modal__body{padding:12px 0}
+.meta{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 18px; margin:0 0 10px}
+.meta dt{font-weight:800; color:var(--muted)}
+.meta dd{margin:0}
+.message-box{
+  max-height:40vh; overflow:auto; white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere;
+  background:var(--primary-50); border:1px solid var(--border); border-radius:12px; padding:12px
+}
+.modal__footer{display:flex; gap:10px; justify-content:flex-start; padding-top:10px; border-top:1px solid var(--border)}
+.modal__footer .disabled{pointer-events:none; opacity:.6}
+
+/* ===== Flash messages ===== */
+.flash-wrap{margin:16px 0}
+.flash{padding:12px 14px; border-radius:12px; margin-bottom:8px}
+.flash.error{background:#ffe6e6; border:1px solid #ffb3b3}
+.flash.success{background:#e6ffef; border:1px solid #b3ffd0}
+
+/* ===== Footer ===== */
+.footer{
+  margin-top:40px; padding-top:16px; border-top:1px solid var(--border);
+  color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:12px
+}
+
+/* ===== WhatsApp FAB ===== */
+.whatsapp-fab{
+  position:fixed; left:18px; bottom:18px;
+  width:56px; height:56px; border-radius:50%;
+  background:var(--wa); color:#fff; display:flex; align-items:center; justify-content:center;
+  box-shadow:var(--shadow); text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.whatsapp-fab:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(2,19,51,.12)}
+
+/* ===== Clean Hamburger (stacked bars, no borders) ===== */
+.hamburger{display:none; background:transparent; border:none; padding:0; cursor:pointer}
+.hamburger span{display:block; width:28px; height:3px; background:#fff; border-radius:3px}
+
+/* ===== Mobile tweaks ===== */
+@media (max-width: 900px){
+  /* show hamburger and stack bars vertically */
+  .hamburger{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center; justify-content:center;
+    width:56px; height:56px;
+  }
+  .hamburger span{margin:5px 0} /* spacing between bars */
+
+  /* dropdown nav (no borders) */
+  .nav{
+    position:absolute; inset-inline:0; top:80px;
+    background:var(--primary);
+    display:none; flex-direction:column; gap:12px; padding:14px 18px;
+  }
+  .nav.open{display:flex}
+}
+
+@media (max-width: 768px){
+  .container{padding:0 14px}
+  .brand-logo{height:56px}
+  .site-title{font-size:21px}
+  .site-subtitle{display:none}
+  .hero{padding:24px}
+  .hero h2{font-size:30px}
+  .hero p{font-size:16px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .cta-row .btn, .form .btn{width:100%}
+}
+
+@media (max-width: 480px){
+  .brand{gap:10px}
+  .brand-logo{height:48px}
+  .nav a{font-size:16px}
+  .nav .btn.small{padding:10px 12px}
+  .hero{padding:20px}
+  .hero h2{font-size:26px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .whatsapp-fab{right:16px; left:auto; width:60px; height:60px}
+  .icon-link{width:40px; height:40px}
+}
+
+
+/* === Hero background: fill card, crop well, keep text visible === */
+/* === Full-bleed hero image inside the white card, with built-in overlay === */
+.hero{
+  position: relative;
+  overflow: hidden;                 /* clip to rounded corners */
+  border-radius: 18px;              /* same radius as before */
+  /* One background with two layers: the dark gradient + your photo */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.42) 40%, rgba(0,0,0,.32) 100%),
+    url('/static/img/hero-bg.png') center 35% / cover no-repeat;  /* .jpg if that's your file */
+}
+/* Stretch hero to the container edges (under the blue header) */
+.hero{ margin-left:-18px; margin-right:-18px; }  /* equal to .container padding */
+
+@media (max-width: 768px){
+  .hero{ margin-left:-14px; margin-right:-14px; }  /* equal to .container padding at this size */
+}
+
+
+/* Stronger overlay so dark text and bullets remain readable */
+.hero::before {
+  content:"";
+  position:absolute; inset:0;
+  /* top-to-bottom gradient: darker near text area */
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.20) 0%,
+    rgba(0,0,0,.12) 40%,
+    rgba(0,0,0,.04) 100%
+  );
+}
+
+/* Keep all existing hero content above the overlay (no color/size changes) */
+.hero > * { position: relative; z-index: 1; }
+
+/* Small readability boost without changing color */
+.hero h2, .hero p, .hero li {
+  text-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+
+/* Make sure buttons sit on top and feel clickable */
+.hero .btn {
+  position: relative; z-index: 2;
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+}
+
+/* Mobile: show a higher part of the image (often looks better in portrait) */
+@media (max-width: 639px){
+  .hero{ background-position: 50% 25%; } /* shift focal point up */
+}
+
+/* Desktop: nudge focal point horizontally if needed */
+@media (min-width: 1024px){
+  .hero{ background-position: 60% 50%; } /* move a bit to the right */
+}
+
+/* === Hero: lighter image + white text + white outline CTA (overrides) === */
+.hero{
+  /* lighter overlay than before */
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,.28) 0%,
+      rgba(0,0,0,.18) 40%,
+      rgba(0,0,0,.10) 100%
+    ),
+    url('/static/img/hero-bg.png') center 35% / cover no-repeat;  /* use .jpg if that's your file */
+}
+
+/* make hero text readable without changing sizes */
+.hero h2,
+.hero p,
+.hero li{
+  color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+
+/* make the outline CTA (اطلب عرض سعر) white */
+.hero .btn.outline{
+  background:transparent;
+  color:#fff !important;
+  border-color:#fff !important;
+}
+.hero .btn.outline:hover{
+  background:rgba(255,255,255,.12);
+  color:#fff !important;
+  border-color:#fff !important;
+}
+
+
+/* Lighter overlay + responsive image-set with fallback */
+.hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+
+  background-image:
+    linear-gradient(180deg,
+      rgba(0,0,0,.28) 0%,
+      rgba(0,0,0,.18) 40%,
+      rgba(0,0,0,.10) 100%
+    ),
+    -webkit-image-set(
+      url('/static/img/hero/hero-640.jpg') 1x,
+      url('/static/img/hero/hero-1280.jpg') 2x,
+      url('/static/img/hero/hero-1920.jpg') 3x
+    );
+  background-image:
+    linear-gradient(180deg,
+      rgba(0,0,0,.28) 0%,
+      rgba(0,0,0,.18) 40%,
+      rgba(0,0,0,.10) 100%
+    ),
+    image-set(
+      url('/static/img/hero/hero-640.png') 1x,
+      url('/static/img/hero/hero-1280.png') 2x,
+      url('/static/img/hero/hero-1920.png') 3x
+    );
+
+  background-size: auto, cover;        /* overlay, image */
+  background-position: center, 35%;    /* overlay, image */
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* Optional focal tweaks */
+@media (min-width:1024px){ .hero{ background-position: center, 60% 35%; } }
+@media (max-width:639px){ .hero{ background-position: center, 50% 20%; } }
+
+
+/* keep text/CTA clear (no size changes) */
+.hero h2, .hero p, .hero li{ color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.15); }
+.hero .btn.outline{
+  background:transparent; color:#fff !important; border-color:#fff !important;
+}
+.hero .btn.outline:hover{
+  background:rgba(255,255,255,.12); color:#fff !important; border-color:#fff !important;
+}
+
+/* Hero: make "اطلب عرض سعر" button white with brand-blue text */
+.hero .btn.outline{
+  background:#fff !important;
+  color:#267fdd !important;        /* brand blue */
+  border-color:#fff !important;
+  text-shadow:none;                 /* crisper on white */
+}
+
+.hero .btn.outline:hover{
+  background:#f5f9ff !important;   /* gentle hover */
+  color:#1f6bb8 !important;         /* darker blue hover */
+  border-color:#f5f9ff !important;
+}
+
+
+/* Hero: slightly bolder body text */
+.hero p,
+.hero li{
+  font-weight: 700;  /* Tajawal 500 is loaded */
+}

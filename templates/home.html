@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h2>حلول موثوقة · جودة مضمونة</h2>
+  <p>نوفر قطع غيار للمعدات الثقيلة، حلول الجسور (مساند مطاطية وفواصل تمددية)، وأدوات إعادة تأهيل الطرق مع تغطية لجميع المحافظات.</p>
+  <ul class="key-points">
+    <li>منتجات أصلية من موردين معروفين</li>
+    <li>استشارات فنية ودعم ما بعد البيع</li>
+    <li>تجهيز سريع وشحن داخل العراق</li>
+  </ul>
+  <div class="cta-row">
+    <a class="btn" href="{{ url_for('products') }}">تصفح المنتجات</a>
+    <a class="btn outline" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
+  </div>
+</section>
+
+<section class="cards">
+  <div class="card">
+    <h3>قطع غيار ومحركات المعدات الثقيلة</h3>
+    <p>محركات وقطع أصلية وبدائل عالية الجودة لضمان استمرارية العمل وتقليل التوقفات.</p>
+  </div>
+  <div class="card">
+    <h3>حلول الجسور</h3>
+    <p>مساند مطاطية (Elastomeric Bearings) وفواصل تمددية (Expansion Joints) بمواصفات قياسية.</p>
+  </div>
+  <div class="card">
+    <h3>إعادة تأهيل الطرق</h3>
+    <p>أدوات قشط أسفلت، شفرات وتمهيد، وملحقات موثوقة لنتائج دقيقة وتكاليف أقل.</p>
+  </div>
+</section>
+{% endblock %}

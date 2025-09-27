@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title">تسجيل الدخول</h2>
+<form class="form" method="post" action="{{ url_for('login') }}">
+  <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+  <input type="text" name="username" placeholder="اسم المستخدم" required>
+  <input type="password" name="password" placeholder="كلمة المرور" required>
+  <button class="btn" type="submit">دخول</button>
+</form>
+{% endblock %}

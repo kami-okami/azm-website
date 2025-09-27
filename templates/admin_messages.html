@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title">رسائل العملاء</h2>
+
+<div class="table-wrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>التاريخ/الوقت</th>
+        <th>الاسم</th>
+        <th>الهاتف</th>
+        <th>البريد</th>
+        <th>الموضوع</th>
+        <th>الرسالة</th>
+        <th>IP</th>
+        <th>إجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for m in messages %}
+      <tr>
+        <td>{{ m.display_time }}</td>
+        <td>{{ m.name }}</td>
+        <td>{{ m.phone }}</td>
+        <td>{{ m.email or '-' }}</td>
+        <td>{{ m.subject or '-' }}</td>
+        <td class="wrap">{{ m.message }}</td>
+        <td>{{ m.ip or '-' }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn outline tiny open-message"
+            data-name="{{ m.name }}"
+            data-phone="{{ m.phone }}"
+            data-email="{{ m.email or '' }}"
+            data-subject="{{ m.subject or '' }}"
+            data-time="{{ m.display_time }}"
+            data-ip="{{ m.ip or '' }}"
+            data-message='{{ m.message|tojson }}'>
+            عرض
+          </button>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="8" style="text-align:center">لا توجد رسائل بعد</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="pager">
+  {% if page > 1 %}
+    <a class="btn outline" href="{{ url_for('admin_messages', page=page-1) }}">السابق</a>
+  {% endif %}
+  {% if has_next %}
+    <a class="btn" href="{{ url_for('admin_messages', page=page+1) }}">التالي</a>
+  {% endif %}
+</div>
+
+<!-- Modal -->
+<div id="msgModal" class="modal" hidden>
+  <div class="modal__overlay" data-close="1"></div>
+  <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__header">
+      <h3 id="modalTitle">تفاصيل الرسالة</h3>
+      <button class="modal__close" type="button" aria-label="إغلاق" data-close="1">×</button>
+    </div>
+
+    <div class="modal__body">
+      <dl class="meta">
+        <div><dt>التاريخ/الوقت</dt><dd id="mTime">-</dd></div>
+        <div><dt>الاسم</dt><dd id="mName">-</dd></div>
+        <div><dt>الهاتف</dt><dd id="mPhone">-</dd></div>
+        <div><dt>البريد</dt><dd id="mEmail">-</dd></div>
+        <div><dt>الموضوع</dt><dd id="mSubject">-</dd></div>
+        <div><dt>IP</dt><dd id="mIP">-</dd></div>
+      </dl>
+
+      <div class="message-box" id="mMessage"></div>
+    </div>
+
+    <div class="modal__footer">
+      <button class="btn outline" type="button" id="copyBtn">نسخ الرسالة</button>
+      <a class="btn" id="waBtn" target="_blank" rel="noopener">رد عبر واتساب</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function(){
+  const modal = document.getElementById('msgModal');
+  const txt = id => document.getElementById(id);
+
+  function openModal(data){
+    // decode message stored as JSON in data-message
+    const message = JSON.parse(data.message || '""');
+
+    txt('mTime').textContent    = data.time || '-';
+    txt('mName').textContent    = data.name || '-';
+    txt('mPhone').textContent   = data.phone || '-';
+    txt('mEmail').textContent   = data.email || '-';
+    txt('mSubject').textContent = data.subject || '-';
+    txt('mIP').textContent      = data.ip || '-';
+    txt('mMessage').textContent = message || '-';
+
+    // Build WhatsApp link to the sender's number
+    const digits = (data.phone || '').replace(/\D/g,'');
+    let intl = digits;
+    if (/^0\d{9}$/.test(digits)) { intl = '964' + digits.slice(1); }
+    else if (/^\+964/.test(data.phone || '')) { intl = digits.slice(1); }
+    else if (/^00964/.test(digits)) { intl = digits.slice(4); }
+    const waText = `مرحباً {{ company }} — رد على رسالتك:\n${message}`;
+    const waHref = intl ? `https://wa.me/${intl}?text=${encodeURIComponent(waText)}` : '#';
+    const waBtn = document.getElementById('waBtn');
+    waBtn.href = waHref;
+    waBtn.classList.toggle('disabled', !intl);
+
+    modal.removeAttribute('hidden');
+  }
+
+  function closeModal(){
+    modal.setAttribute('hidden', '');
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.open-message');
+    if (btn){
+      openModal({
+        name: btn.dataset.name,
+        phone: btn.dataset.phone,
+        email: btn.dataset.email,
+        subject: btn.dataset.subject,
+        time: btn.dataset.time,
+        ip: btn.dataset.ip,
+        message: btn.dataset.message
+      });
+    }
+    if (e.target.dataset.close){ closeModal(); }
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeModal();
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(document.getElementById('mMessage').textContent);
+      const b = document.getElementById('copyBtn');
+      const prev = b.textContent;
+      b.textContent = 'تم النسخ ✓';
+      setTimeout(()=> b.textContent = prev, 1200);
+    }catch(_){}
+  });
+})();
+</script>
+{% endblock %}
