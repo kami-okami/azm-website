@@ -1,6 +1,8 @@
 import os
 import re
 import sqlite3
+import shutil
+
 import time
 import smtplib
 from datetime import datetime, timedelta
@@ -30,7 +32,21 @@ app.config.update(
 if os.getenv("FLASK_ENV") == "production":
     app.config['SESSION_COOKIE_SECURE'] = True
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'messages.db')
+# Use /data/messages.db on Render (via env), fallback to local messages.db in dev
+DB_PATH = os.environ.get(
+    "SQLITE_PATH",
+    os.path.join(os.path.dirname(__file__), "messages.db")
+)
+
+# One-time copy on first boot: if deploying to Render and /data/messages.db
+# doesn't exist yet but a local messages.db exists in the repo, copy it so
+# your old messages appear in production immediately.
+if os.environ.get("SQLITE_PATH") and not os.path.exists(DB_PATH):
+    local_db = os.path.join(os.path.dirname(__file__), "messages.db")
+    if os.path.exists(local_db):
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        shutil.copyfile(local_db, DB_PATH)
+
 
 # --- Env / Social ---
 FACEBOOK_URL = os.getenv("FACEBOOK_URL", "").strip() or None
