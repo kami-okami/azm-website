@@ -12,6 +12,8 @@
 
 </head>
 <body>
+  {% block extra_scripts %}{% endblock %}
+
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="{{ url_for('home') }}">
