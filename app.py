@@ -175,24 +175,24 @@ def inject_globals():
 def set_security_headers(resp):
     csp = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; "
+        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/; "
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com data:; "
         "img-src 'self' data: https:; "
-        "connect-src 'self'; "
-        "frame-src https://www.google.com/recaptcha/;"
+        "connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; "
+        "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/ https://www.recaptcha.net/;"
     )
     resp.headers.setdefault("Content-Security-Policy", csp)
     resp.headers.setdefault("X-Content-Type-Options", "nosniff")
     resp.headers.setdefault("X-Frame-Options", "DENY")
     resp.headers.setdefault("Referrer-Policy", "same-origin")
     resp.headers.setdefault("Permissions-Policy", "geolocation=(), camera=(), microphone=()")
-    # Extra protection for admin pages
     if request.path.startswith("/admin"):
         resp.headers["Cache-Control"] = "no-store"
         resp.headers["Pragma"] = "no-cache"
         resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
+
 
 # --------------- Validation ---------------
 IRAQ_ALLOWED_PREFIXES = {"75", "77", "78", "79"}
@@ -217,17 +217,31 @@ def normalize_iraq_phone(raw: str):
 
 
 def verify_recaptcha(token):
-    if not RECAPTCHA_SECRET_KEY:
+    if not RECAPTCHA_SECRET_KEY or not token:
         return False
     try:
         resp = requests.post(
             "https://www.google.com/recaptcha/api/siteverify",
-            data={"secret": RECAPTCHA_SECRET_KEY, "response": token},
-            timeout=8
+            data={
+                "secret": RECAPTCHA_SECRET_KEY,
+                "response": token,
+                "remoteip": request.headers.get('X-Forwarded-For', request.remote_addr or '')
+            },
+            timeout=5
         )
-        return bool(resp.json().get("success"))
-    except Exception:
+        data = resp.json()
+        if not data.get("success"):
+            app.logger.warning("RECAPTCHA_FAIL: %s", data)
+            return False
+        host = data.get("hostname", "")
+        if host not in {"azmsupply.com", "www.azmsupply.com"}:
+            app.logger.warning("RECAPTCHA_HOST_MISMATCH: %r", host)
+            return False
+        return True
+    except Exception as e:
+        app.logger.warning("RECAPTCHA_VERIFY_ERROR: %s", e)
         return False
+
 
 def send_email_notification(payload):
     if not (EMAIL_HOST and EMAIL_USER and EMAIL_PASS and EMAIL_TO):
