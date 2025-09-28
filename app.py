@@ -58,7 +58,7 @@ ADMIN_USER = (os.getenv("ADMIN_USER", "admin") or "").strip()
 ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD", "") or "").strip()  # plaintext fallback (optional)
 ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()  # preferred
 
-# --- reCAPTCHA (dev keys OK for localhost) ---
+# --- reCAPTCHA (prod keys set in env) ---
 RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
 RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")
 
@@ -193,9 +193,9 @@ def set_security_headers(resp):
         resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
 
-
 # --------------- Validation ---------------
 IRAQ_ALLOWED_PREFIXES = {"75", "77", "78", "79"}
+DENY_PHONES = {"07802280589", "07740818896", "07518232611"}  # blocked numbers (normalized national format)
 
 def normalize_iraq_phone(raw: str):
     if not raw:
@@ -214,7 +214,6 @@ def normalize_iraq_phone(raw: str):
     if digits[:2] not in IRAQ_ALLOWED_PREFIXES:
         return None
     return "0" + digits
-
 
 def verify_recaptcha(token):
     if not RECAPTCHA_SECRET_KEY or not token:
@@ -241,7 +240,6 @@ def verify_recaptcha(token):
     except Exception as e:
         app.logger.warning("RECAPTCHA_VERIFY_ERROR: %s", e)
         return False
-
 
 def send_email_notification(payload):
     if not (EMAIL_HOST and EMAIL_USER and EMAIL_PASS and EMAIL_TO):
@@ -353,8 +351,14 @@ def contact():
             return redirect(url_for('contact'))
 
         phone = normalize_iraq_phone(phone_raw)
+
         if not phone:
             flash("رقم الهاتف غير صالح. أدخل رقم عراقي صحيح يبدأ بـ 075/077/078/079 (مثال: 07802280589 أو +9647802280589).", "error")
+            return redirect(url_for('contact'))
+
+        # Block specific numbers (normalized national format)
+        if phone in DENY_PHONES:
+            flash("يرجى إدخال رقم هاتف مختلف.", "error")
             return redirect(url_for('contact'))
 
         payload = {"name": name, "phone": phone, "email": email,

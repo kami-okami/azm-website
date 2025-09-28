@@ -8,16 +8,55 @@
 
   <input type="text" name="name" placeholder="الاسم الكامل *" required>
 
-  <input
-    type="tel"
-    name="phone"
-    inputmode="numeric"
-    autocomplete="tel-national"
-    dir="ltr"
-    required
-    pattern="^(?:0?7[5789]\d{8}|(?:\+?964)?7[5789]\d{8})$"
-    title="أدخل رقم هاتف عراقي صحيح يبدأ بـ 075 أو 077 أو 078 أو 079 (مثال: 07802280589 أو +9647802280589)."
-    placeholder="0780 228 0589" />
+  <!-- replace your existing phone input with this -->
+<input
+  type="tel"
+  name="phone"
+  inputmode="numeric"
+  autocomplete="tel-national"
+  dir="ltr"
+  required
+  pattern="^(?:0?7[5789]\d{8}|(?:\+?964)?7[5789]\d{8})$"
+  title="أدخل رقم هاتف عراقي صحيح يبدأ بـ 075 أو 077 أو 078 أو 079 (مثال: 07802280589 أو +9647802280589)."
+  placeholder="ادخل رقم هاتف صحيح"
+ />
+
+{% block extra_scripts %}
+  <!-- reCAPTCHA script (keep) -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <!-- deny-list numbers on the client for better UX (server still re-checks) -->
+  <script>
+  (function () {
+    const deny = new Set(["07802280589","07740818896","07518232611"]);
+    const input = document.querySelector('input[name="phone"]');
+
+    function normalize(raw) {
+      if (!raw) return "";
+      let d = raw.replace(/\D/g, "");
+      if (d.startsWith("00964")) d = d.slice(5);
+      else if (d.startsWith("964")) d = d.slice(3);
+      if (d.startsWith("0")) d = d.slice(1);
+      // Expect 10 digits starting with 7 → return 0 + digits
+      if (d.length === 10 && d.startsWith("7")) return "0" + d;
+      return raw; // if invalid, leave as-is; pattern will handle it
+    }
+
+    function check() {
+      const n = normalize(input.value);
+      if (deny.has(n)) {
+        input.setCustomValidity("يرجى إدخال رقم هاتف مختلف.");
+      } else {
+        input.setCustomValidity("");
+      }
+    }
+
+    input.addEventListener("input", check);
+    input.addEventListener("change", check);
+  })();
+  </script>
+{% endblock %}
+
 
   <input type="email" name="email" placeholder="البريد الإلكتروني (اختياري)">
   <input type="text" name="subject" placeholder="الموضوع (اختياري)">
