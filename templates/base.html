@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or "موقع الشركة" }} | {{ company or "الشركة" }}</title>
+  <!-- head-version: 2025-09-29-HomeMeta -->
+
+
+  {% if meta_description %}
+  <meta name="description" content="{{ meta_description }}">
+{% else %}
+  <meta name="description" content="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — منتجات موثوقة تشمل مفاصل التمدد، مساند الارتكاز، وقطع غيار المحركات لمشاريع الطرق والجسور في العراق.">
+{% endif %}
+
 
   <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 

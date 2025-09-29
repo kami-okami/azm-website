@@ -304,24 +304,43 @@ def is_logged_in():
 # --------------- Routes ---------------
 @app.route('/')
 def home():
-    return render_template('home.html', title="الرئيسية", company=COMPANY_NAME,
-                           active_page='home', facebook_url=FACEBOOK_URL,
-                           whatsapp_number=WHATSAPP_NUMBER,
-                           whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''))
+    return render_template(
+        'home.html',
+        title="الرئيسية",
+        company=COMPANY_NAME,
+        active_page='home',
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
+        meta_description="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — نوفر مفاصل تمدد، مساند ارتكاز، وقطع غيار محركات لمشاريع الطرق والجسور في العراق بجودة عالية وخدمة سريعة."
+    )
+
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title="من نحن", company=COMPANY_NAME,
-                           active_page='about', facebook_url=FACEBOOK_URL,
-                           whatsapp_number=WHATSAPP_NUMBER,
-                           whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''))
+    return render_template(
+        'about.html',
+        title="من نحن",
+        company=COMPANY_NAME,
+        active_page='about',
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
+        meta_description="تعرف على شركة عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — رؤيتنا، قيمنا، وخبراتنا في دعم مشاريع البنية التحتية في العراق."
+    )
 
 @app.route('/products')
 def products():
-    return render_template('products.html', title="المنتجات", company=COMPANY_NAME,
-                           active_page='products', facebook_url=FACEBOOK_URL,
-                           whatsapp_number=WHATSAPP_NUMBER,
-                           whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''))
+    return render_template(
+        'products.html',
+        title="المنتجات",
+        company=COMPANY_NAME,
+        active_page='products',
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
+        meta_description="اكتشف مجموعة منتجات عزم: مفاصل تمدد، مساند ارتكاز، قطع غيار المحركات، ولوازم إعادة تأهيل الطرق والجسور بجودة موثوقة."
+    )
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -373,10 +392,19 @@ def contact():
 
         return redirect(url_for('thank_you'))
 
-    return render_template('contact.html', title="تواصل معنا", company=COMPANY_NAME,
-                           active_page='contact', recaptcha_site_key=RECAPTCHA_SITE_KEY,
-                           facebook_url=FACEBOOK_URL, whatsapp_number=WHATSAPP_NUMBER,
-                           whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''))
+    # GET: render with page-specific meta description
+    return render_template(
+        'contact.html',
+        title="تواصل معنا",
+        company=COMPANY_NAME,
+        active_page='contact',
+        recaptcha_site_key=RECAPTCHA_SITE_KEY,
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
+        meta_description="تواصل مع عزم للحصول على عروض أسعار واستشارات حول مفاصل التمدد، مساند الارتكاز، وقطع الغيار لمشاريع الطرق والجسور في العراق."
+    )
+
 
 @app.route('/thank-you')
 def thank_you():
