@@ -20,12 +20,14 @@
 
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
+html{scrollbar-gutter: stable;}
 body{
   font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
   background:var(--bg);
   line-height:1.85;
   font-size:16px;
+  overflow-x:hidden; /* prevent tiny horizontal overflow (+ signs) */
 }
 
 /* ===== Layout ===== */
@@ -221,10 +223,13 @@ main.container{padding-top:28px}
     linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.42) 40%, rgba(0,0,0,.32) 100%),
     url('/static/img/hero-bg.png') center 35% / cover no-repeat;
 }
-.hero{ margin-left:-18px; margin-right:-18px; }
+
+/* CLAMPED negative margins to avoid sub-pixel overflow in some browsers */
+.hero{ margin-inline: max(-18px, calc(-1 * (100vw - 100%))); }
 @media (max-width: 768px){
-  .hero{ margin-left:-14px; margin-right:-14px; }
+  .hero{ margin-inline: max(-14px, calc(-1 * (100vw - 100%))); }
 }
+
 .hero::before {
   content:"";
   position:absolute; inset:0;
@@ -373,20 +378,7 @@ main.container{padding-top:28px}
   padding: 0 !important;
   margin-block: 24px !important;
 }
-.seo-intro,
-.seo-intro h2,
-.seo-intro h3,
-.seo-intro p,
-.seo-intro li {
-  color: #0f172a !important;
-  text-shadow: none !important;
-}
-/* keep the two-column list on desktop */
-.seo-grid{ display:grid; gap:14px; }
-@media (min-width: 900px){
-  .seo-grid{ grid-template-columns: 1fr 1fr; }
-}
-/* === Match SEO intro text color to hero section === */
+/* Color override for SEO block (match hero) */
 .seo-intro,
 .seo-intro h2,
 .seo-intro h3,
@@ -395,12 +387,12 @@ main.container{padding-top:28px}
   color: #fff !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
-/* === Prevent unwanted horizontal overflow (removes + signs) === */
-html, body {
-  overflow-x: hidden;
-}
-/* === Remove accidental horizontal overflow (prevents extra scrollbar) === */
-html, body { overflow-x: hidden; }
 
-/* === Hide scrollbar buttons that appear as '+' in some browsers === */
+/* keep the two-column list on desktop */
+.seo-grid{ display:grid; gap:14px; }
+@media (min-width: 900px){
+  .seo-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+/* Hide scrollbar buttons that appear as '+' in some browsers */
 ::-webkit-scrollbar-button { width: 0; height: 0; display: none; }
