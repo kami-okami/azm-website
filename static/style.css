@@ -398,3 +398,12 @@ main.container{padding-top:28px}
 ::-webkit-scrollbar-button { width: 0; height: 0; display: none; }
 /* === Prevent tiny horizontal bleed from full-bleed hero inside .container === */
 .container { overflow-x: clip; } /* hides 1–2px RTL overflow without affecting layout */
+/* === FINAL FIX: remove horizontal overflow from .hero negative margins === */
+html, body {
+  overflow-x: clip; /* modern browsers — cleaner than hidden */
+}
+
+.hero {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
