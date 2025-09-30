@@ -396,3 +396,5 @@ main.container{padding-top:28px}
 
 /* Hide scrollbar buttons that appear as '+' in some browsers */
 ::-webkit-scrollbar-button { width: 0; height: 0; display: none; }
+/* === Prevent tiny horizontal bleed from full-bleed hero inside .container === */
+.container { overflow-x: clip; } /* hides 1–2px RTL overflow without affecting layout */
