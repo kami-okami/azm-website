@@ -88,7 +88,9 @@ main.container{padding-top:28px}
 .hero{
   margin:32px 0; padding:36px 28px;
   background:linear-gradient(180deg, var(--primary-50) 0%, rgba(245,249,255,.4) 100%);
-  border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow)
+  border-radius:18px;
+  border:0;               /* changed from: 1px solid var(--border) */
+  box-shadow:none;        /* changed from: var(--shadow) */
 }
 .hero h2{
   font-family:"Changa", sans-serif;
@@ -170,16 +172,14 @@ main.container{padding-top:28px}
 
 /* ===== Mobile tweaks ===== */
 @media (max-width: 900px){
-  /* show hamburger and stack bars vertically */
   .hamburger{
     display:inline-flex;
     flex-direction:column;
     align-items:center; justify-content:center;
     width:56px; height:56px;
   }
-  .hamburger span{margin:5px 0} /* spacing between bars */
+  .hamburger span{margin:5px 0}
 
-  /* dropdown nav (no borders) */
   .nav{
     position:absolute; inset-inline:0; top:80px;
     background:var(--primary);
@@ -212,31 +212,22 @@ main.container{padding-top:28px}
   .icon-link{width:40px; height:40px}
 }
 
-
 /* === Hero background: fill card, crop well, keep text visible === */
-/* === Full-bleed hero image inside the white card, with built-in overlay === */
 .hero{
   position: relative;
   overflow: hidden;                 /* clip to rounded corners */
   border-radius: 18px;              /* same radius as before */
-  /* One background with two layers: the dark gradient + your photo */
   background:
     linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.42) 40%, rgba(0,0,0,.32) 100%),
-    url('/static/img/hero-bg.png') center 35% / cover no-repeat;  /* .jpg if that's your file */
+    url('/static/img/hero-bg.png') center 35% / cover no-repeat;
 }
-/* Stretch hero to the container edges (under the blue header) */
-.hero{ margin-left:-18px; margin-right:-18px; }  /* equal to .container padding */
-
+.hero{ margin-left:-18px; margin-right:-18px; }
 @media (max-width: 768px){
-  .hero{ margin-left:-14px; margin-right:-14px; }  /* equal to .container padding at this size */
+  .hero{ margin-left:-14px; margin-right:-14px; }
 }
-
-
-/* Stronger overlay so dark text and bullets remain readable */
 .hero::before {
   content:"";
   position:absolute; inset:0;
-  /* top-to-bottom gradient: darker near text area */
   background: linear-gradient(
     180deg,
     rgba(0,0,0,.20) 0%,
@@ -244,52 +235,26 @@ main.container{padding-top:28px}
     rgba(0,0,0,.04) 100%
   );
 }
-
-/* Keep all existing hero content above the overlay (no color/size changes) */
 .hero > * { position: relative; z-index: 1; }
-
-/* Small readability boost without changing color */
-.hero h2, .hero p, .hero li {
-  text-shadow: 0 1px 2px rgba(0,0,0,.25);
-}
-
-/* Make sure buttons sit on top and feel clickable */
-.hero .btn {
-  position: relative; z-index: 2;
-  box-shadow: 0 6px 20px rgba(0,0,0,.18);
-}
-
-/* Mobile: show a higher part of the image (often looks better in portrait) */
-@media (max-width: 639px){
-  .hero{ background-position: 50% 25%; } /* shift focal point up */
-}
-
-/* Desktop: nudge focal point horizontally if needed */
-@media (min-width: 1024px){
-  .hero{ background-position: 60% 50%; } /* move a bit to the right */
-}
+.hero h2, .hero p, .hero li { text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.hero .btn { position: relative; z-index: 2; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+@media (max-width: 639px){ .hero{ background-position: 50% 25%; } }
+@media (min-width: 1024px){ .hero{ background-position: 60% 50%; } }
 
 /* === Hero: lighter image + white text + white outline CTA (overrides) === */
 .hero{
-  /* lighter overlay than before */
   background:
     linear-gradient(180deg,
       rgba(0,0,0,.28) 0%,
       rgba(0,0,0,.18) 40%,
       rgba(0,0,0,.10) 100%
     ),
-    url('/static/img/hero-bg.png') center 35% / cover no-repeat;  /* use .jpg if that's your file */
+    url('/static/img/hero-bg.png') center 35% / cover no-repeat;
 }
-
-/* make hero text readable without changing sizes */
-.hero h2,
-.hero p,
-.hero li{
+.hero h2, .hero p, .hero li{
   color:#fff;
   text-shadow:0 1px 2px rgba(0,0,0,.15);
 }
-
-/* make the outline CTA (اطلب عرض سعر) white */
 .hero .btn.outline{
   background:transparent;
   color:#fff !important;
@@ -301,13 +266,11 @@ main.container{padding-top:28px}
   border-color:#fff !important;
 }
 
-
 /* Lighter overlay + responsive image-set with fallback */
 .hero{
   position: relative;
   overflow: hidden;
   border-radius: 18px;
-
   background-image:
     linear-gradient(180deg,
       rgba(0,0,0,.28) 0%,
@@ -330,18 +293,12 @@ main.container{padding-top:28px}
       url('/static/img/hero/hero-1280.png') 2x,
       url('/static/img/hero/hero-1920.png') 3x
     );
-
-  background-size: auto, cover;        /* overlay, image */
-  background-position: center, 35%;    /* overlay, image */
+  background-size: auto, cover;
+  background-position: center, 35%;
   background-repeat: no-repeat, no-repeat;
 }
-
-/* Optional focal tweaks */
 @media (min-width:1024px){ .hero{ background-position: center, 60% 35%; } }
 @media (max-width:639px){ .hero{ background-position: center, 50% 20%; } }
-
-
-/* keep text/CTA clear (no size changes) */
 .hero h2, .hero p, .hero li{ color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.15); }
 .hero .btn.outline{
   background:transparent; color:#fff !important; border-color:#fff !important;
@@ -349,62 +306,35 @@ main.container{padding-top:28px}
 .hero .btn.outline:hover{
   background:rgba(255,255,255,.12); color:#fff !important; border-color:#fff !important;
 }
-
 /* Hero: make "اطلب عرض سعر" button white with brand-blue text */
 .hero .btn.outline{
   background:#fff !important;
-  color:#267fdd !important;        /* brand blue */
+  color:#267fdd !important;
   border-color:#fff !important;
-  text-shadow:none;                 /* crisper on white */
+  text-shadow:none;
 }
-
 .hero .btn.outline:hover{
-  background:#f5f9ff !important;   /* gentle hover */
-  color:#1f6bb8 !important;         /* darker blue hover */
+  background:#f5f9ff !important;
+  color:#1f6bb8 !important;
   border-color:#f5f9ff !important;
 }
+.hero p, .hero li{ font-weight: 700; }
 
-
-/* Hero: slightly bolder body text */
-.hero p,
-.hero li{
-  font-weight: 700;  /* Tajawal 500 is loaded */
-}
 /* ===== Header Facebook icon: white circle + brand-blue "f" ===== */
-.site-header .nav .social { 
-  /* push the social icon to the opposite end of the nav (LTR/RTL-aware) */
-  margin-inline-start: auto; 
-  order: 99;
-}
-
+.site-header .nav .social { margin-inline-start: auto; order: 99; }
 .site-header .nav .social .icon-link {
-  /* perfect circle button */
-  inline-size: 40px;
-  block-size: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-
-  /* fill the whole circle white and remove the outline */
-  background: #fff;
-  border: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,.12);
-
-  /* make only the "f" the same color as the header background */
-  color: #267FDD; /* <-- change if your header blue is different */
+  inline-size: 40px; block-size: 40px; display: inline-flex;
+  align-items: center; justify-content: center; border-radius: 9999px;
+  background: #fff; border: 0; box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  color: #267FDD;
 }
-
 .site-header .nav .social .icon-link svg {
-  inline-size: 20px;
-  block-size: 20px;
-  fill: currentColor; /* the "f" takes the blue above */
+  inline-size: 20px; block-size: 20px; fill: currentColor;
+}
+.site-header .nav .social .icon-link:hover {
+  transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.18);
 }
 
-.site-header .nav .social .icon-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,.18);
-}
 /* Visually hidden but accessible (for screen readers & SEO) */
 .sr-only {
   position: absolute !important;
@@ -413,28 +343,45 @@ main.container{padding-top:28px}
   overflow: hidden; clip: rect(0, 0, 0, 0);
   white-space: nowrap; border: 0;
 }
+
 /* SEO intro block */
 .seo-intro{
-  background:#fff;
-  border-radius:16px;
-  padding:24px;
-  margin-block:28px;
-  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  background:transparent;   /* changed from: #fff */
+  border-radius:0;          /* changed from: 16px */
+  padding:0;                /* changed from: 24px */
+  margin-block:24px;        /* changed from: 28px */
+  box-shadow:none;          /* changed from: 0 6px 18px ... */
   line-height:1.9;
 }
-.seo-intro h2{
-  font-size:1.35rem;
-  margin:0 0 10px;
-}
-.seo-intro h3{
-  font-size:1.05rem;
-  margin:16px 0 8px;
-}
+.seo-intro h2{ font-size:1.35rem; margin:0 0 10px; }
+.seo-intro h3{ font-size:1.05rem; margin:16px 0 8px; }
 .seo-intro p{ margin:10px 0; }
 .seo-intro ul{ padding-inline-start:1.2em; margin:8px 0; }
 .seo-intro li{ margin:4px 0; }
 
 /* two-column on desktop, single on mobile */
+.seo-grid{ display:grid; gap:14px; }
+@media (min-width: 900px){
+  .seo-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- Override SEO intro to be flat (no white box) ---- */
+.seo-intro{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin-block: 24px !important;
+}
+.seo-intro,
+.seo-intro h2,
+.seo-intro h3,
+.seo-intro p,
+.seo-intro li {
+  color: #0f172a !important;
+  text-shadow: none !important;
+}
+/* keep the two-column list on desktop */
 .seo-grid{ display:grid; gap:14px; }
 @media (min-width: 900px){
   .seo-grid{ grid-template-columns: 1fr 1fr; }
