@@ -399,3 +399,8 @@ main.container{padding-top:28px}
 html, body {
   overflow-x: hidden;
 }
+/* === Remove accidental horizontal overflow (prevents extra scrollbar) === */
+html, body { overflow-x: hidden; }
+
+/* === Hide scrollbar buttons that appear as '+' in some browsers === */
+::-webkit-scrollbar-button { width: 0; height: 0; display: none; }
