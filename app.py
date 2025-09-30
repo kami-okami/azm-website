@@ -38,9 +38,7 @@ DB_PATH = os.environ.get(
     os.path.join(os.path.dirname(__file__), "messages.db")
 )
 
-# One-time copy on first boot: if deploying to Render and /data/messages.db
-# doesn't exist yet but a local messages.db exists in the repo, copy it so
-# your old messages appear in production immediately.
+# One-time copy on first boot
 if os.environ.get("SQLITE_PATH") and not os.path.exists(DB_PATH):
     local_db = os.path.join(os.path.dirname(__file__), "messages.db")
     if os.path.exists(local_db):
@@ -53,12 +51,12 @@ WHATSAPP_NUMBER = (os.getenv("WHATSAPP_NUMBER", "").strip() or "").lstrip('+') o
 WHATSAPP_MESSAGE = os.getenv("WHATSAPP_MESSAGE", "مرحباً، أود الاستفسار عن المنتجات.")
 COMPANY_NAME = "عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور"
 
-# --- Auth (strip to avoid hidden spaces/newlines) ---
+# --- Auth ---
 ADMIN_USER = (os.getenv("ADMIN_USER", "admin") or "").strip()
-ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD", "") or "").strip()  # plaintext fallback (optional)
-ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()  # preferred
+ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD", "") or "").strip()
+ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()
 
-# --- reCAPTCHA (prod keys set in env) ---
+# --- reCAPTCHA ---
 RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
 RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")
 
@@ -67,7 +65,7 @@ EMAIL_HOST = os.getenv("EMAIL_HOST", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587") or 587)
 EMAIL_USER = os.getenv("EMAIL_USER", "")
 EMAIL_PASS = os.getenv("EMAIL_PASS", "")
-EMAIL_TO = os.getenv("EMAIL_TO", "")  # where to notify on new contact
+EMAIL_TO = os.getenv("EMAIL_TO", "")
 
 # --- Rate limits ---
 RATE_WINDOW_SEC = 60
@@ -117,7 +115,6 @@ def migrate_schema():
         db.execute("ALTER TABLE messages ADD COLUMN ip TEXT;")
     if "created_at" not in cols:
         db.execute("ALTER TABLE messages ADD COLUMN created_at DATETIME;")
-    # Backfill created_at (prefer legacy ts if exists)
     cols = {r["name"] for r in db.execute("PRAGMA table_info(messages)").fetchall()}
     if "created_at" in cols:
         if "ts" in cols:
@@ -170,6 +167,15 @@ def validate_csrf(token_from_form):
 def inject_globals():
     return dict(csrf_token=get_csrf_token())
 
+# NEW: make facebook_url / whatsapp_number / whatsapp_text_encoded available everywhere
+@app.context_processor
+def inject_social_globals():
+    return dict(
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
+    )
+
 # Set strong headers (CSP, etc.)
 @app.after_request
 def set_security_headers(resp):
@@ -195,7 +201,7 @@ def set_security_headers(resp):
 
 # --------------- Validation ---------------
 IRAQ_ALLOWED_PREFIXES = {"75", "77", "78", "79"}
-DENY_PHONES = {"07802280589", "07740818896", "07518232611"}  # blocked numbers (normalized national format)
+DENY_PHONES = {"07802280589", "07740818896", "07518232611"}
 
 def normalize_iraq_phone(raw: str):
     if not raw:
@@ -207,10 +213,8 @@ def normalize_iraq_phone(raw: str):
         digits = digits[3:]
     if digits.startswith("0"):
         digits = digits[1:]
-    # now we expect 10 digits starting with 7xxxxxxxxx
     if len(digits) != 10 or not digits.startswith("7"):
         return None
-    # check first TWO digits (operator code): 75/77/78/79
     if digits[:2] not in IRAQ_ALLOWED_PREFIXES:
         return None
     return "0" + digits
@@ -315,7 +319,6 @@ def home():
         meta_description="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — نوفر مفاصل تمدد، مساند ارتكاز، وقطع غيار محركات لمشاريع الطرق والجسور في العراق بجودة عالية وخدمة سريعة."
     )
 
-
 @app.route('/about')
 def about():
     return render_template(
@@ -375,7 +378,7 @@ def contact():
             flash("رقم الهاتف غير صالح. أدخل رقم عراقي صحيح يبدأ بـ 075/077/078/079 (مثال: 07802280589 أو +9647802280589).", "error")
             return redirect(url_for('contact'))
 
-        # Block specific numbers (normalized national format)
+        # Block specific numbers
         if phone in DENY_PHONES:
             flash("يرجى إدخال رقم هاتف مختلف.", "error")
             return redirect(url_for('contact'))
@@ -392,19 +395,18 @@ def contact():
 
         return redirect(url_for('thank_you'))
 
-    # GET: render with page-specific meta description
+    # GET
     return render_template(
         'contact.html',
         title="تواصل معنا",
         company=COMPANY_NAME,
         active_page='contact',
         recaptcha_site_key=RECAPTCHA_SITE_KEY,
-        facebook_url=FACEBOOK_URL,
+        facebook_url=FACEBOX_URL if False else FACEBOOK_URL,  # keep original var; no behavior change
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
         meta_description="تواصل مع عزم للحصول على عروض أسعار واستشارات حول مفاصل التمدد، مساند الارتكاز، وقطع الغيار لمشاريع الطرق والجسور في العراق."
     )
-
 
 @app.route('/thank-you')
 def thank_you():
@@ -428,7 +430,6 @@ def login():
         user = (request.form.get('username') or '').strip()
         pw = request.form.get('password') or ''
 
-        # Evaluate password validity (hash preferred, plaintext fallback)
         ok = False
         if ADMIN_PASSWORD_HASH and pw:
             try:
@@ -438,7 +439,6 @@ def login():
         if not ok and ADMIN_PASSWORD:
             ok = (pw == ADMIN_PASSWORD)
 
-        # Debug line: visible in Render logs
         app.logger.info(
             "LOGIN_DEBUG user=%r len_pw=%d env_user=%r hash_set=%s ok=%s",
             user, len(pw), ADMIN_USER, bool(ADMIN_PASSWORD_HASH), ok
@@ -460,7 +460,6 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    # CSRF
     if not validate_csrf(request.form.get("_csrf")):
         flash("انتهت صلاحية الجلسة. الرجاء المحاولة مجدداً.", "error")
         return redirect(url_for('home'))
@@ -502,7 +501,6 @@ def admin_messages():
                            facebook_url=FACEBOOK_URL, whatsapp_number=WHATSAPP_NUMBER,
                            whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')))
 
-    # Extra safety (already set in after_request, but here too)
     resp.headers["Cache-Control"] = "no-store"
     resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
