@@ -413,3 +413,29 @@ main.container{padding-top:28px}
   overflow: hidden; clip: rect(0, 0, 0, 0);
   white-space: nowrap; border: 0;
 }
+/* SEO intro block */
+.seo-intro{
+  background:#fff;
+  border-radius:16px;
+  padding:24px;
+  margin-block:28px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  line-height:1.9;
+}
+.seo-intro h2{
+  font-size:1.35rem;
+  margin:0 0 10px;
+}
+.seo-intro h3{
+  font-size:1.05rem;
+  margin:16px 0 8px;
+}
+.seo-intro p{ margin:10px 0; }
+.seo-intro ul{ padding-inline-start:1.2em; margin:8px 0; }
+.seo-intro li{ margin:4px 0; }
+
+/* two-column on desktop, single on mobile */
+.seo-grid{ display:grid; gap:14px; }
+@media (min-width: 900px){
+  .seo-grid{ grid-template-columns: 1fr 1fr; }
+}
