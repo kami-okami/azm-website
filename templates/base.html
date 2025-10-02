@@ -35,6 +35,41 @@
   <meta property="og:url" content="{{ request.url_root.rstrip('/') }}{{ request.path }}">
   <meta property="og:image" content="{{ url_for('static', filename='logo.png', _external=True) }}">
 
+  <!-- Structured Data (Organization + LocalBusiness) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Organization","LocalBusiness"],
+    "name": "{{ company or 'عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور' }}",
+    "url": "{{ request.url_root.rstrip('/') }}",
+    "email": "mailto:ahmad@azmsupply.com",
+    "telephone": ["+9647802280589","+9647740818896","+9647518232611"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IQ"
+    },
+    "areaServed": "IQ",
+    "logo": "{{ url_for('static', filename='logo.png', _external=True) }}",
+    "image": "{{ url_for('static', filename='logo.png', _external=True) }}",
+    {% if facebook_url %}
+    "sameAs": ["{{ facebook_url }}"],
+    {% endif %}
+    "knowsAbout": [
+      "bridge expansion joints",
+      "elastomeric bearings",
+      "road milling picks",
+      "asphalt cutting",
+      "construction equipment spare parts",
+      "Iraq roads and bridges"
+    ],
+    "contactPoint": [
+      {"@type":"ContactPoint","telephone":"+9647802280589","contactType":"sales","areaServed":"IQ","availableLanguage":["ar","en"]},
+      {"@type":"ContactPoint","telephone":"+9647740818896","contactType":"sales","areaServed":"IQ","availableLanguage":["ar","en"]},
+      {"@type":"ContactPoint","telephone":"+9647518232611","contactType":"sales","areaServed":"IQ","availableLanguage":["ar","en"]}
+    ]
+  }
+  </script>
+
   <!-- Performance: font preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
