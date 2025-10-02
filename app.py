@@ -316,7 +316,7 @@ def home():
         facebook_url=FACEBOOK_URL,
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
-        meta_description="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — نوفر مفاصل تمدد، مساند ارتكاز، وقطع غيار محركات لمشاريع الطرق والجسور في العراق بجودة عالية وخدمة سريعة."
+        meta_description="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق — مفاصل تمدد للجسور، مساند ارتكاز مطاطية، وقطع غيار معدات ثقيلة مع استشارة فنية وشحن سريع."
     )
 
 @app.route('/about')
@@ -329,7 +329,7 @@ def about():
         facebook_url=FACEBOOK_URL,
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
-        meta_description="تعرف على شركة عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — رؤيتنا، قيمنا، وخبراتنا في دعم مشاريع البنية التحتية في العراق."
+        meta_description="عن عزم: مورد موثوق لقطع غيار المعدات الثقيلة وحلول الطرق والجسور في العراق، نلتزم بالمواصفات الفنية والدعم الفني الواضح لضمان جودة التنفيذ."
     )
 
 @app.route('/products')
@@ -342,7 +342,7 @@ def products():
         facebook_url=FACEBOOK_URL,
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
-        meta_description="اكتشف مجموعة منتجات عزم: مفاصل تمدد، مساند ارتكاز، قطع غيار المحركات، ولوازم إعادة تأهيل الطرق والجسور بجودة موثوقة."
+        meta_description="المنتجات: مساند ارتكاز مطاطية، مفاصل تمدد للجسور، أسنان قشط وحفر، أسنان شفلات وحفارات، ومستلزمات إعادة تأهيل الطرق — توريد سريع داخل العراق."
     )
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -373,7 +373,6 @@ def contact():
             return redirect(url_for('contact'))
 
         phone = normalize_iraq_phone(phone_raw)
-
         if not phone:
             flash("رقم الهاتف غير صالح. أدخل رقم عراقي صحيح يبدأ بـ 075/077/078/079 (مثال: 07802280589 أو +9647802280589).", "error")
             return redirect(url_for('contact'))
@@ -402,11 +401,12 @@ def contact():
         company=COMPANY_NAME,
         active_page='contact',
         recaptcha_site_key=RECAPTCHA_SITE_KEY,
-        facebook_url=FACEBOX_URL if False else FACEBOOK_URL,  # keep original var; no behavior change
+        facebook_url=FACEBOOK_URL,  # لا تغيير وظيفي
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
-        meta_description="تواصل مع عزم للحصول على عروض أسعار واستشارات حول مفاصل التمدد، مساند الارتكاز، وقطع الغيار لمشاريع الطرق والجسور في العراق."
+        meta_description="تواصل معنا لطلب عرض سعر أو استشارة فنية حول مساند الارتكاز، مفاصل التمدد، وقطع غيار المعدات الثقيلة — الرد سريع داخل العراق."
     )
+
 
 @app.route('/thank-you')
 def thank_you():
