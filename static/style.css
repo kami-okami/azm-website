@@ -407,3 +407,9 @@ html, body {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
+/* === STEP 6D: Ensure hero H1 is readable (white text + soft shadow) === */
+.hero .page-title{
+  color:#fff !important;
+  text-shadow:0 2px 6px rgba(0,0,0,.35);
+}
