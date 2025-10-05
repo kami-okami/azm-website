@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="page-title">منتجاتنا</h1>
+<h1 class="page-title">المنتجات: مساند مطاطية وفواصل تمدد للجسور وقطع غيار المعدات الثقيلة في العراق</h1>
 
+<p>
+  نقدّم تشكيلة عملية تغطي احتياجات مشاريع الطرق والجسور داخل العراق، تشمل
+  <strong>مساند مطاطية</strong>، <strong>فواصل تمدد للجسور</strong>، و
+  <strong>قطع غيار للمعدات الثقيلة</strong>، مع تجهيز سريع ودعم فني واضح.
+</p>
+<p>
+  نساعد فرق التنفيذ على اختيار المقاسات والمواصفات الملائمة وفق الوثائق الفنية،
+  ونوفّر حلولاً موثوقة تقلل التوقفات وتُحسّن الأداء في مواقع العمل بجميع المحافظات.
+</p>
+
+<h2>فئات المنتجات</h2>
 <div class="cards">
   <section class="card">
     <img src="{{ url_for('static', filename='img/products/engine-parts.jpg') }}"
@@ -12,7 +23,7 @@
 
     <h3>محركات وقطع غيار المعدات الثقيلة</h3>
     <p>توريد قطع أصلية وبدائل عالية الجودة للمحركات، فلاتر، مضخات، وأكثر.</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - محركات وقطع غيار') }}" aria-label="اطلب عرض السعر لمحركات وقطع الغيار">اطلب عرض السعر</a>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمحركات وقطع الغيار">اطلب عرض السعر</a>
   </section>
 
   <section class="card">
@@ -23,7 +34,7 @@
     <div class="chips"><span class="chip">Elastomeric Bearings</span></div>
     <h3>مساند أرتكاز للجسور</h3>
     <p>مساند مطاطية بالمواصفات لتوزيع الأحمال وتقليل الاهتزازات في الجسور.</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - مساند ارتكاز') }}" aria-label="اطلب عرض السعر لمساند الارتكاز">اطلب عرض السعر</a>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمساند الارتكاز">اطلب عرض السعر</a>
   </section>
 
   <section class="card">
@@ -34,18 +45,18 @@
     <div class="chips"><span class="chip">Expansion Joints</span></div>
     <h3>مفاصل تمدد للجسور</h3>
     <p>فواصل اعتمادية تتحمل التمدد والانكماش وتغير درجات الحرارة.</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - مفاصل تمدد') }}" aria-label="اطلب عرض السعر لمفاصل التمدد">اطلب عرض السعر</a>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمفاصل التمدد">اطلب عرض السعر</a>
   </section>
 
   <section class="card">
     <img src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
-         alt="اعادة تاهيل الطرق"
+         alt="إعادة تأهيل الطرق"
          loading="lazy" decoding="async" width="1344" height="768"
          style="width:100%;height:auto;">
     <div class="chips"><span class="chip">Road Rehabilitation</span></div>
-    <h3>اعادة تاهيل الطرق</h3>
-    <p>مستلزمات اليات قشط الاسفلت و الفارشات و الحادلات لاعادة تأهيل الطرق.</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - إعادة تأهيل الطرق') }}" aria-label="اطلب عرض السعر لإعادة تأهيل الطرق">اطلب عرض السعر</a>
+    <h3>إعادة تأهيل الطرق</h3>
+    <p>مستلزمات آليات قشط الأسفلت والفرش والحدل لنتائج دقيقة وتكاليف أقل.</p>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لإعادة تأهيل الطرق">اطلب عرض السعر</a>
   </section>
 
   <section class="card">
@@ -54,9 +65,9 @@
          loading="lazy" decoding="async" width="1200" height="675"
          style="width:100%;height:auto;">
     <div class="chips"><span class="chip">Ground Drilling Picks</span></div>
-    <h3> أسنان حفر </h3>
+    <h3>أسنان حفر</h3>
     <p>أسنان حفر ذات عمر طويل وأداء ثابت لحفر أسس المباني وركائز الجسور.</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - أسنان حفر') }}" aria-label="اطلب عرض السعر لأسنان الحفر">اطلب عرض السعر</a>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لأسنان الحفر">اطلب عرض السعر</a>
   </section>
 
   <section class="card">
@@ -65,9 +76,9 @@
          loading="lazy" decoding="async" width="1200" height="675"
          style="width:100%;height:auto;">
     <div class="chips"><span class="chip">Bucket Teeth</span></div>
-    <h3> أسنان شفل وحفارة</h3>
-    <p> أسنان حفر التربة والصخور من مناشئ عالمية لمختلف انواع الشفلات و الحفارات</p>
-    <a class="btn" href="{{ url_for('contact', subject='طلب عرض سعر - أسنان شفل وحفارة') }}" aria-label="اطلب عرض السعر لأسنان الشفل والحفارة">اطلب عرض السعر</a>
+    <h3>أسنان شفل وحفارة</h3>
+    <p>أسنان للتربة والصخور من مناشئ عالمية لمختلف أنواع الشفلات والحفارات.</p>
+    <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لأسنان الشفل والحفارة">اطلب عرض السعر</a>
   </section>
 </div>
 {% endblock %}
