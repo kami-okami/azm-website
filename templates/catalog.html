@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="page-title">الكاتلوك</h1>
+<p>تصفّح نظرة عامة مختصرة على الفئات الرئيسية أدناه، ثم حمّل الكاتلوك الكامل أو تواصل معنا لطلب عرض سعر.</p>
+
+<hr>
+
+<div class="accordion">
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>مفاصل التمدد للجسور (Expansion Joints)</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>مفاصل تمدد بمقاسات وأنواع مختلفة مطابقة للمواصفات، مناسبة لمشاريع الطرق والجسور.</p>
+      <ul>
+        <li>مصنوعة من الفولاذ المطلي والمطاط الصناعي</li>
+        <li>مقاومة عالية للحرارة والتآكل</li>
+        <li>تدعم الحركات الأفقية والعمودية</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>المساند المطاطية للجسور (Elastomeric Bearings)</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>مساند مطاطية عالية التحمل لامتصاص الاهتزازات وحركات الجسر لضمان سلامة إنشائية أطول.</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>رافعات الشد ومضخات الهيدروليك (Post-Tension)</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>جاكات شد ومضخات هيدروليكية مخصّصة لأعمال الشد في الجسور الخرسانية مسبقة الإجهاد.</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>أدوات قشط وتبليط الأسفلت</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>حاملات السن، أسنان القشط، السيور الناقلة، والقواعد المطاطية لأعمال الطرق.</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>قطع غيار المعدات الثقيلة</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>فلاتر، مضخات، سكاكين، جنزير، بكرات؛ بدائل مطابقة لمواصفات علامات مثل CAT و Komatsu و Volvo.</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>تأثيث الطرق</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>عواكس، علامات أرضية، ولوازم تنظيم المرور بمواد مقاومة للعوامل الجوية.</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary class="acc__summary">
+      <span>الاستيراد الخاص / حلول التوريد</span>
+      <span class="acc__chev" aria-hidden="true"></span>
+    </summary>
+    <div class="acc__content">
+      <p>تأمين منتجات ومعدات حسب المواصفات والكميات المطلوبة وفق شروط الاستيراد.</p>
+    </div>
+  </details>
+
+</div>
+
+<!-- CTA BLOCK moved to bottom -->
+<a class="btn btn-primary"
+   href="{{ url_for('static', filename='catalog/azm-supply-road-bridge-parts-catalog-2025.pdf') }}"
+   download>
+  تحميل الكاتلوك (PDF)
+</a>
+
+  <a class="btn btn-secondary" href="{{ url_for('contact') }}">
+    اطلب عرض سعر
+  </a>
+</div>
+
+{% endblock %}

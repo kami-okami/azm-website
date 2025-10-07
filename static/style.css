@@ -413,3 +413,17 @@ html, body {
   color:#fff !important;
   text-shadow:0 2px 6px rgba(0,0,0,.35);
 }
+
+/* ===== Catalog accordion (RTL friendly) ===== */
+.accordion{display:grid;gap:12px;margin:16px 0}
+.acc{border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+.acc[open]{box-shadow:0 8px 24px rgba(2,19,51,.10)}
+.acc__summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;font-weight:700}
+.acc__summary::-webkit-details-marker{display:none}
+.acc__chev{width:10px;height:10px;border-inline-start:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s}
+.acc[open] .acc__chev{transform:rotate(-135deg)}
+.acc__content{padding:0 16px 14px 16px;border-top:1px solid var(--border);color:var(--muted)}
+.bottom-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.btn{display:inline-block;padding:.6rem 1rem;border:1px solid var(--primary,#267FDD);border-radius:.6rem;text-decoration:none}
+.btn-primary{background:var(--primary,#267FDD);color:#fff}
+.btn-secondary{background:#fff;color:var(--primary,#267FDD)}

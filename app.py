@@ -1,6 +1,8 @@
 import os
 import re
 import sqlite3
+from datetime import date
+
 import shutil
 
 import time
@@ -345,6 +347,19 @@ def products():
         meta_description="المنتجات: مساند ارتكاز مطاطية، مفاصل تمدد للجسور، أسنان قشط وحفر، أسنان شفلات وحفارات، ومستلزمات إعادة تأهيل الطرق — توريد سريع داخل العراق."
     )
 
+
+@app.route('/catalog')
+def catalog():
+    return render_template(
+        'catalog.html',
+        title="الكتالوج",
+        company=COMPANY_NAME,
+        active_page='catalog',
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
+    )
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
@@ -519,14 +534,25 @@ def robots():
 
 @app.route('/sitemap.xml')
 def sitemap():
-    urls = [('home','daily'),('about','weekly'),('products','weekly'),('contact','monthly')]
+    today = date.today().isoformat()
+    urls = [
+        ('home','daily'),
+        ('about','weekly'),
+        ('products','weekly'),
+        ('catalog','weekly'),   # ← new
+        ('contact','monthly'),
+    ]
     base = request.url_root.rstrip('/')
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for endpoint, freq in urls:
-        out.append(f"<url><loc>{base}{url_for(endpoint)}</loc><changefreq>{freq}</changefreq></url>")
+        loc = f"{base}{url_for(endpoint)}"
+        out.append(
+            f"<url><loc>{loc}</loc><changefreq>{freq}</changefreq><lastmod>{today}</lastmod></url>"
+        )
     out.append("</urlset>")
     return Response("\n".join(out), mimetype="application/xml; charset=utf-8")
+
 
 # --- Favicon helper ---
 @app.route('/favicon.ico')

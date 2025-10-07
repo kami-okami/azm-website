@@ -90,7 +90,7 @@
   <!-- cache-buster v=17 -->
   <!-- cache-buster v=17 -->
 
- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=36">
+ <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=37">
 </head>
 <body>
 
@@ -132,6 +132,7 @@
         <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">الرئيسية</a>
         <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">من نحن</a>
         <a href="{{ url_for('products') }}" class="{% if active_page == 'products' %}active{% endif %}">المنتجات</a>
+        <a href="{{ url_for('catalog') }}" class="{% if active_page == 'catalog' %}active{% endif %}">الكاتلوك</a>
         <a class="btn small {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">تواصل معنا</a>
 
         {% if session.get('logged_in') %}
