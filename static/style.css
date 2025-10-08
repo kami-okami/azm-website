@@ -318,3 +318,47 @@ html, body { overflow-x: clip; }
 .bottom-cta .btn{display:inline-block;padding:.6rem 1rem;border:1px solid var(--primary,#267FDD);border-radius:.6rem;text-decoration:none}
 .bottom-cta .btn-primary{background:var(--primary,#267FDD);color:#fff}
 .bottom-cta .btn-secondary{background:#fff;color:var(--primary,#267FDD)}
+/* === HOTFIX: make hero image behave like a background but stay discoverable === */
+.hero { position: relative; overflow: hidden; border-radius: 18px; }
+
+/* Put the <picture>/<img> behind content and fill the card */
+.hero picture { position: absolute; inset: 0; z-index: 0; }
+.hero-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Keep overlay above image but below text */
+.hero::before { z-index: 1; }
+.hero > :not(picture) { position: relative; z-index: 2; }
+
+/* Ensure hero retains card padding/background and text sits on top */
+.hero { background: linear-gradient(180deg, var(--primary-50) 0%, rgba(245,249,255,.4) 100%); }
+.hero .page-title, .hero h2, .hero p, .hero li {
+  color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+/* === HOTFIX: restore Facebook icon placement in the header nav === */
+.site-header .nav .social { margin-inline-start: 6px !important; order: initial !important; }
+
+/* (Optional) If the site title looked larger, lock it back to the intended size */
+.site-title { font-size: 24px !important; }
+/* === DESKTOP NAV HOTFIX: keep one row, CTA inline, Facebook last-left === */
+@media (min-width: 901px){
+  /* keep the nav on a single line */
+  .nav{ flex-wrap: nowrap; align-items:center; }
+
+  /* make sure items don't wrap individually */
+  .nav a,
+  .nav .btn.small,
+  .nav .social { white-space: nowrap; }
+
+  /* show CTA just before Facebook (and keep it in the same row) */
+  .nav .btn.small{ order: 98; }
+
+  /* push Facebook block to the far left and make it the last item */
+  .site-header .nav .social{
+    margin-inline-start: auto !important; /* in RTL this becomes margin-right:auto */
+    order: 99 !important;
+  }
+}
+
+/* keep normal (compact) spacing */
+.site-header .nav .social { margin-inline-start: 6px; }
