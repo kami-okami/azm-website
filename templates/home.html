@@ -2,6 +2,33 @@
 {% block content %}
 
 <section class="hero">
+
+  <!-- LCP image (discoverable + prioritized) -->
+  <picture>
+    <!-- Modern format first -->
+    <source
+      type="image/webp"
+      srcset="
+        {{ url_for('static', filename='img/hero/hero-640.webp') }}   640w,
+        {{ url_for('static', filename='img/hero/hero-1280.webp') }} 1280w,
+        {{ url_for('static', filename='img/hero/hero-1920.webp') }} 1920w"
+      sizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw">
+    <!-- Fallback PNGs -->
+    <img
+      src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
+      srcset="
+        {{ url_for('static', filename='img/hero/hero-640.png') }}   640w,
+        {{ url_for('static', filename='img/hero/hero-1280.png') }} 1280w,
+        {{ url_for('static', filename='img/hero/hero-1920.png') }} 1920w"
+      sizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw"
+      fetchpriority="high"
+      decoding="async"
+      loading="eager"
+      alt="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق"
+      width="1920" height="640"
+      class="hero-img">
+  </picture>
+
   <!-- Visible, single H1 for the page (short, primary phrase) -->
   <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق</h1>
 
