@@ -16,6 +16,10 @@
 
   --shadow:0 6px 18px rgba(2,19,51,.08);
   --wa:#25D366;
+
+  /* STEP 2: CLS guardrails (header height tokens) */
+  --header-h: 80px;
+  --header-h-sm: 72px;
 }
 
 *{box-sizing:border-box}
@@ -39,8 +43,14 @@ main.container{padding-top:28px}
   position:sticky; top:0; z-index:50;
   background:var(--primary);
   box-shadow:0 2px 16px rgba(38,127,221,.22);
+
+  /* STEP 2: lock header height to prevent CLS on font swap */
+  min-height: var(--header-h);
 }
-.nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:18px 0}
+.nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:18px 0;
+/* STEP 2: keep nav-wrap from collapsing during load */
+  min-height: var(--header-h);
+}
 
 /* Brand (logo + name) */
 .brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:#fff}
@@ -93,6 +103,9 @@ main.container{padding-top:28px}
   background:linear-gradient(180deg, var(--primary-50) 0%, rgba(245,249,255,.4) 100%);
   border:0;
   box-shadow:none;
+
+  /* STEP 2: stabilize hero box height to avoid early layout shifts */
+  min-height: clamp(280px, 60vh, 640px);
 }
 .hero h2{
   font-family:"Changa", sans-serif;
@@ -234,11 +247,15 @@ main.container{padding-top:28px}
   .brand-logo{height:56px}
   .site-title{font-size:21px}
   .site-subtitle{display:none}
-  .hero{padding:24px}
+  .hero{padding:24px; min-height: clamp(240px, 56vh, 560px);} /* STEP 2: stabilize mobile hero */
   .hero h2{font-size:30px}
   .hero p{font-size:16px}
   .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
   .cta-row .btn, .form .btn{width:100%}
+
+  /* STEP 2: smaller fixed header on mobile to avoid jump */
+  .site-header{min-height: var(--header-h-sm);}
+  .nav-wrap{min-height: var(--header-h-sm);}
 }
 
 @media (max-width: 480px){
@@ -318,6 +335,7 @@ html, body { overflow-x: clip; }
 .bottom-cta .btn{display:inline-block;padding:.6rem 1rem;border:1px solid var(--primary,#267FDD);border-radius:.6rem;text-decoration:none}
 .bottom-cta .btn-primary{background:var(--primary,#267FDD);color:#fff}
 .bottom-cta .btn-secondary{background:#fff;color:var(--primary,#267FDD)}
+
 /* === HOTFIX: make hero image behave like a background but stay discoverable === */
 .hero { position: relative; overflow: hidden; border-radius: 18px; }
 
@@ -340,6 +358,7 @@ html, body { overflow-x: clip; }
 
 /* (Optional) If the site title looked larger, lock it back to the intended size */
 .site-title { font-size: 24px !important; }
+
 /* === DESKTOP NAV HOTFIX: keep one row, CTA inline, Facebook last-left === */
 @media (min-width: 901px){
   /* keep the nav on a single line */
