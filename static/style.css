@@ -406,3 +406,5 @@ html, body { overflow-x: clip; }
   .hero{ min-height: 48vh; }
 }
 
+/* ensures zero gaps & no layout jump */
+.product-media img { display:block; width:100%; height:auto; }

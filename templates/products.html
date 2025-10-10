@@ -20,11 +20,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/engine-parts.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/engine-parts.jpg') }}"
-          alt="محركات وقطع غيار المعدات الثقيلة"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/engine-parts.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/engine-parts.jpg') }}"
+             alt="محركات وقطع غيار المعدات الثقيلة"
+             loading="lazy" decoding="async"
+             width="658" height="499"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Engine Parts</span></div>
@@ -37,11 +40,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/elastomeric-bearings.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
-          alt="مساند ارتكاز للجسور"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/elastomeric-bearings.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
+             alt="مساند ارتكاز للجسور"
+             loading="lazy" decoding="async"
+             width="1184" height="864"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Elastomeric Bearings</span></div>
@@ -54,11 +60,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/expansion-joints.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
-          alt="مفاصل تمدد للجسور"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/expansion-joints.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
+             alt="مفاصل تمدد للجسور"
+             loading="lazy" decoding="async"
+             width="1184" height="864"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Expansion Joints</span></div>
@@ -71,11 +80,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/road-rehab.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
-          alt="إعادة تأهيل الطرق"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/road-rehab.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
+             alt="إعادة تأهيل الطرق"
+             loading="lazy" decoding="async"
+             width="1344" height="768"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Road Rehabilitation</span></div>
@@ -88,11 +100,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/ground-drilling-picks.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/ground-drilling-picks.png') }}"
-          alt="أسنان حفر"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/ground-drilling-picks.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/ground-drilling-picks.png') }}"
+             alt="أسنان حفر"
+             loading="lazy" decoding="async"
+             width="1200" height="675"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Ground Drilling Picks</span></div>
@@ -105,11 +120,14 @@
   <section class="card">
     <div class="product-media">
       <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/bucket-teeth.webp') }}">
-        <img
-          src="{{ url_for('static', filename='img/products/bucket-teeth.jpg') }}"
-          alt="أسنان شفل وحفارة"
-          loading="lazy" decoding="async">
+        <source type="image/webp"
+                srcset="{{ url_for('static', filename='img/products/bucket-teeth.webp') }}"
+                sizes="(min-width: 900px) 33vw, 100vw">
+        <img src="{{ url_for('static', filename='img/products/bucket-teeth.jpg') }}"
+             alt="أسنان شفل وحفارة"
+             loading="lazy" decoding="async"
+             width="1200" height="675"
+             sizes="(min-width: 900px) 33vw, 100vw">
       </picture>
     </div>
     <div class="chips"><span class="chip">Bucket Teeth</span></div>
@@ -120,7 +138,6 @@
 
 </div>
 
-<!-- General, non-FAQ notes to keep useful content without answering questions -->
 <h2>إرشادات الطلب والتجهيز</h2>
 <p>
   لإصدار عرض سعر دقيق يُفضّل تزويدنا بالمقاسات المطلوبة، الكميات التقريبية، المحافظة،
