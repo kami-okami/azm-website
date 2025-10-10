@@ -15,72 +15,109 @@
 
 <h2>فئات المنتجات</h2>
 <div class="cards">
-  <section class="card">
-    <img src="{{ url_for('static', filename='img/products/engine-parts.jpg') }}"
-         alt="محركات وقطع غيار المعدات الثقيلة"
-         loading="lazy" decoding="async" width="658" height="499"
-         style="width:100%;height:auto;">
-    <div class="chips"><span class="chip">Engine Parts</span></div>
 
+  <!-- محركات وقطع غيار -->
+  <section class="card">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/engine-parts.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/engine-parts.jpg') }}"
+          alt="محركات وقطع غيار المعدات الثقيلة"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="chips"><span class="chip">Engine Parts</span></div>
     <h3>محركات وقطع غيار المعدات الثقيلة</h3>
     <p>توريد قطع أصلية وبدائل عالية الجودة للمحركات، فلاتر، مضخات، وأكثر.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمحركات وقطع الغيار">اطلب عرض السعر</a>
   </section>
 
+  <!-- مساند ارتكاز -->
   <section class="card">
-    <img src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
-         alt="مساند ارتكاز للجسور"
-         loading="lazy" decoding="async" width="1184" height="864"
-         style="width:100%;height:auto;">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/elastomeric-bearings.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
+          alt="مساند ارتكاز للجسور"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
     <div class="chips"><span class="chip">Elastomeric Bearings</span></div>
     <h3>مساند ارتكاز للجسور</h3>
     <p>مساند مطاطية بالمواصفات لتوزيع الأحمال وتقليل الاهتزازات في الجسور.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمساند الارتكاز">اطلب عرض السعر</a>
   </section>
 
+  <!-- مفاصل تمدد -->
   <section class="card">
-    <img src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
-         alt="مفاصل تمدد للجسور"
-         loading="lazy" decoding="async" width="1184" height="864"
-         style="width:100%;height:auto;">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/expansion-joints.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
+          alt="مفاصل تمدد للجسور"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
     <div class="chips"><span class="chip">Expansion Joints</span></div>
     <h3>مفاصل تمدد للجسور</h3>
     <p>فواصل اعتمادية تتحمل التمدد والانكماش وتغير درجات الحرارة.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لمفاصل التمدد">اطلب عرض السعر</a>
   </section>
 
+  <!-- إعادة تأهيل الطرق -->
   <section class="card">
-    <img src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
-         alt="إعادة تأهيل الطرق"
-         loading="lazy" decoding="async" width="1344" height="768"
-         style="width:100%;height:auto;">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/road-rehab.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
+          alt="إعادة تأهيل الطرق"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
     <div class="chips"><span class="chip">Road Rehabilitation</span></div>
     <h3>إعادة تأهيل الطرق</h3>
     <p>مستلزمات آليات قشط الأسفلت والفرش والحدل لنتائج دقيقة وتكاليف أقل.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لإعادة تأهيل الطرق">اطلب عرض السعر</a>
   </section>
 
+  <!-- أسنان حفر -->
   <section class="card">
-    <img src="{{ url_for('static', filename='img/products/ground-drilling-picks.png') }}"
-         alt="أسنان حفر"
-         loading="lazy" decoding="async" width="1200" height="675"
-         style="width:100%;height:auto;">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/ground-drilling-picks.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/ground-drilling-picks.png') }}"
+          alt="أسنان حفر"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
     <div class="chips"><span class="chip">Ground Drilling Picks</span></div>
     <h3>أسنان حفر</h3>
     <p>أسنان حفر ذات عمر طويل وأداء ثابت لحفر أسس المباني وركائز الجسور.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لأسنان الحفر">اطلب عرض السعر</a>
   </section>
 
+  <!-- أسنان شفل وحفارة -->
   <section class="card">
-    <img src="{{ url_for('static', filename='img/products/bucket-teeth.jpg') }}"
-         alt="أسنان شفل وحفارة"
-         loading="lazy" decoding="async" width="1200" height="675"
-         style="width:100%;height:auto;">
+    <div class="product-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/products/bucket-teeth.webp') }}">
+        <img
+          src="{{ url_for('static', filename='img/products/bucket-teeth.jpg') }}"
+          alt="أسنان شفل وحفارة"
+          loading="lazy" decoding="async">
+      </picture>
+    </div>
     <div class="chips"><span class="chip">Bucket Teeth</span></div>
     <h3>أسنان شفل وحفارة</h3>
     <p>أسنان للتربة والصخور من مناشئ عالمية لمختلف أنواع الشفلات والحفارات.</p>
     <a class="btn" href="{{ url_for('contact') }}" aria-label="اطلب عرض السعر لأسنان الشفل والحفارة">اطلب عرض السعر</a>
   </section>
+
 </div>
 
 <!-- General, non-FAQ notes to keep useful content without answering questions -->
@@ -100,12 +137,10 @@
     <h3>كيف أختار مقاس ومساحة تحمل مساند الارتكاز؟</h3>
     <a class="btn outline" href="{{ url_for('contact') }}" aria-label="اسأل عن اختيار مساند الارتكاز">اسأل المختص</a>
   </div>
-
   <div class="card">
     <h3>ما المعلومات اللازمة لاختيار مفاصل التمدد المناسبة؟</h3>
     <a class="btn outline" href="{{ url_for('contact') }}" aria-label="اسأل عن اختيار مفاصل التمدد">اسأل المختص</a>
   </div>
-
   <div class="card">
     <h3>ما زمن التوريد وهل تتوفر شهادات مطابقة؟</h3>
     <a class="btn outline" href="{{ url_for('contact') }}" aria-label="اسأل عن زمن التوريد والشهادات">اسأل المختص</a>
