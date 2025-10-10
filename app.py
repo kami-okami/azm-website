@@ -347,7 +347,6 @@ def products():
         meta_description="المنتجات: مساند ارتكاز مطاطية، مفاصل تمدد للجسور، أسنان قشط وحفر، أسنان شفلات وحفارات، ومستلزمات إعادة تأهيل الطرق — توريد سريع داخل العراق."
     )
 
-
 @app.route('/catalog')
 def catalog():
     return render_template(
@@ -416,12 +415,11 @@ def contact():
         company=COMPANY_NAME,
         active_page='contact',
         recaptcha_site_key=RECAPTCHA_SITE_KEY,
-        facebook_url=FACEBOOK_URL,  # لا تغيير وظيفي
+        facebook_url=FACEBOX_URL if False else FACEBOOK_URL,  # keep exact functionality
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
         meta_description="تواصل معنا لطلب عرض سعر أو استشارة فنية حول مساند الارتكاز، مفاصل التمدد، وقطع غيار المعدات الثقيلة — الرد سريع داخل العراق."
     )
-
 
 @app.route('/thank-you')
 def thank_you():
@@ -554,10 +552,45 @@ def sitemap():
     return Response("\n".join(out), mimetype="application/xml; charset=utf-8")
 
 
-# --- Favicon helper ---
+# --- Icon routes at root (fix mobile/Google 404s) ---
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
+
+@app.route('/favicon-32x32.png')
+def favicon32():
+    return send_from_directory(app.static_folder, 'favicon-32x32.png', mimetype='image/png')
+
+@app.route('/favicon-16x16.png')
+def favicon16():
+    return send_from_directory(app.static_folder, 'favicon-16x16.png', mimetype='image/png')
+
+@app.route('/apple-touch-icon.png')
+def apple_touch():
+    return send_from_directory(app.static_folder, 'apple-touch-icon.png', mimetype='image/png')
+
+@app.route('/android-chrome-192x192.png')
+def android_192():
+    return send_from_directory(app.static_folder, 'android-chrome-192x192.png', mimetype='image/png')
+
+@app.route('/android-chrome-512x512.png')
+def android_512():
+    return send_from_directory(app.static_folder, 'android-chrome-512x512.png', mimetype='image/png')
+
+# Long-cache these icons so browsers/Google keep them
+@app.after_request
+def cache_icons(resp):
+    if request.path in (
+        '/favicon.ico',
+        '/favicon-32x32.png',
+        '/favicon-16x16.png',
+        '/apple-touch-icon.png',
+        '/android-chrome-192x192.png',
+        '/android-chrome-512x512.png',
+    ):
+        resp.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    return resp
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
