@@ -4,14 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or "موقع الشركة" }} | {{ company or "الشركة" }}</title>
-  <!-- head-version: 2025-09-29-HomeMeta -->
-   <!-- Favicons -->
-<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}?v=1">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}?v=1">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}?v=1">
-<link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}?v=1">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}?v=1">
+  <!-- head-version: 2025-10-10-Step6 -->
 
+  <!-- Enable DNS prefetching for cross-origins -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}?v=1">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}?v=1">
+  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}?v=1">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}?v=1">
 
   {% if meta_description %}
     <meta name="description" content="{{ meta_description }}">
@@ -44,23 +47,14 @@
     "url": "{{ request.url_root.rstrip('/') }}",
     "email": "mailto:ahmad@azmsupply.com",
     "telephone": ["+9647802280589","+9647740818896","+9647518232611"],
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "IQ"
-    },
+    "address": { "@type": "PostalAddress", "addressCountry": "IQ" },
     "areaServed": "IQ",
     "logo": "{{ url_for('static', filename='logo.png', _external=True) }}",
     "image": "{{ url_for('static', filename='logo.png', _external=True) }}",
-    {% if facebook_url %}
-    "sameAs": ["{{ facebook_url }}"],
-    {% endif %}
+    {% if facebook_url %}"sameAs": ["{{ facebook_url }}"],{% endif %}
     "knowsAbout": [
-      "bridge expansion joints",
-      "elastomeric bearings",
-      "road milling picks",
-      "asphalt cutting",
-      "construction equipment spare parts",
-      "Iraq roads and bridges"
+      "bridge expansion joints","elastomeric bearings","road milling picks",
+      "asphalt cutting","construction equipment spare parts","Iraq roads and bridges"
     ],
     "contactPoint": [
       {"@type":"ContactPoint","telephone":"+9647802280589","contactType":"sales","areaServed":"IQ","availableLanguage":["ar","en"]},
@@ -70,13 +64,13 @@
   }
   </script>
 
-  <!-- Performance: font preconnect -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Performance: preconnect + dns-prefetch for Google Fonts -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- STEP 3: async-load Google Fonts CSS -->
+  <!-- Async-load Google Fonts CSS (swap) -->
   <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Changa:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
@@ -94,10 +88,8 @@
         imagesizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw"
         href="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
 
-  <!-- cache-buster v=17 -->
-  <!-- cache-buster v=17 -->
-
- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=39">
+  <!-- cache-buster v=18 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=40">
 </head>
 <body>
 
@@ -106,7 +98,6 @@
       <a class="brand" href="{{ url_for('home') }}">
         <picture class="brand-logo-wrap">
           <source type="image/svg+xml" srcset="{{ url_for('static', filename='logo.svg') }}">
-          <!-- STEP 4: add intrinsic size to reduce CLS -->
           <img src="{{ url_for('static', filename='logo.png') }}" class="brand-logo" alt="شعار الشركة" width="204" height="68">
         </picture>
         <div class="brand-text">
@@ -123,12 +114,7 @@
       <nav id="primaryNav" class="nav">
         {% if facebook_url %}
         <div class="social">
-          <a class="icon-link"
-             href="{{ facebook_url }}"
-             target="_blank"
-             rel="noopener"
-             aria-label="فيسبوك"
-             title="صفحتنا على فيسبوك">
+          <a class="icon-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="فيسبوك" title="صفحتنا على فيسبوك">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path fill="currentColor" d="M22 12.06C22 6.49 17.52 2 12 2S2 6.49 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.78-3.88 1.1 0 2.25.2 2.25.2v2.48h-1.27c-1.25 0-1.64.78-1.64 1.58v1.9h2.79l-.45 2.9h-2.34V22c4.78-.78 8.44-4.93 8.44-9.94z"/>
             </svg>

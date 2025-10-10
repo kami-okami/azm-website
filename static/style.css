@@ -381,3 +381,9 @@ html, body { overflow-x: clip; }
 
 /* keep normal (compact) spacing */
 .site-header .nav .social { margin-inline-start: 6px; }
+
+/* === Step 6: tiny hero stabilizer for small screens (no visual change) === */
+@media (max-width: 900px){
+  .hero{ min-height: 48vh; }
+}
+
