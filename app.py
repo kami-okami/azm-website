@@ -260,15 +260,32 @@ def send_email_notification(payload):
         f"IP: {payload.get('ip','')}\n"
     )
     msg = MIMEText(body, _charset='utf-8')
-    msg['Subject'] = Header("📥 رسالة جديدة من الموقع", 'utf-8')
+    # No emojis per project rules
+    msg['Subject'] = Header("[Azm Supply] رسالة جديدة من الموقع", 'utf-8')
     msg['From'] = EMAIL_USER
     msg['To'] = EMAIL_TO
+
+    # Auto-detect SSL vs STARTTLS; allow overrides via env
+    use_ssl_env = os.getenv("EMAIL_USE_SSL", "").lower() in ("1", "true", "yes")
+    use_tls_env = os.getenv("EMAIL_USE_TLS", "").lower() in ("1", "true", "yes")
+    use_ssl = use_ssl_env or EMAIL_PORT == 465
+    use_tls = (use_tls_env or EMAIL_PORT == 587) and not use_ssl
+
     try:
-        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=10) as s:
-            s.starttls()
-            s.login(EMAIL_USER, EMAIL_PASS)
-            s.sendmail(EMAIL_USER, [EMAIL_TO], msg.as_string())
+        if use_ssl:
+            # Titan default: smtp.titan.email:465 (implicit SSL)
+            with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT, timeout=15) as s:
+                s.login(EMAIL_USER, EMAIL_PASS)
+                s.sendmail(EMAIL_USER, [EMAIL_TO], msg.as_string())
+        else:
+            with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=15) as s:
+                if use_tls:
+                    s.starttls()
+                if EMAIL_USER and EMAIL_PASS:
+                    s.login(EMAIL_USER, EMAIL_PASS)
+                s.sendmail(EMAIL_USER, [EMAIL_TO], msg.as_string())
     except Exception:
+        # Best-effort: never crash the user flow
         pass
 
 def table_columns():
