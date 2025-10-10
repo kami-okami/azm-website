@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 import requests
 from werkzeug.security import check_password_hash
 import secrets
+from urllib.parse import urlsplit, urlunsplit  # <-- NEW
 
 load_dotenv()
 
@@ -129,6 +130,36 @@ def migrate_schema():
 def before_any():
     init_db()
     migrate_schema()
+
+# --- NEW: canonical redirect to https + www.azmsupply.com ---
+@app.before_request
+def enforce_canonical_host():
+    # Only enforce in production to avoid interfering with local dev
+    if os.getenv("FLASK_ENV") != "production":
+        return
+
+    desired_host = "www.azmsupply.com"
+
+    # Detect effective scheme behind proxy (Render)
+    forwarded_proto = request.headers.get("X-Forwarded-Proto", request.scheme or "http")
+    scheme = "https" if forwarded_proto in ("https", "wss") else "http"
+
+    parts = urlsplit(request.url)
+    current_host = parts.hostname or ""
+    needs_https = (scheme != "https")
+    needs_www = (current_host != desired_host)
+
+    if needs_https or needs_www:
+        # Force https in scheme
+        new_scheme = "https"
+
+        # Force host to desired_host, preserve non-standard port if present
+        netloc = desired_host
+        if parts.port and parts.port not in (80, 443):
+            netloc = f"{desired_host}:{parts.port}"
+
+        new_url = urlunsplit((new_scheme, netloc, parts.path, parts.query, parts.fragment))
+        return redirect(new_url, code=301)
 
 # --------------- Security helpers ---------------
 def _rate(ip, bucket, window, max_posts):
