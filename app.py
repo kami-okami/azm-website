@@ -249,7 +249,8 @@ def verify_recaptcha(token):
 
 def send_email_notification(payload):
     if not (EMAIL_HOST and EMAIL_USER and EMAIL_PASS and EMAIL_TO):
-        return
+        app.logger.warning("SMTP_CONFIG_MISSING host=%r user=%r to=%r", EMAIL_HOST, EMAIL_USER, EMAIL_TO)
+        return False
     body = (
         f"اسم المرسل: {payload.get('name')}\n"
         f"الهاتف: {payload.get('phone')}\n"
@@ -260,12 +261,10 @@ def send_email_notification(payload):
         f"IP: {payload.get('ip','')}\n"
     )
     msg = MIMEText(body, _charset='utf-8')
-    # No emojis per project rules
     msg['Subject'] = Header("[Azm Supply] رسالة جديدة من الموقع", 'utf-8')
     msg['From'] = EMAIL_USER
     msg['To'] = EMAIL_TO
 
-    # Auto-detect SSL vs STARTTLS; allow overrides via env
     use_ssl_env = os.getenv("EMAIL_USE_SSL", "").lower() in ("1", "true", "yes")
     use_tls_env = os.getenv("EMAIL_USE_TLS", "").lower() in ("1", "true", "yes")
     use_ssl = use_ssl_env or EMAIL_PORT == 465
@@ -273,20 +272,20 @@ def send_email_notification(payload):
 
     try:
         if use_ssl:
-            # Titan default: smtp.titan.email:465 (implicit SSL)
-            with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT, timeout=15) as s:
+            with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT, timeout=20) as s:
                 s.login(EMAIL_USER, EMAIL_PASS)
                 s.sendmail(EMAIL_USER, [EMAIL_TO], msg.as_string())
         else:
-            with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=15) as s:
+            with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=20) as s:
                 if use_tls:
                     s.starttls()
-                if EMAIL_USER and EMAIL_PASS:
-                    s.login(EMAIL_USER, EMAIL_PASS)
+                s.login(EMAIL_USER, EMAIL_PASS)
                 s.sendmail(EMAIL_USER, [EMAIL_TO], msg.as_string())
-    except Exception:
-        # Best-effort: never crash the user flow
-        pass
+        app.logger.info("SMTP_OK to=%s via %s:%s ssl=%s tls=%s", EMAIL_TO, EMAIL_HOST, EMAIL_PORT, use_ssl, use_tls)
+        return True
+    except Exception as e:
+        app.logger.exception("SMTP_ERROR to=%s via %s:%s ssl=%s tls=%s err=%s", EMAIL_TO, EMAIL_HOST, EMAIL_PORT, use_ssl, use_tls, e)
+        return False
 
 def table_columns():
     db = get_db()
@@ -419,10 +418,11 @@ def contact():
 
         try:
             payload["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-            send_email_notification(payload)
+            ok = send_email_notification(payload)
+            if not ok:
+                app.logger.warning("CONTACT_EMAIL_SEND_FAILED ip=%s phone=%s", ip, phone)
         except Exception:
-            pass
-
+            app.logger.exception("CONTACT_EMAIL_UNHANDLED")
         return redirect(url_for('thank_you'))
 
     # GET
@@ -534,6 +534,23 @@ def admin_messages():
     resp.headers["Cache-Control"] = "no-store"
     resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
+
+# --- Simple admin-only test endpoint ---
+@app.route('/admin/email-test')
+def admin_email_test():
+    if not is_logged_in():
+        return redirect(url_for('home'))
+    payload = {
+        "name": "اختبار",
+        "phone": "07900000000",
+        "email": "test@example.com",
+        "subject": "اختبار البريد",
+        "message": "رسالة اختبار من لوحة الإدارة.",
+        "ip": request.headers.get('X-Forwarded-For', request.remote_addr or ''),
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M")
+    }
+    ok = send_email_notification(payload)
+    return ("OK" if ok else "FAIL (check logs)"), (200 if ok else 500)
 
 # --- robots & sitemap ---
 @app.route('/robots.txt')
