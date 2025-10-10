@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or "موقع الشركة" }} | {{ company or "الشركة" }}</title>
-  <!-- head-version: 2025-10-10-Step6 -->
+  <!-- head-version: 2025-10-10-Step7 -->
 
   <!-- Enable DNS prefetching for cross-origins -->
   <meta http-equiv="x-dns-prefetch-control" content="on">
@@ -87,6 +87,9 @@
           {{ url_for('static', filename='img/hero/hero-1920.webp') }} 1920w"
         imagesizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw"
         href="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
+
+  <!-- NEW: Preload stylesheet to shorten render-blocking wait -->
+  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=40">
 
   <!-- cache-buster v=18 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=40">
@@ -172,17 +175,24 @@
   </a>
   {% endif %}
 
-  <!-- Mobile menu toggle -->
+  <!-- Mobile menu toggle: run after load/idle to avoid any render-phase reflow -->
   <script>
-    (function(){
-      const toggle = document.getElementById('navToggle');
-      const nav = document.getElementById('primaryNav');
-      if (!toggle || !nav) return;
-      const closeNav = () => { nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); };
-      const openNav  = () => { nav.classList.add('open');    toggle.setAttribute('aria-expanded','true');  };
-      toggle.addEventListener('click', () => { nav.classList.contains('open') ? closeNav() : openNav(); });
-      nav.addEventListener('click', (e) => { if (e.target.closest('a')) closeNav(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
+    (function initNav(){
+      function wire() {
+        const toggle = document.getElementById('navToggle');
+        const nav = document.getElementById('primaryNav');
+        if (!toggle || !nav) return;
+        const closeNav = () => { nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); };
+        const openNav  = () => { nav.classList.add('open');    toggle.setAttribute('aria-expanded','true');  };
+        toggle.addEventListener('click', () => { nav.classList.contains('open') ? closeNav() : openNav(); });
+        nav.addEventListener('click', (e) => { if (e.target.closest('a')) closeNav(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(wire, {timeout: 1000});
+      } else {
+        window.addEventListener('load', wire, { once: true });
+      }
     })();
   </script>
 
