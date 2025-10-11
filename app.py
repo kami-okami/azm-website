@@ -12,13 +12,14 @@ from email.mime.text import MIMEText
 from email.header import Header
 from flask import (
     Flask, render_template, request, redirect, url_for,
-    flash, session, g, send_from_directory, Response, make_response
+    flash, session, g, send_from_directory, Response, make_response, jsonify  # === META CAPI: jsonify
 )
 from dotenv import load_dotenv
 import requests
 from werkzeug.security import check_password_hash
 import secrets
 from urllib.parse import urlsplit, urlunsplit  # <-- NEW
+import hashlib  # === META CAPI: hashing
 
 load_dotenv()
 
@@ -53,6 +54,13 @@ FACEBOOK_URL = (os.getenv("FACEBOOK_URL", "").strip() or None)
 WHATSAPP_NUMBER = (os.getenv("WHATSAPP_NUMBER", "").strip() or "").lstrip('+') or None
 WHATSAPP_MESSAGE = os.getenv("WHATSAPP_MESSAGE", "مرحباً، أود الاستفسار عن المنتجات.")
 COMPANY_NAME = "عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور"
+
+# === META CAPI: Env vars for Pixel/CAPI ===
+META_PIXEL_ID = os.getenv("META_PIXEL_ID") or None
+META_CAPI_TOKEN = os.getenv("META_CAPI_TOKEN") or None
+META_GRAPH_VERSION = os.getenv("META_GRAPH_VERSION", "v20.0")
+META_TEST_EVENT_CODE = os.getenv("META_TEST_EVENT_CODE") or None
+# ==========================================
 
 # --- Auth ---
 ADMIN_USER = (os.getenv("ADMIN_USER", "admin") or "").strip()
@@ -209,16 +217,24 @@ def inject_social_globals():
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
     )
 
+# === META CAPI: expose META_PIXEL_ID to templates (for base.html Pixel) ===
+@app.context_processor
+def inject_meta_vars():
+    return {"META_PIXEL_ID": META_PIXEL_ID}
+# ========================================================================
+
 # Set strong headers (CSP, etc.)
 @app.after_request
 def set_security_headers(resp):
     csp = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/; "
+        # [CSP+META] allow Meta Pixel loader
+        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/ https://connect.facebook.net; "
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com data:; "
         "img-src 'self' data: https:; "
-        "connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; "
+        # [CSP+META] allow POSTs to Meta Graph + Pixel pings
+        "connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://graph.facebook.com https://www.facebook.com; "
         "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/ https://www.recaptcha.net/;"
     )
     resp.headers.setdefault("Content-Security-Policy", csp)
@@ -353,6 +369,49 @@ def normalize_dt_str(s):
 
 def is_logged_in():
     return bool(session.get('logged_in'))
+
+# === META CAPI: helpers for hashing + sender ===
+def _sha256(v):
+    if not v:
+        return None
+    v = str(v).strip().lower()
+    return hashlib.sha256(v.encode('utf-8')).hexdigest()
+
+def _normalize_phone_for_capi(ph):
+    """
+    Convert to E.164-like (Iraq: 9647xxxxxxxx) BEFORE hashing.
+    Reuse your validator, then map '0xxxxxxxxxx' -> '964xxxxxxxxx'
+    """
+    p = normalize_iraq_phone(ph)  # returns like 079xxxxxxxx
+    if not p:
+        return None
+    # strip leading 0, prepend 964
+    return "964" + p[1:]
+
+def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_time=None,
+                  action_source='website', test_event_code=None):
+    if not (META_PIXEL_ID and META_CAPI_TOKEN):
+        return 400, "META_PIXEL_ID or META_CAPI_TOKEN missing"
+    url = f"https://graph.facebook.com/{META_GRAPH_VERSION}/{META_PIXEL_ID}/events"
+    payload = {
+        "data": [{
+            "event_name": event_name,
+            "event_time": int(event_time or time.time()),
+            "event_id": event_id,
+            "action_source": action_source,
+            "user_data": user_data or {},
+            "custom_data": custom_data or {}
+        }]
+    }
+    tec = test_event_code or META_TEST_EVENT_CODE
+    if tec:
+        payload["test_event_code"] = tec
+    try:
+        r = requests.post(url, params={"access_token": META_CAPI_TOKEN}, json=payload, timeout=7)
+        return r.status_code, r.text
+    except Exception as e:
+        return 500, f"request_error: {e}"
+# =================================================
 
 # --------------- Routes ---------------
 @app.route('/')
@@ -656,6 +715,41 @@ def cache_icons(resp):
         resp.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
     return resp
 
+# === META CAPI: public endpoint the frontend calls (from base.html JS) ===
+@app.post("/capi/track")
+def capi_track():
+    """
+    Receives JSON from browser, hashes PII, and forwards to Meta CAPI.
+    Expects:
+      { event_name, event_id, fbp, fbc, ph, em, external_id, ... }
+    """
+    try:
+        j = request.get_json(force=True, silent=True) or {}
+        event_name = j.get("event_name") or "Lead"
+        event_id   = j.get("event_id") or None
+
+        # User identifiers (hash on server)
+        fbp = j.get("fbp") or None
+        fbc = j.get("fbc") or None
+        em_h  = _sha256(j.get("em"))
+        ph_e164 = _normalize_phone_for_capi(j.get("ph"))
+        ph_h = _sha256(ph_e164) if ph_e164 else None
+        ext_h = _sha256(j.get("external_id"))
+
+        user_data = {
+            "client_ip_address": request.headers.get("X-Forwarded-For", request.remote_addr),
+            "client_user_agent": request.headers.get("User-Agent"),
+            "fbp": fbp, "fbc": fbc,
+            "em": em_h, "ph": ph_h, "external_id": ext_h,
+        }
+        user_data = {k: v for k, v in user_data.items() if v}
+
+        custom_data = {}
+        status, text = _send_to_capi(event_name, event_id, user_data=user_data, custom_data=custom_data)
+        return jsonify({"ok": (200 <= status < 300), "status": status}), 200
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 200
+# ========================================================================
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

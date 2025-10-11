@@ -10,6 +10,8 @@
   <meta http-equiv="x-dns-prefetch-control" content="on">
 
   <!-- Favicons -->
+  <!-- Primary favicon for Google Search -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}?v=1">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}?v=1">
@@ -93,6 +95,39 @@
 
   <!-- cache-buster v=18 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=40">
+
+  {# === Meta Pixel (guarded) === #}
+  {% if META_PIXEL_ID %}
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src='https://connect.facebook.net/en_US/fbevents.js';
+    s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script');
+    fbq('init', '{{ META_PIXEL_ID }}');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id={{ META_PIXEL_ID }}&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- /Meta Pixel -->
+  {% endif %}
+
+  <!-- Helpers for dedup + cookie access -->
+  <script>
+    window.azm = window.azm || {};
+    azm.uuidv4 = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = crypto.getRandomValues(new Uint8Array(1))[0] & 15;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+    azm.getCookie = (name) => {
+      const m = document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)');
+      return m ? m[2] : undefined;
+    };
+  </script>
 </head>
 <body>
 
@@ -195,6 +230,102 @@
       }
     })();
   </script>
+
+  {# ===== CAPI wiring (browser+server with dedup). No UI changes. ===== #}
+  {% if META_PIXEL_ID %}
+  <script>
+    (function(){
+      // 1) Lead on contact form submit
+      document.addEventListener('DOMContentLoaded', function(){
+        const form = document.querySelector('form.form') || document.querySelector('form[action*="contact"]');
+        if (!form) return;
+
+        form.addEventListener('submit', function(){
+          const eventId = azm.uuidv4();
+
+          // Browser event (dedup)
+          try { fbq && fbq('track', 'Lead', { eventID: eventId }); } catch(e){}
+
+          // Prepare payload for server (hashing is done server-side)
+          const ph = form.querySelector('input[name="phone"]')?.value || '';
+          const em = form.querySelector('input[name="email"]')?.value || '';
+          const ext = form.querySelector('input[name="name"]')?.value || '';
+
+          const payload = {
+            event_name: 'Lead',
+            event_id: eventId,
+            fbp: azm.getCookie('_fbp'),
+            fbc: azm.getCookie('_fbc'),
+            ph: ph,
+            em: em,
+            external_id: ext
+          };
+
+          const send = () => {
+            const body = JSON.stringify(payload);
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+            } else {
+              fetch('/capi/track', {method:'POST', headers:{'Content-Type':'application/json'}, body});
+            }
+          };
+          send();
+        }, { once: true }); // avoid double fire on repeated submits
+      });
+
+      // 2) Contact on WhatsApp/phone link click (auto-detect by href)
+      document.addEventListener('click', function(e){
+        const el = e.target.closest('a[href]');
+        if (!el) return;
+        const href = el.getAttribute('href') || '';
+        const isWhatsApp = href.includes('wa.me') || href.includes('api.whatsapp.com');
+        const isPhone = href.startsWith('tel:');
+        if (!isWhatsApp && !isPhone) return;
+
+        const eventId = azm.uuidv4();
+        try { fbq && fbq('track', 'Contact', { eventID: eventId }); } catch(e){}
+
+        const payload = {
+          event_name: 'Contact',
+          event_id: eventId,
+          fbp: azm.getCookie('_fbp'),
+          fbc: azm.getCookie('_fbc'),
+          source: isWhatsApp ? 'whatsapp' : 'phone'
+        };
+
+        const body = JSON.stringify(payload);
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+        } else {
+          fetch('/capi/track', {method:'POST', headers:{'Content-Type':'application/json'}, body});
+        }
+      });
+
+      // 3) ViewContent on /catalog
+      document.addEventListener('DOMContentLoaded', function(){
+        try {
+          if (location && location.pathname && location.pathname.replace(/\/+$/,'') === '/catalog') {
+            const eventId = azm.uuidv4();
+            try { fbq && fbq('track', 'ViewContent', { eventID: eventId }); } catch(e){}
+            const payload = {
+              event_name: 'ViewContent',
+              event_id: eventId,
+              fbp: azm.getCookie('_fbp'),
+              fbc: azm.getCookie('_fbc'),
+              content_name: 'Catalog'
+            };
+            const body = JSON.stringify(payload);
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+            } else {
+              fetch('/capi/track', {method:'POST', headers:{'Content-Type':'application/json'}, body});
+            }
+          }
+        } catch(e){}
+      });
+    })();
+  </script>
+  {% endif %}
 
   {% block extra_scripts %}{% endblock %}
 </body>
