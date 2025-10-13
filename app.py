@@ -750,6 +750,16 @@ def capi_track():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 200
 # ========================================================================
+@app.route("/debug/env")
+def debug_env():
+    import os
+    return {
+        "META_PIXEL_ID": os.getenv("META_PIXEL_ID"),
+        "META_CAPI_TOKEN": bool(os.getenv("META_CAPI_TOKEN")),
+        "META_TEST_EVENT_CODE": os.getenv("META_TEST_EVENT_CODE"),
+        "META_GRAPH_VERSION": os.getenv("META_GRAPH_VERSION")
+    }
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
