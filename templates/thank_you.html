@@ -8,3 +8,42 @@
   </div>
 </section>
 {% endblock %}
+
+{% block extra_scripts %}
+<script>
+/**
+ * Fire Lead ONLY on the success page (server-confirmed).
+ * Uses sessionStorage to avoid duplicate fires on refresh in this tab.
+ * Keeps dedup by sending the same event_id to Pixel (eventID) and CAPI (event_id).
+ */
+(function () {
+  if (!window.azm || !window.fbq) return;
+
+  // One-shot guard per tab
+  const FLAG = "azm_lead_fired_once";
+  if (sessionStorage.getItem(FLAG)) return;
+  sessionStorage.setItem(FLAG, "1");
+
+  const eventId = azm.uuidv4();
+
+  // 1) Pixel (browser)
+  try { fbq('track', 'Lead', { eventID: eventId }); } catch (e) {}
+
+  // 2) CAPI (server) — include cookies + source URL
+  const payload = {
+    event_name: 'Lead',
+    event_id: eventId,
+    fbp: azm.getCookie('_fbp'),
+    fbc: azm.getCookie('_fbc'),
+    event_source_url: location.href
+    // (No PII here because form is already posted; not needed on TY page)
+  };
+  const body = JSON.stringify(payload);
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+  } else {
+    fetch('/capi/track', { method:'POST', headers:{'Content-Type':'application/json'}, body });
+  }
+})();
+</script>
+{% endblock %}

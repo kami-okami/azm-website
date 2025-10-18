@@ -235,43 +235,7 @@
   {% if META_PIXEL_ID %}
   <script>
     (function(){
-      // 1) Lead on contact form submit
-      document.addEventListener('DOMContentLoaded', function(){
-        const form = document.querySelector('form.form') || document.querySelector('form[action*="contact"]');
-        if (!form) return;
-
-        form.addEventListener('submit', function(){
-          const eventId = azm.uuidv4();
-
-          // Browser event (dedup)
-          try { fbq && fbq('track', 'Lead', { eventID: eventId }); } catch(e){}
-
-          // Prepare payload for server (hashing is done server-side)
-          const ph = form.querySelector('input[name="phone"]')?.value || '';
-          const em = form.querySelector('input[name="email"]')?.value || '';
-          const ext = form.querySelector('input[name="name"]')?.value || '';
-
-          const payload = {
-            event_name: 'Lead',
-            event_id: eventId,
-            fbp: azm.getCookie('_fbp'),
-            fbc: azm.getCookie('_fbc'),
-            ph: ph,
-            em: em,
-            external_id: ext
-          };
-
-          const send = () => {
-            const body = JSON.stringify(payload);
-            if (navigator.sendBeacon) {
-              navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
-            } else {
-              fetch('/capi/track', {method:'POST', headers:{'Content-Type':'application/json'}, body});
-            }
-          };
-          send();
-        }, { once: true }); // avoid double fire on repeated submits
-      });
+      // NOTE: Lead-on-submit removed. Lead now fires on the thank-you page only.
 
       // 2) Contact on WhatsApp/phone link click (auto-detect by href)
       document.addEventListener('click', function(e){
@@ -290,7 +254,8 @@
           event_id: eventId,
           fbp: azm.getCookie('_fbp'),
           fbc: azm.getCookie('_fbc'),
-          source: isWhatsApp ? 'whatsapp' : 'phone'
+          source: isWhatsApp ? 'whatsapp' : 'phone',
+          event_source_url: location.href
         };
 
         const body = JSON.stringify(payload);
@@ -312,7 +277,8 @@
               event_id: eventId,
               fbp: azm.getCookie('_fbp'),
               fbc: azm.getCookie('_fbc'),
-              content_name: 'Catalog'
+              content_name: 'Catalog',
+              event_source_url: location.href
             };
             const body = JSON.stringify(payload);
             if (navigator.sendBeacon) {

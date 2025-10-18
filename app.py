@@ -389,26 +389,43 @@ def _normalize_phone_for_capi(ph):
     return "964" + p[1:]
 
 def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_time=None,
-                  action_source='website', test_event_code=None):
+                  action_source='website', test_event_code=None, event_source_url=None):
+    """
+    Compose Meta CAPI payload and POST it. Returns (status_code, response_text).
+    """
     if not (META_PIXEL_ID and META_CAPI_TOKEN):
         return 400, "META_PIXEL_ID or META_CAPI_TOKEN missing"
-    url = f"https://graph.facebook.com/{META_GRAPH_VERSION}/{META_PIXEL_ID}/events"
-    payload = {
-        "data": [{
-            "event_name": event_name,
-            "event_time": int(event_time or time.time()),
-            "event_id": event_id,
-            "action_source": action_source,
-            "user_data": user_data or {},
-            "custom_data": custom_data or {}
-        }]
+
+    payload_event = {
+        "event_name": event_name,
+        "event_time": int(event_time or time.time()),
+        "event_id": event_id,
+        "action_source": action_source,
+        "user_data": user_data or {},
     }
+    if custom_data:
+        payload_event["custom_data"] = custom_data
+    if event_source_url:
+        payload_event["event_source_url"] = event_source_url
+
+    payload = {"data": [payload_event]}
     tec = test_event_code or META_TEST_EVENT_CODE
     if tec:
         payload["test_event_code"] = tec
+
+    url = f"https://graph.facebook.com/{META_GRAPH_VERSION}/{META_PIXEL_ID}/events"
+
+    # POST with short timeout + one retry on timeout/5xx
     try:
-        r = requests.post(url, params={"access_token": META_CAPI_TOKEN}, json=payload, timeout=7)
+        r = requests.post(url, params={"access_token": META_CAPI_TOKEN},
+                          json=payload, timeout=(2, 5))
+        if 500 <= r.status_code < 600:
+            time.sleep(0.2)
+            r = requests.post(url, params={"access_token": META_CAPI_TOKEN},
+                              json=payload, timeout=(2, 5))
         return r.status_code, r.text
+    except requests.Timeout as e:
+        return 598, f"timeout: {e}"
     except Exception as e:
         return 500, f"request_error: {e}"
 # =================================================
@@ -721,12 +738,23 @@ def capi_track():
     """
     Receives JSON from browser, hashes PII, and forwards to Meta CAPI.
     Expects:
-      { event_name, event_id, fbp, fbc, ph, em, external_id, ... }
+      { event_name, event_id, fbp, fbc, ph, em, external_id, event_source_url? }
     """
     try:
         j = request.get_json(force=True, silent=True) or {}
-        event_name = j.get("event_name") or "Lead"
+        event_name = (j.get("event_name") or "Lead").strip()
         event_id   = j.get("event_id") or None
+
+        # Source URL preference: explicit -> Referer -> current path on this host
+        event_source_url = (
+            j.get("event_source_url")
+            or request.headers.get("Referer")
+            or (request.url_root.rstrip('/') + request.path)
+        )
+
+        # Network context (recommended by Meta)
+        client_ip  = (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
+        user_agent = request.headers.get("User-Agent", "")
 
         # User identifiers (hash on server)
         fbp = j.get("fbp") or None
@@ -736,16 +764,26 @@ def capi_track():
         ph_h = _sha256(ph_e164) if ph_e164 else None
         ext_h = _sha256(j.get("external_id"))
 
+        # Build user_data; hashed IDs as arrays per Meta helper
         user_data = {
-            "client_ip_address": request.headers.get("X-Forwarded-For", request.remote_addr),
-            "client_user_agent": request.headers.get("User-Agent"),
-            "fbp": fbp, "fbc": fbc,
-            "em": em_h, "ph": ph_h, "external_id": ext_h,
+            "client_ip_address": client_ip if client_ip else None,
+            "client_user_agent": user_agent if user_agent else None,
+            "fbp": fbp,
+            "fbc": fbc,
+            "em": [em_h] if em_h else None,
+            "ph": [ph_h] if ph_h else None,
+            "external_id": [ext_h] if ext_h else None,
         }
         user_data = {k: v for k, v in user_data.items() if v}
 
-        custom_data = {}
-        status, text = _send_to_capi(event_name, event_id, user_data=user_data, custom_data=custom_data)
+        custom_data = j.get("custom_data") or {}
+
+        status, text = _send_to_capi(
+            event_name, event_id,
+            user_data=user_data,
+            custom_data=custom_data,
+            event_source_url=event_source_url
+        )
         return jsonify({"ok": (200 <= status < 300), "status": status}), 200
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 200
