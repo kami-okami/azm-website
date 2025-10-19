@@ -106,7 +106,7 @@
     t.src='https://connect.facebook.net/en_US/fbevents.js';
     s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script');
     fbq('init', '{{ META_PIXEL_ID }}');
-    fbq('track', 'PageView');
+    /* PageView will be fired below with an eventID for dedup */
   </script>
   <noscript>
     <img height="1" width="1" style="display:none"
@@ -235,6 +235,31 @@
   {% if META_PIXEL_ID %}
   <script>
     (function(){
+      // --- 1) PageView with eventID + CAPI mirror for dedup ---
+      document.addEventListener('DOMContentLoaded', function(){
+        try {
+          // stable per-page event id
+          var pvId = azm.uuidv4();
+          window.__pv_eid = pvId;
+          try { fbq && fbq('track', 'PageView', {}, { eventID: pvId }); } catch(e){}
+
+          var payload = {
+            event_name: 'PageView',
+            event_id: pvId,
+            fbp: azm.getCookie('_fbp'),
+            fbc: azm.getCookie('_fbc'),
+            event_source_url: location.href,
+            event_time: Math.floor(Date.now()/1000)
+          };
+          var body = JSON.stringify(payload);
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+          } else {
+            fetch('/capi/track', { method:'POST', headers:{'Content-Type':'application/json'}, body });
+          }
+        } catch(e){}
+      });
+
       // NOTE: Lead-on-submit removed. Lead now fires on the thank-you page only.
 
       // 2) Contact on WhatsApp/phone link click (auto-detect by href)

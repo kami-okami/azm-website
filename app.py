@@ -20,6 +20,7 @@ from werkzeug.security import check_password_hash
 import secrets
 from urllib.parse import urlsplit, urlunsplit  # <-- NEW
 import hashlib  # === META CAPI: hashing
+import uuid     # === META CAPI: event_id
 
 load_dotenv()
 
@@ -388,6 +389,31 @@ def _normalize_phone_for_capi(ph):
     # strip leading 0, prepend 964
     return "964" + p[1:]
 
+def _extract_fbp_fbc_from_request():
+    """
+    Try to obtain fbp/fbc from cookies or fbclid (per Meta guidance).
+    """
+    fbp = request.cookies.get('_fbp') or None
+    fbc = request.cookies.get('_fbc') or None
+
+    # If no _fbc cookie, try to synthesize from fbclid query param (when present)
+    try:
+        referer = request.headers.get("Referer") or ""
+        # A minimal, safe parse: look for fbclid=... substring
+        if (not fbc) and "fbclid=" in referer:
+            # This 'fb.1' format is acceptable as a constructed fbc
+            # fb.1.<timestamp>.<fbclid>
+            ts = str(int(time.time()))
+            fbclid = referer.split("fbclid=")[1].split("&")[0]
+            fbc = f"fb.1.{ts}.{fbclid}"
+    except Exception:
+        pass
+
+    return fbp, fbc
+
+def _absolute_url(endpoint):
+    return request.url_root.rstrip('/') + url_for(endpoint)
+
 def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_time=None,
                   action_source='website', test_event_code=None, event_source_url=None):
     """
@@ -524,12 +550,58 @@ def contact():
         insert_message_row(payload)
 
         try:
+            # Try sending email (non-blocking for the UX)
             payload["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             ok = send_email_notification(payload)
             if not ok:
                 app.logger.warning("CONTACT_EMAIL_SEND_FAILED ip=%s phone=%s", ip, phone)
         except Exception:
             app.logger.exception("CONTACT_EMAIL_UNHANDLED")
+
+        # === META CAPI: Server-side Lead with hashed PII + cookie fbp/fbc
+        try:
+            event_id = str(uuid.uuid4())
+            session['last_lead_event_id'] = event_id  # to use on /thank-you for browser dedup
+
+            # Build user_data (hashed on server)
+            ph_e164 = _normalize_phone_for_capi(phone)
+            user_data = {
+                "client_ip_address": (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip(),
+                "client_user_agent": request.headers.get("User-Agent", ""),
+                "em": [_sha256(email)] if email else None,
+                "ph": [_sha256(ph_e164)] if ph_e164 else None,
+                "external_id": [_sha256(name)] if name else None,
+            }
+
+            # Pull fbp/fbc from cookies (if present)
+            fbp_cookie, fbc_cookie = _extract_fbp_fbc_from_request()
+            if fbp_cookie:
+                user_data["fbp"] = fbp_cookie
+            if fbc_cookie:
+                user_data["fbc"] = fbc_cookie
+
+            # Optional custom_data (harmless enrichment)
+            custom_data = {
+                "content_name": "Website Lead",
+                "content_category": "Contact",
+                "currency": "USD"
+            }
+
+            # Use the final thank-you URL as source url (closer to conversion surface)
+            thank_you_abs = _absolute_url('thank_you')
+
+            status, text = _send_to_capi(
+                event_name="Lead",
+                event_id=event_id,
+                user_data={k: v for k, v in user_data.items() if v},
+                custom_data=custom_data,
+                event_source_url=thank_you_abs
+            )
+            app.logger.info("CAPI Lead server-side status=%s text=%s", status, text[:200])
+        except Exception as e:
+            app.logger.warning("CAPI Lead send failed: %s", e)
+        # === /META CAPI
+
         return redirect(url_for('thank_you'))
 
     # GET
@@ -547,10 +619,18 @@ def contact():
 
 @app.route('/thank-you')
 def thank_you():
-    return render_template('thank_you.html', title="شكراً لتواصلكم",
-                           company=COMPANY_NAME, active_page=None,
-                           facebook_url=FACEBOOK_URL, whatsapp_number=WHATSAPP_NUMBER,
-                           whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''))
+    # Pass the last server-side event_id to browser for perfect Lead dedup
+    lead_event_id = session.pop('last_lead_event_id', None)
+    return render_template(
+        'thank_you.html',
+        title="شكراً لتواصلكم",
+        company=COMPANY_NAME,
+        active_page=None,
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
+        lead_event_id=lead_event_id
+    )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -738,7 +818,7 @@ def capi_track():
     """
     Receives JSON from browser, hashes PII, and forwards to Meta CAPI.
     Expects:
-      { event_name, event_id, fbp, fbc, ph, em, external_id, event_source_url? }
+      { event_name, event_id, fbp, fbc, ph, em, external_id, event_source_url?, event_time? }
     """
     try:
         j = request.get_json(force=True, silent=True) or {}
@@ -759,6 +839,13 @@ def capi_track():
         # User identifiers (hash on server)
         fbp = j.get("fbp") or None
         fbc = j.get("fbc") or None
+
+        # Fallback to cookies if not provided
+        if not fbp or not fbc:
+            fbp_ck, fbc_ck = _extract_fbp_fbc_from_request()
+            fbp = fbp or fbp_ck
+            fbc = fbc or fbc_ck
+
         em_h  = _sha256(j.get("em"))
         ph_e164 = _normalize_phone_for_capi(j.get("ph"))
         ph_h = _sha256(ph_e164) if ph_e164 else None
@@ -777,11 +864,13 @@ def capi_track():
         user_data = {k: v for k, v in user_data.items() if v}
 
         custom_data = j.get("custom_data") or {}
+        event_time = j.get("event_time")  # optional
 
         status, text = _send_to_capi(
             event_name, event_id,
             user_data=user_data,
             custom_data=custom_data,
+            event_time=event_time,
             event_source_url=event_source_url
         )
         return jsonify({"ok": (200 <= status < 300), "status": status}), 200
