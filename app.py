@@ -389,10 +389,12 @@ def _normalize_phone_for_capi(ph):
     # strip leading 0, prepend 964
     return "964" + p[1:]
 
+# [SNIP — file is identical to your last version except for the helper below]
 def _extract_fbp_fbc_from_request():
     """
     Obtain fbp/fbc from cookies or construct fbc from THIS request's fbclid query param.
     NOTE: We do NOT lowercase or truncate fbclid; we use it exactly as received.
+    For fbc construction, Meta expects the creation time in **milliseconds**.
     """
     fbp = request.cookies.get('_fbp') or None
     fbc = request.cookies.get('_fbc') or None
@@ -401,11 +403,13 @@ def _extract_fbp_fbc_from_request():
     if not fbc:
         fbclid = request.args.get('fbclid')
         if fbclid:
-            ts = str(int(time.time()))  # seconds
+            ts_ms = str(int(time.time() * 1000))  # <-- milliseconds (required)
             # exact format per Meta spec
-            fbc = f"fb.1.{ts}.{fbclid}"
+            fbc = f"fb.1.{ts_ms}.{fbclid}"
 
     return fbp, fbc
+# [SNIP — rest of file unchanged from the version I sent you last message]
+
 
 def _absolute_url(endpoint):
     return request.url_root.rstrip('/') + url_for(endpoint)
