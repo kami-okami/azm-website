@@ -391,23 +391,19 @@ def _normalize_phone_for_capi(ph):
 
 def _extract_fbp_fbc_from_request():
     """
-    Try to obtain fbp/fbc from cookies or fbclid (per Meta guidance).
+    Obtain fbp/fbc from cookies or construct fbc from THIS request's fbclid query param.
+    NOTE: We do NOT lowercase or truncate fbclid; we use it exactly as received.
     """
     fbp = request.cookies.get('_fbp') or None
     fbc = request.cookies.get('_fbc') or None
 
-    # If no _fbc cookie, try to synthesize from fbclid query param (when present)
-    try:
-        referer = request.headers.get("Referer") or ""
-        # A minimal, safe parse: look for fbclid=... substring
-        if (not fbc) and "fbclid=" in referer:
-            # This 'fb.1' format is acceptable as a constructed fbc
-            # fb.1.<timestamp>.<fbclid>
-            ts = str(int(time.time()))
-            fbclid = referer.split("fbclid=")[1].split("&")[0]
+    # If no _fbc cookie, synthesize from fbclid query param on the current request
+    if not fbc:
+        fbclid = request.args.get('fbclid')
+        if fbclid:
+            ts = str(int(time.time()))  # seconds
+            # exact format per Meta spec
             fbc = f"fb.1.{ts}.{fbclid}"
-    except Exception:
-        pass
 
     return fbp, fbc
 
@@ -424,7 +420,8 @@ def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_
 
     payload_event = {
         "event_name": event_name,
-        "event_time": int(event_time or time.time()),
+        # always seconds (UTC)
+        "event_time": int(event_time if event_time is not None else time.time()),
         "event_id": event_id,
         "action_source": action_source,
         "user_data": user_data or {},
@@ -573,7 +570,7 @@ def contact():
                 "external_id": [_sha256(name)] if name else None,
             }
 
-            # Pull fbp/fbc from cookies (if present)
+            # Pull fbp/fbc from cookies or current fbclid
             fbp_cookie, fbc_cookie = _extract_fbp_fbc_from_request()
             if fbp_cookie:
                 user_data["fbp"] = fbp_cookie
@@ -611,7 +608,7 @@ def contact():
         company=COMPANY_NAME,
         active_page='contact',
         recaptcha_site_key=RECAPTCHA_SITE_KEY,
-        facebook_url=FACEBOX_URL if False else FACEBOOK_URL,  # keep exact functionality
+        facebook_url=FACEBOOK_URL,
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe=''),
         meta_description="تواصل معنا لطلب عرض سعر أو استشارة فنية حول مساند الارتكاز، مفاصل التمدد، وقطع غيار المعدات الثقيلة — الرد سريع داخل العراق."
@@ -818,7 +815,7 @@ def capi_track():
     """
     Receives JSON from browser, hashes PII, and forwards to Meta CAPI.
     Expects:
-      { event_name, event_id, fbp, fbc, ph, em, external_id, event_source_url?, event_time? }
+      { event_name, event_id, fbp, fbc, ph, em, external_id, event_source_url? }
     """
     try:
         j = request.get_json(force=True, silent=True) or {}
@@ -840,7 +837,7 @@ def capi_track():
         fbp = j.get("fbp") or None
         fbc = j.get("fbc") or None
 
-        # Fallback to cookies if not provided
+        # Fallback to cookies / current fbclid if not provided
         if not fbp or not fbc:
             fbp_ck, fbc_ck = _extract_fbp_fbc_from_request()
             fbp = fbp or fbp_ck
@@ -864,7 +861,9 @@ def capi_track():
         user_data = {k: v for k, v in user_data.items() if v}
 
         custom_data = j.get("custom_data") or {}
-        event_time = j.get("event_time")  # optional
+
+        # Always send a clean server-side timestamp (UTC seconds)
+        event_time = int(time.time())
 
         status, text = _send_to_capi(
             event_name, event_id,
