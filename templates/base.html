@@ -47,7 +47,7 @@
     "@type": ["Organization","LocalBusiness"],
     "name": "{{ company or 'عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور' }}",
     "url": "{{ request.url_root.rstrip('/') }}",
-    "email": "mailto:ahmad@azmsupply.com",
+    "email": "mailto:info@azmsupply.com",
     "telephone": ["+9647802280589","+9647740818896","+9647518232611"],
     "address": { "@type": "PostalAddress", "addressCountry": "IQ" },
     "areaServed": "IQ",
@@ -94,7 +94,7 @@
   <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=40">
 
   <!-- cache-buster v=18 -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=40">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=41">
 
   {# === Meta Pixel (guarded) === #}
   {% if META_PIXEL_ID %}
@@ -235,10 +235,31 @@
   {% if META_PIXEL_ID %}
   <script>
     (function(){
+      // --- 0) Cache PII from contact form (if present on this page) for Contact event quality ---
+      document.addEventListener('DOMContentLoaded', function(){
+        try {
+          var form = document.querySelector('form[action*="contact"]') || document.querySelector('form[action="/contact"]');
+          if (!form) return;
+          var nameEl  = form.querySelector('[name="name"]');
+          var emailEl = form.querySelector('[name="email"]');
+          var phoneEl = form.querySelector('[name="phone"]');
+
+          function savePII(){
+            if (nameEl && nameEl.value)  sessionStorage.setItem('azm_pi_name',  nameEl.value.trim());
+            if (emailEl && emailEl.value) sessionStorage.setItem('azm_pi_em',   emailEl.value.trim());
+            if (phoneEl && phoneEl.value) sessionStorage.setItem('azm_pi_ph',   phoneEl.value.trim());
+          }
+          ['change','input','blur'].forEach(function(evt){
+            if (nameEl)  nameEl.addEventListener(evt, savePII);
+            if (emailEl) emailEl.addEventListener(evt, savePII);
+            if (phoneEl) phoneEl.addEventListener(evt, savePII);
+          });
+        } catch(e){}
+      });
+
       // --- 1) PageView with eventID + CAPI mirror for dedup ---
       document.addEventListener('DOMContentLoaded', function(){
         try {
-          // stable per-page event id
           var pvId = azm.uuidv4();
           window.__pv_eid = pvId;
           try { fbq && fbq('track', 'PageView', {}, { eventID: pvId }); } catch(e){}
@@ -262,7 +283,7 @@
 
       // NOTE: Lead-on-submit removed. Lead now fires on the thank-you page only.
 
-      // 2) Contact on WhatsApp/phone link click (auto-detect by href)
+      // --- 2) Contact on WhatsApp/phone link click (auto-detect by href) ---
       document.addEventListener('click', function(e){
         const el = e.target.closest('a[href]');
         if (!el) return;
@@ -274,14 +295,22 @@
         const eventId = azm.uuidv4();
         try { fbq && fbq('track', 'Contact', { eventID: eventId }); } catch(e){}
 
+        // pull any cached PII from this session (contact page)
+        var em  = sessionStorage.getItem('azm_pi_em')   || undefined;
+        var ph  = sessionStorage.getItem('azm_pi_ph')   || undefined;
+        var ext = sessionStorage.getItem('azm_pi_name') || undefined;
+
         const payload = {
           event_name: 'Contact',
           event_id: eventId,
           fbp: azm.getCookie('_fbp'),
           fbc: azm.getCookie('_fbc'),
-          source: isWhatsApp ? 'whatsapp' : 'phone',
           event_source_url: location.href
         };
+        // only include when present (server will hash/normalize)
+        if (em)  payload.em = em;
+        if (ph)  payload.ph = ph;
+        if (ext) payload.external_id = ext;
 
         const body = JSON.stringify(payload);
         if (navigator.sendBeacon) {
@@ -291,7 +320,7 @@
         }
       });
 
-      // 3) ViewContent on /catalog
+      // --- 3) ViewContent on /catalog ---
       document.addEventListener('DOMContentLoaded', function(){
         try {
           if (location && location.pathname && location.pathname.replace(/\/+$/,'') === '/catalog') {

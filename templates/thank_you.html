@@ -6,45 +6,62 @@
   <div class="cta-row">
     <a class="btn" href="{{ url_for('home') }}">العودة للرئيسية</a>
   </div>
+
+  {# Provide lead_event_id to JS without putting Jinja inside JS #}
+  <div id="lead-dedupe" data-lead-id="{{ lead_event_id or '' }}" hidden></div>
 </section>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-/**
- * Fire Lead ONLY on the success page (server-confirmed).
- * Uses the server-generated event_id (lead_event_id) for Browser↔Server dedup.
- * One-shot per tab via sessionStorage to avoid duplicate fires on refresh.
- */
+// Lead fires ONLY on the success page (server-confirmed).
+// Uses server-generated event_id for Browser↔Server dedup;
+// One-shot per tab via sessionStorage; includes optional PII captured on contact page.
 (function () {
+  'use strict';
   if (!window.azm || !window.fbq) return;
 
   // One-shot guard per tab
-  const FLAG = "azm_lead_fired_once";
-  if (sessionStorage.getItem(FLAG)) return;
-  sessionStorage.setItem(FLAG, "1");
+  var FLAG = 'azm_lead_fired_once';
+  try {
+    if (sessionStorage.getItem(FLAG)) return;
+    sessionStorage.setItem(FLAG, '1');
+  } catch (e) {}
 
-  // Use server event_id if provided; fallback to a fresh UUID
-  var eventId = {{ lead_event_id | tojson }};
+  // Get event_id from data- attribute (avoids Jinja inside JS)
+  var dataEl = document.getElementById('lead-dedupe');
+  var eventId = (dataEl && dataEl.getAttribute('data-lead-id')) || '';
   if (!eventId) { eventId = azm.uuidv4(); }
+
+  // Pull cached PII from this tab (may or may not exist)
+  var em  = sessionStorage.getItem('azm_pi_em')   || undefined;
+  var ph  = sessionStorage.getItem('azm_pi_ph')   || undefined;
+  var ext = sessionStorage.getItem('azm_pi_name') || undefined;
 
   // 1) Pixel (browser)
   try { fbq('track', 'Lead', { eventID: eventId }); } catch (e) {}
 
-  // 2) CAPI (server) — include cookies + source URL
-  var payload = {
-    event_name: 'Lead',
-    event_id: eventId,
-    fbp: azm.getCookie('_fbp'),
-    fbc: azm.getCookie('_fbc'),
-    event_source_url: location.href
-    // No PII here. Server already sent hashed PII at form submit.
-  };
+  // 2) CAPI (server)
+  var payload = {};
+  payload.event_name = 'Lead';
+  payload.event_id = eventId;
+  payload.fbp = azm.getCookie('_fbp');
+  payload.fbc = azm.getCookie('_fbc');
+  payload.event_source_url = (window.location && window.location.href) ? window.location.href : '';
+  payload.event_time = Math.floor(Date.now() / 1000);
+  if (em)  payload.em = em;
+  if (ph)  payload.ph = ph;
+  if (ext) payload.external_id = ext;
+
   var body = JSON.stringify(payload);
   if (navigator.sendBeacon) {
-    navigator.sendBeacon('/capi/track', new Blob([body], {type:'application/json'}));
+    try {
+      navigator.sendBeacon('/capi/track', new Blob([body], { type: 'application/json' }));
+    } catch (e) {
+      fetch('/capi/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body });
+    }
   } else {
-    fetch('/capi/track', { method:'POST', headers:{'Content-Type':'application/json'}, body });
+    fetch('/capi/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body });
   }
 })();
 </script>
