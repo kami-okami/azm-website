@@ -225,6 +225,7 @@ def inject_meta_vars():
 # ========================================================================
 
 # Set strong headers (CSP, etc.)
+# === BEGIN SECURITY HEADERS — DO NOT MODIFY ===
 @app.after_request
 def set_security_headers(resp):
     csp = (
@@ -248,6 +249,7 @@ def set_security_headers(resp):
         resp.headers["Pragma"] = "no-cache"
         resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
+# === END SECURITY HEADERS ===
 
 # --------------- Validation ---------------
 IRAQ_ALLOWED_PREFIXES = {"75", "77", "78", "79"}
@@ -372,6 +374,7 @@ def is_logged_in():
     return bool(session.get('logged_in'))
 
 # === META CAPI: helpers for hashing + sender ===
+# === BEGIN CAPI HELPERS — DO NOT MODIFY ===
 def _sha256(v):
     if not v:
         return None
@@ -456,6 +459,7 @@ def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_
     except Exception as e:
         return 500, f"request_error: {e}"
 # =================================================
+# === END CAPI HELPERS ===
 
 # --------------- Routes ---------------
 @app.route('/')
@@ -559,6 +563,7 @@ def contact():
         except Exception:
             app.logger.exception("CONTACT_EMAIL_UNHANDLED")
 
+        # === BEGIN SERVER-SIDE LEAD EVENT — DO NOT MODIFY ===
         # === META CAPI: Server-side Lead with hashed PII + cookie fbp/fbc
         try:
             event_id = str(uuid.uuid4())
@@ -602,6 +607,7 @@ def contact():
         except Exception as e:
             app.logger.warning("CAPI Lead send failed: %s", e)
         # === /META CAPI
+        # === END SERVER-SIDE LEAD EVENT ===
 
         return redirect(url_for('thank_you'))
 
@@ -814,6 +820,7 @@ def cache_icons(resp):
     return resp
 
 # === META CAPI: public endpoint the frontend calls (from base.html JS) ===
+# === BEGIN CAPI RELAY ROUTE — DO NOT MODIFY ===
 @app.post("/capi/track")
 def capi_track():
     """
@@ -880,6 +887,7 @@ def capi_track():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 200
 # ========================================================================
+# === END CAPI RELAY ROUTE ===
 @app.route("/debug/env")
 def debug_env():
     import os
