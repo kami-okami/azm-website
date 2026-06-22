@@ -1,38 +1,112 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section class="hero">
-
-  <!-- LCP image (discoverable + prioritized) -->
-  <picture>
-    <!-- Modern format first -->
+<!-- Hero (Stitch rebuild): full-bleed image + overlay + CTAs -->
+<section class="home-hero">
+  <picture class="home-hero__media">
     <source
       type="image/webp"
       srcset="
         {{ url_for('static', filename='img/hero/hero-640.webp') }}   640w,
         {{ url_for('static', filename='img/hero/hero-1280.webp') }} 1280w,
         {{ url_for('static', filename='img/hero/hero-1920.webp') }} 1920w"
-      sizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw">
-    <!-- Fallback PNGs -->
+      sizes="100vw">
     <img
       src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
       srcset="
         {{ url_for('static', filename='img/hero/hero-640.png') }}   640w,
         {{ url_for('static', filename='img/hero/hero-1280.png') }} 1280w,
         {{ url_for('static', filename='img/hero/hero-1920.png') }} 1920w"
-      sizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw"
+      sizes="100vw"
       fetchpriority="high"
       decoding="async"
       loading="eager"
       alt="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق"
-      width="1920" height="640"
-      class="hero-img">
+      width="1920" height="640">
   </picture>
 
-  <!-- Visible, single H1 for the page (short, primary phrase) -->
-  <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق</h1>
+  <div class="home-hero__inner">
+    <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق</h1>
+    <p>
+      المزود الرائد في العراق لمعدات البناء الثقيلة، مفاصل التمدد، ومساند الارتكاز عالية الجودة.
+      نلتزم بأعلى معايير الهندسة لضمان متانة مشاريعكم الاستراتيجية.
+    </p>
+    <div class="home-hero__cta">
+      <a class="home-hero__btn home-hero__btn--solid" href="{{ url_for('products') }}">تصفح المنتجات</a>
+      <a class="home-hero__btn home-hero__btn--ghost" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
+    </div>
+  </div>
+</section>
 
-  <!-- Alignment paragraph: repeats H1 tokens in plain text and adds core services -->
+<!-- Service grid (Stitch rebuild) -->
+<section class="home-services" aria-label="خدماتنا">
+  <div class="home-service-card">
+    <div class="home-service-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+    <h3>قطع غيار المعدات الثقيلة</h3>
+    <p>توفير قطع غيار أصلية وموثوقة لجميع أنواع المعدات الإنشائية والآليات الثقيلة لضمان استمرارية العمل.</p>
+  </div>
+  <div class="home-service-card">
+    <div class="home-service-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </div>
+    <h3>حلول الجسور التخصصية</h3>
+    <p>نقدم مفاصل التمدد ومساند الارتكاز المصنعة وفق أحدث التقنيات العالمية لدعم البنية التحتية الوطنية.</p>
+  </div>
+  <div class="home-service-card">
+    <div class="home-service-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    </div>
+    <h3>إعادة تأهيل الطرق</h3>
+    <p>توريد كافة المستلزمات والمواد اللازمة لمشاريع صيانة وتطوير شبكات الطرق والجسور في كافة محافظات العراق.</p>
+  </div>
+</section>
+
+<!-- Strategic partner (Stitch rebuild) -->
+<section class="home-partner" aria-label="شريككم الاستراتيجي">
+  <div class="home-partner-grid">
+    <div>
+      <span class="home-partner-pill">خبرة في السوق العراقي</span>
+      <h2>شريككم الاستراتيجي في الإعمار</h2>
+      <p class="home-partner-lead">
+        تتميز شركة عزم للتوريدات بقدرتها الفائقة على تلبية احتياجات كبرى شركات المقاولات والجهات الحكومية في العراق.
+        نحن متخصصون في توريد أجود المنتجات العالمية لضمان ديمومة المشاريع العملاقة:
+      </p>
+      <ul class="home-partner-list">
+        <li>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>مفاصل التمدد (Expansion Joints)</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>مساند ارتكاز (Bridge Bearings)</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>فلاتر وزيوت المعدات الثقيلة</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>أنظمة حماية وصيانة الجسور</span>
+        </li>
+      </ul>
+    </div>
+    <div class="home-partner-media">
+      <picture>
+        <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
+        <img src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
+             alt="مشاريع البنية التحتية والجسور في العراق"
+             loading="lazy" decoding="async" width="1280" height="640">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<!-- SEO content block (kept; moved below hero) -->
+<section class="home-seo" aria-label="تعريف الشركة">
+  <h2>لمحة عن خدماتنا</h2>
+
   <p>
     عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق يقدم حلولاً موثوقة للمعدات الثقيلة،
     تشمل توريد مساند مطاطية وفواصل تمدد للجسور مع تجهيز سريع داخل العراق. نساعد فرق التنفيذ
@@ -41,131 +115,99 @@
     المواصفات والجودة واستمرارية التوريد.
   </p>
 
-  <!-- SEO content block -->
-  <section class="seo-intro" aria-label="تعريف الشركة">
-    <h2>لمحة عن خدماتنا</h2>
+  <p>
+    نخدم شركات المقاولات ودوائر الدولة عبر جميع المحافظات. جميع المنتجات من موردين معروفين
+    وبمواصفات معتمدة. نساعد فرق التنفيذ في اختيار المقاس المناسب، وطريقة التركيب، وخطط الصيانة.
+  </p>
 
-    <p>
-      نوفر حلولاً موثوقة للمشاريع في العراق: مفاصل التمدد، مساند الارتكاز، وقطع غيار المعدات الثقيلة.
-      نركز على الجودة، سرعة التوريد، والدعم الفني بعد البيع.
-    </p>
-
-    <p>
-      نخدم شركات المقاولات ودوائر الدولة عبر جميع المحافظات. جميع المنتجات من موردين معروفين
-      وبمواصفات معتمدة. نساعد فرق التنفيذ في اختيار المقاس المناسب، وطريقة التركيب، وخطط الصيانة.
-    </p>
-
-    <div class="seo-grid">
-      <div>
-        <h3>المنتجات الرئيسية</h3>
-        <ul>
-          <li>مفاصل التمدد للجسور بأنواعها.</li>
-          <li>مساند ارتكاز مطاطية ومسلحة.</li>
-          <li>قطع غيار محركات ومعدات ثقيلة.</li>
-          <li>مواد اليات الأسفلت والخرسانة.</li>
-          <li>مرتكزات تثبيت، براغي وأنكور.</li>
-          <li>اسنان حفر ركائز و اسنان حفر للمعدات الثقيلة</li>
-        </ul>
-      </div>
-      <div>
-        <h3>لماذا عزم؟</h3>
-        <ul>
-          <li>جودة مضمونة وشهادات مطابقة.</li>
-          <li>تجهيز سريع وشحن داخل العراق.</li>
-          <li>أسعار واضحة وعروض مفصلة.</li>
-          <li>تواصل مستمر</li>
-        </ul>
-      </div>
+  <div class="seo-grid">
+    <div>
+      <h3>المنتجات الرئيسية</h3>
+      <ul>
+        <li>مفاصل التمدد للجسور بأنواعها.</li>
+        <li>مساند ارتكاز مطاطية ومسلحة.</li>
+        <li>قطع غيار محركات ومعدات ثقيلة.</li>
+        <li>مواد اليات الأسفلت والخرسانة.</li>
+        <li>مرتكزات تثبيت، براغي وأنكور.</li>
+        <li>اسنان حفر ركائز و اسنان حفر للمعدات الثقيلة</li>
+      </ul>
     </div>
-  </section>
-
-  <h2>حلول موثوقة · جودة مضمونة</h2>
-  <p>نوفر قطع غيار للمعدات الثقيلة، حلول الجسور (مساند مطاطية وفواصل تمددية)، وأدوات إعادة تأهيل الطرق مع تغطية لجميع المحافظات.</p>
-  <ul class="key-points">
-    <li>منتجات أصلية من موردين معروفين</li>
-    <li>استشارات فنية ودعم ما بعد البيع</li>
-    <li>تجهيز سريع وشحن داخل العراق</li>
-  </ul>
-  <div class="cta-row">
-    <a class="btn" href="{{ url_for('products') }}">تصفح المنتجات</a>
-    <a class="btn outline" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
+    <div>
+      <h3>لماذا عزم؟</h3>
+      <ul>
+        <li>جودة مضمونة وشهادات مطابقة.</li>
+        <li>تجهيز سريع وشحن داخل العراق.</li>
+        <li>أسعار واضحة وعروض مفصلة.</li>
+        <li>تواصل مستمر</li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<section class="cards">
-  <div class="card">
-    <h3>قطع غيار ومحركات المعدات الثقيلة</h3>
-    <p>محركات وقطع أصلية وبدائل عالية الجودة لضمان استمرارية العمل وتقليل التوقفات.</p>
-  </div>
-  <div class="card">
-    <h3>حلول الجسور</h3>
-    <p>مساند مطاطية (Elastomeric Bearings) وفواصل تمددية (Expansion Joints) بمواصفات قياسية.</p>
-  </div>
-  <div class="card">
-    <h3>إعادة تأهيل الطرق</h3>
-    <p>أدوات قشط أسفلت، شفرات وتمهيد، وملحقات موثوقة لنتائج دقيقة وتكاليف أقل.</p>
-  </div>
-</section>
-
-<!-- FAQ styled as cards ("hamburger") -->
-<section class="faq" aria-label="الأسئلة الشائعة">
+<!-- FAQ accordion (Stitch rebuild) -->
+<section class="home-faq" aria-label="الأسئلة الشائعة">
   <h2>الأسئلة الشائعة</h2>
 
-  <div class="cards faq-cards">
-    <div class="card">
-      <details>
-        <summary>ما أنواع فواصل التمدد المتوفرة؟</summary>
-        <p>
-          نوفر حلول <strong>فواصل التمدد</strong> للجسور بمستويات حركة مختلفة وفق المواصفات
-          الفنية الشائعة. نساعدكم في اختيار النظام المناسب حسب طول الفتحة وظروف الموقع،
-          مع توفير ملحقات التثبيت وإرشادات التركيب.
-        </p>
-      </details>
-    </div>
+  <div class="home-faq-list">
+    <details class="home-faq-item">
+      <summary>
+        <span>ما أنواع فواصل التمدد المتوفرة؟</span>
+        <svg class="home-faq-chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="home-faq-answer">
+        نوفر حلول <strong>فواصل التمدد</strong> للجسور بمستويات حركة مختلفة وفق المواصفات
+        الفنية الشائعة. نساعدكم في اختيار النظام المناسب حسب طول الفتحة وظروف الموقع،
+        مع توفير ملحقات التثبيت وإرشادات التركيب.
+      </p>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary>كيف أختار مساند الارتكاز المناسبة؟</summary>
-        <p>
-          اختيار <strong>المساند المطاطية</strong> يعتمد على الأحمال، التشوهات الحرارية،
-          والقيود الإنشائية. نراجع الرسومات ونعتمد المقاسات وفق المواصفة المطلوبة لضمان
-          الأداء والاستدامة وتقليل الصيانة.
-        </p>
-      </details>
-    </div>
+    <details class="home-faq-item">
+      <summary>
+        <span>كيف أختار مساند الارتكاز المناسبة؟</span>
+        <svg class="home-faq-chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="home-faq-answer">
+        اختيار <strong>المساند المطاطية</strong> يعتمد على الأحمال، التشوهات الحرارية،
+        والقيود الإنشائية. نراجع الرسومات ونعتمد المقاسات وفق المواصفة المطلوبة لضمان
+        الأداء والاستدامة وتقليل الصيانة.
+      </p>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary>ما مدة التوريد داخل العراق؟</summary>
-        <p>
-          للأصناف المتوفرة عادةً 3–7 أيام عمل حسب المحافظة والكمية. تتوفر خيارات أسرع
-          للمشاريع الحرجة، ونوضح زمن التوريد عند تأكيد الطلب.
-        </p>
-      </details>
-    </div>
+    <details class="home-faq-item">
+      <summary>
+        <span>ما مدة التوريد داخل العراق؟</span>
+        <svg class="home-faq-chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="home-faq-answer">
+        للأصناف المتوفرة عادةً 3–7 أيام عمل حسب المحافظة والكمية. تتوفر خيارات أسرع
+        للمشاريع الحرجة، ونوضح زمن التوريد عند تأكيد الطلب.
+      </p>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary>هل تقدّمون دعم تركيب وإشراف فني؟</summary>
-        <p>
-          نعم، نوفر إرشادات تركيب مفصلة وملاحظات فنية، ويمكننا ربطكم بمقاولين مختصين
-          عند الحاجة لضمان التنفيذ السليم وتقليل المخاطر.
-        </p>
-      </details>
-    </div>
+    <details class="home-faq-item">
+      <summary>
+        <span>هل تقدّمون دعم تركيب وإشراف فني؟</span>
+        <svg class="home-faq-chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="home-faq-answer">
+        نعم، نوفر إرشادات تركيب مفصلة وملاحظات فنية، ويمكننا ربطكم بمقاولين مختصين
+        عند الحاجة لضمان التنفيذ السليم وتقليل المخاطر.
+      </p>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary>ما البيانات اللازمة لإصدار عرض سعر دقيق؟</summary>
-        <p>
-          رسومات أو مخططات، المواصفة المطلوبة، المقاسات، الكميات، المحافظة، وأي شروط خاصة
-          بالموقع. إرسال هذه البيانات يسهل تقديم سعر ومدة توريد واقعيين.
-        </p>
-      </details>
-    </div>
+    <details class="home-faq-item">
+      <summary>
+        <span>ما البيانات اللازمة لإصدار عرض سعر دقيق؟</span>
+        <svg class="home-faq-chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="home-faq-answer">
+        رسومات أو مخططات، المواصفة المطلوبة، المقاسات، الكميات، المحافظة، وأي شروط خاصة
+        بالموقع. إرسال هذه البيانات يسهل تقديم سعر ومدة توريد واقعيين.
+      </p>
+    </details>
   </div>
 
-  <p style="margin-top:1rem">
+  <p class="home-faq-cta">
     لاستفسار سريع أو عرض سعر، تفضل بزيارة
     <a href="{{ url_for('contact') }}?subject=استفسار%20FAQ">صفحة التواصل</a>.
   </p>

@@ -408,3 +408,177 @@ html, body { overflow-x: clip; }
 
 /* ensures zero gaps & no layout jump */
 .product-media img { display:block; width:100%; height:auto; }
+
+/* =========================================================
+   Home rebuild (frontend-rebuild) — Stitch integration.
+   Additive only; new selectors are .home-* or scoped under
+   .hero so other pages are unaffected.
+   ========================================================= */
+
+/* ----- Hero (full-bleed image + overlay + CTAs) ----- */
+.home-hero{
+  position:relative;
+  min-height:520px;
+  display:flex;
+  align-items:center;
+  border-radius:18px;
+  overflow:hidden;
+  margin:32px 0;
+}
+.home-hero__media{position:absolute; inset:0; z-index:0; display:block}
+.home-hero__media img{width:100%; height:100%; object-fit:cover; display:block}
+.home-hero::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(rgba(8,18,40,.72), rgba(8,18,40,.45));
+}
+.home-hero__inner{
+  position:relative; z-index:2;
+  padding:48px 36px; max-width:760px; width:100%;
+}
+.home-hero .page-title{
+  font-family:"Changa", sans-serif; font-weight:800;
+  font-size:38px; line-height:1.2; margin:0 0 20px;
+  color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.home-hero p{
+  color:rgba(255,255,255,.92); font-size:18px; line-height:1.85;
+  margin:0 0 28px; max-width:620px;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.home-hero__cta{display:flex; flex-wrap:wrap; gap:16px}
+.home-hero__btn{
+  display:inline-block; padding:14px 32px; border-radius:14px;
+  font-family:"Changa", sans-serif; font-weight:800; text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.home-hero__btn:active{transform:scale(.97)}
+.home-hero__btn--solid{background:#fff; color:var(--primary); box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.home-hero__btn--solid:hover{background:#f1f6ff}
+.home-hero__btn--ghost{border:2px solid #fff; color:#fff}
+.home-hero__btn--ghost:hover{background:rgba(255,255,255,.12)}
+
+/* ----- SEO intro (light bg, dark text) ----- */
+.home-seo{max-width:1120px; margin:40px auto; padding:8px 0; line-height:1.9}
+.home-seo h2{font-family:"Changa", sans-serif; font-weight:800; font-size:26px; margin:0 0 12px; color:var(--text)}
+.home-seo h3{font-family:"Changa", sans-serif; font-weight:700; font-size:18px; margin:16px 0 8px; color:var(--text)}
+.home-seo p{margin:10px 0; color:var(--muted)}
+.home-seo ul{padding-inline-start:1.2em; margin:8px 0}
+.home-seo li{margin:4px 0; color:var(--muted)}
+
+/* ----- Service grid ----- */
+.home-services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+  margin:32px 0;
+}
+.home-service-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.home-service-card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.home-service-icon{
+  width:52px; height:52px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:12px;
+  background:var(--primary-50);
+  color:var(--primary);
+  margin-bottom:16px;
+}
+.home-service-card h3{
+  font-family:"Changa", sans-serif; font-weight:700; font-size:20px; margin:0 0 8px;
+}
+.home-service-card p{margin:0; color:var(--muted)}
+
+/* ----- Strategic partner (dark) ----- */
+.home-partner{
+  background:#11203a;
+  border-radius:20px;
+  padding:48px 32px;
+  margin:32px 0;
+  color:#fff;
+}
+.home-partner-grid{
+  display:grid; grid-template-columns:1fr; gap:32px; align-items:center;
+}
+@media (min-width:900px){
+  .home-partner-grid{grid-template-columns:1fr 1fr; gap:48px}
+}
+.home-partner-pill{
+  display:inline-block;
+  background:var(--primary); color:#fff;
+  padding:6px 16px; border-radius:999px;
+  font-weight:700; font-size:13px;
+  margin-bottom:16px;
+}
+.home-partner h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:#fff;
+}
+.home-partner-lead{
+  color:rgba(255,255,255,.9); font-size:18px; margin:0 0 24px; line-height:1.9;
+}
+.home-partner-list{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:1fr; gap:14px;
+}
+@media (min-width:600px){
+  .home-partner-list{grid-template-columns:1fr 1fr; gap:14px 24px}
+}
+.home-partner-list li{
+  display:flex; align-items:center; gap:10px;
+  font-weight:500; font-size:16px; color:#fff;
+}
+.home-partner-list svg{color:var(--primary); flex:0 0 auto}
+.home-partner-media{
+  border-radius:16px; overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  border:4px solid rgba(255,255,255,.06);
+}
+.home-partner-media img{
+  display:block; width:100%; height:100%; object-fit:cover; aspect-ratio:4/3;
+}
+
+/* ----- FAQ accordion (scoped to .home-faq; catalog .acc untouched) ----- */
+.home-faq{max-width:760px; margin:32px auto; padding:8px 0}
+.home-faq h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  text-align:center; margin:0 0 24px;
+}
+.home-faq-list{display:grid; gap:14px}
+.home-faq-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.home-faq-item > summary{
+  list-style:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:18px 22px;
+  font-family:"Changa", sans-serif; font-weight:700; font-size:18px;
+  color:var(--text);
+}
+.home-faq-item > summary::-webkit-details-marker{display:none}
+.home-faq-chev{flex:0 0 auto; color:var(--muted); transition:transform .25s ease}
+.home-faq-item[open] .home-faq-chev{transform:rotate(180deg)}
+.home-faq-answer{margin:0; padding:0 22px 20px; color:var(--muted)}
+.home-faq-cta{text-align:center; margin-top:20px; color:var(--muted)}
+
+/* ----- Responsive ----- */
+@media (max-width:768px){
+  .home-hero{min-height:420px}
+  .home-hero__inner{padding:32px 20px}
+  .home-hero .page-title{font-size:28px}
+  .home-hero p{font-size:16px}
+  .home-hero__btn{padding:12px 22px}
+  .home-partner{padding:32px 20px}
+  .home-partner h2{font-size:26px}
+  .home-faq h2{font-size:26px}
+  .home-faq-item > summary{font-size:16px; padding:16px 18px}
+}
