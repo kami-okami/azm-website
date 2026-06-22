@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- === BEGIN HEAD META — DO NOT MODIFY === -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or "موقع الشركة" }} | {{ company or "الشركة" }}</title>
@@ -17,21 +18,27 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}?v=1">
   <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}?v=1">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}?v=1">
+  <!-- === END HEAD META === -->
 
+  <!-- === BEGIN META DESCRIPTION — DO NOT MODIFY === -->
   {% if meta_description %}
     <meta name="description" content="{{ meta_description }}">
   {% else %}
     <meta name="description" content="عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — منتجات موثوقة تشمل مفاصل التمدد، مساند الارتكاز، وقطع غيار المحركات لمشاريع الطرق والجسور في العراق.">
   {% endif %}
+  <!-- === END META DESCRIPTION === -->
 
   <!-- Canonical -->
+  <!-- === BEGIN CANONICAL HREFLANG — DO NOT MODIFY === -->
   <link rel="canonical" href="{{ request.url_root.rstrip('/') }}{{ request.path }}">
 
   <!-- hreflang -->
   <link rel="alternate" hreflang="ar-IQ" href="{{ request.url_root.rstrip('/') }}{{ request.path }}">
   <link rel="alternate" hreflang="x-default" href="{{ request.url_root.rstrip('/') }}{{ request.path }}">
+  <!-- === END CANONICAL HREFLANG === -->
 
   <!-- Open Graph -->
+  <!-- === BEGIN OPEN GRAPH — DO NOT MODIFY === -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_IQ">
   <meta property="og:site_name" content="{{ company or 'الشركة' }}">
@@ -39,8 +46,11 @@
   <meta property="og:description" content="{{ meta_description or 'عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور — منتجات موثوقة تشمل مفاصل التمدد، مساند الارتكاز، وقطع غيار المحركات.' }}">
   <meta property="og:url" content="{{ request.url_root.rstrip('/') }}{{ request.path }}">
   <meta property="og:image" content="{{ url_for('static', filename='logo.png', _external=True) }}">
+  <!-- === END OPEN GRAPH === -->
 
   <!-- Structured Data (Organization + LocalBusiness) -->
+
+  <!-- === BEGIN STRUCTURED DATA — DO NOT MODIFY === -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -65,8 +75,10 @@
     ]
   }
   </script>
+  <!-- === END STRUCTURED DATA === -->
 
   <!-- Performance: preconnect + dns-prefetch for Google Fonts -->
+  <!-- === BEGIN FONT LOADING — DO NOT MODIFY === -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -80,8 +92,12 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Changa:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap">
   </noscript>
+  <!-- === END FONT LOADING === -->
+
+<!-- === BEGIN LCP PRELOAD — DO NOT MODIFY === -->
 
   <!-- Preload hero image (responsive WebP) -->
+   
   <link rel="preload" as="image"
         imagesrcset="
           {{ url_for('static', filename='img/hero/hero-640.webp') }} 640w,
@@ -89,13 +105,17 @@
           {{ url_for('static', filename='img/hero/hero-1920.webp') }} 1920w"
         imagesizes="(max-width: 767px) 100vw, (max-width: 1439px) 100vw, 100vw"
         href="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
+        <!-- === END LCP PRELOAD === -->
 
   <!-- NEW: Preload stylesheet to shorten render-blocking wait -->
-  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=40">
+  <!-- === BEGIN STYLESHEET — VERSION QUERY (?v=N) MAY BE BUMPED, NOTHING ELSE === -->
+  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=41">
 
-  <!-- cache-buster v=18 -->
+  <!-- cache-buster v=41 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=41">
+  <!-- === END STYLESHEET === -->
 
+  <!-- === BEGIN META PIXEL BASE — DO NOT MODIFY === -->
   {# === Meta Pixel (guarded) === #}
   {% if META_PIXEL_ID %}
   <!-- Meta Pixel -->
@@ -109,13 +129,18 @@
     /* PageView will be fired below with an eventID for dedup */
   </script>
   <noscript>
+    
     <img height="1" width="1" style="display:none"
          src="https://www.facebook.com/tr?id={{ META_PIXEL_ID }}&ev=PageView&noscript=1"/>
   </noscript>
   <!-- /Meta Pixel -->
   {% endif %}
+  <!-- === END META PIXEL BASE === -->
+     
 
-  <!-- Helpers for dedup + cookie access -->
+ 
+  <!-- === BEGIN AZM HELPERS — DO NOT MODIFY (CAPI depends on these) === -->
+    <!-- Helpers for dedup + cookie access -->
   <script>
     window.azm = window.azm || {};
     azm.uuidv4 = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -128,6 +153,7 @@
       return m ? m[2] : undefined;
     };
   </script>
+  <!-- === END AZM HELPERS === -->
 </head>
 <body>
 
@@ -178,6 +204,7 @@
   </header>
 
   <main class="container">
+  <!-- === BEGIN FLASH MESSAGES — DO NOT MODIFY === -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="flash-wrap">
@@ -187,6 +214,7 @@
         </div>
       {% endif %}
     {% endwith %}
+    <!-- === END FLASH MESSAGES === -->
 
     {% block content %}{% endblock %}
   </main>
@@ -211,6 +239,8 @@
   </a>
   {% endif %}
 
+
+<!-- === BEGIN MOBILE MENU SCRIPT — DO NOT MODIFY === -->
   <!-- Mobile menu toggle: run after load/idle to avoid any render-phase reflow -->
   <script>
     (function initNav(){
@@ -231,7 +261,10 @@
       }
     })();
   </script>
+<!-- === END MOBILE MENU SCRIPT === -->
 
+
+<!-- === BEGIN CAPI WIRING — DO NOT MODIFY (depends on AZM HELPERS, fires PageView/Contact/ViewContent with dedup) === -->
   {# ===== CAPI wiring (browser+server with dedup). No UI changes. ===== #}
   {% if META_PIXEL_ID %}
   <script>
@@ -347,6 +380,7 @@
     })();
   </script>
   {% endif %}
+<!-- === END CAPI WIRING === -->
 
   {% block extra_scripts %}{% endblock %}
 </body>
