@@ -207,7 +207,7 @@ def validate_csrf(token_from_form):
 
 @app.context_processor
 def inject_globals():
-    return dict(csrf_token=get_csrf_token())
+    return dict(csrf_token=get_csrf_token(), current_year=datetime.now().year)
 
 # NEW: make facebook_url / whatsapp_number / whatsapp_text_encoded available everywhere
 @app.context_processor

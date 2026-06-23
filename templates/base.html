@@ -109,10 +109,10 @@
 
   <!-- NEW: Preload stylesheet to shorten render-blocking wait -->
   <!-- === BEGIN STYLESHEET — VERSION QUERY (?v=N) MAY BE BUMPED, NOTHING ELSE === -->
-  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=42">
+  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=43">
 
-  <!-- cache-buster v=42 -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=42">
+  <!-- cache-buster v=43 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=43">
   <!-- === END STYLESHEET === -->
 
   <!-- === BEGIN META PIXEL BASE — DO NOT MODIFY === -->
@@ -226,12 +226,68 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="container footer">
-    <div>© 2025 جميع الحقوق محفوظة · {{ company }}</div>
-    <div class="contacts">
-      <strong>هاتف:</strong> 07802280589 · 07740818896 · 07518232611
-      <p><a href="mailto:info@azmsupply.com">info@azmsupply.com</a></p>
+  <!-- Site footer -->
+  <footer class="site-footer">
+    <div class="site-footer__container">
+      <div class="site-footer__grid">
 
+        <!-- Brand column -->
+        <div class="site-footer__brand">
+          <div class="site-footer__brand-name">عزم</div>
+          <p class="site-footer__tagline">
+            المزود العراقي الأول لتجهيزات بناء الجسور والطرق والمعدات الصناعية الثقيلة وفق أعلى المعايير العالمية.
+          </p>
+          <div class="site-footer__contact">
+            <div class="site-footer__phones" dir="ltr">
+              <a href="tel:+9647802280589">07802280589</a>
+              <span class="site-footer__sep">·</span>
+              <a href="tel:+9647740818896">07740818896</a>
+              <span class="site-footer__sep">·</span>
+              <a href="tel:+9647518232611">07518232611</a>
+            </div>
+            <a class="site-footer__email" href="mailto:info@azmsupply.com" dir="ltr">info@azmsupply.com</a>
+          </div>
+        </div>
+
+        <!-- Links columns -->
+        <div class="site-footer__links">
+          <div class="site-footer__col">
+            <h4 class="site-footer__heading">روابط سريعة</h4>
+            <ul class="site-footer__list">
+              <li><a href="{{ url_for('about') }}">من نحن</a></li>
+              <li><a href="#">عملاؤنا</a></li>     {# TODO: replace with url_for('clients') when page is built #}
+              <li><a href="#">المدونة</a></li>      {# TODO: replace with url_for('blog') when page is built #}
+            </ul>
+          </div>
+
+          <div class="site-footer__col">
+            <h4 class="site-footer__heading">الدعم</h4>
+            <ul class="site-footer__list">
+              <li><a href="{{ url_for('contact') }}">اتصل بنا</a></li>
+              <li><a href="#">الأسئلة الشائعة</a></li>   {# TODO: replace with url_for('faq') when page is built #}
+              <li><a href="#">سياسة الخصوصية</a></li>    {# TODO: replace with url_for('privacy') when page is built #}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Newsletter column -->
+        <div class="site-footer__newsletter">
+          <h4 class="site-footer__heading">النشرة الإخبارية</h4>
+          <p class="site-footer__newsletter-desc">اشترك لتصلك آخر أخبار المشاريع والتجهيزات.</p>
+          {# TODO: wire to a real /subscribe route when the blog launches. Must include opt-in + unsubscribe + CAPI Lead event. #}
+          <form class="site-footer__form"
+                onsubmit="event.preventDefault(); alert('سيتم تفعيل النشرة الإخبارية قريباً، شكراً لاهتمامك'); this.reset();">
+            <input type="email" name="email" placeholder="بريدك الإلكتروني" class="site-footer__input" required>
+            <button type="submit" class="site-footer__submit" aria-label="اشتراك">←</button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="site-footer__bottom">
+        <p>© {{ current_year }} عزم لتجارة قطع غيار المعدات الثقيلة ومستلزمات إنشاء الطرق والجسور. جميع الحقوق محفوظة.</p>
+      </div>
     </div>
   </footer>
 

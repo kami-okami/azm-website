@@ -709,3 +709,196 @@ html, body { overflow-x: clip; }
   .home-faq h2{font-size:26px}
   .home-faq-item > summary{font-size:16px; padding:16px 18px}
 }
+
+/* ==========================================================================
+   Site Footer
+   ========================================================================== */
+
+:root {
+  --footer-bg: #1a1d24;
+  --footer-text: #ffffff;
+  --footer-text-muted: rgba(255, 255, 255, 0.7);
+  --footer-text-dim: rgba(255, 255, 255, 0.5);
+  --footer-border: rgba(255, 255, 255, 0.1);
+  --footer-primary: #267FDD;        /* matches --primary, the nav "اتصل بنا" button */
+  --footer-primary-hover: #1f6bb8;  /* matches --primary-600 */
+  --footer-input-bg: rgba(255, 255, 255, 0.08);
+}
+
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 4rem 0 2rem;
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.site-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Brand */
+.site-footer__brand-name {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.site-footer__tagline {
+  color: var(--footer-text-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Contact info inside brand column */
+.site-footer__contact {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.site-footer__phones {
+  color: var(--footer-text-muted);
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.site-footer__phones a,
+.site-footer__email {
+  color: var(--footer-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer__phones a:hover,
+.site-footer__email:hover {
+  color: var(--footer-primary);
+}
+
+.site-footer__sep {
+  margin: 0 0.4rem;
+  color: var(--footer-text-dim);
+}
+
+.site-footer__email {
+  font-size: 0.95rem;
+  text-align: right;
+  display: inline-block;
+}
+
+/* Links */
+.site-footer__links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.site-footer__heading {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--footer-text);
+}
+
+.site-footer__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer__list li {
+  margin-bottom: 0.75rem;
+}
+
+.site-footer__list a {
+  color: var(--footer-text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.site-footer__list a:hover {
+  color: var(--footer-primary);
+}
+
+/* Newsletter */
+.site-footer__newsletter-desc {
+  color: var(--footer-text-muted);
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.site-footer__form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.site-footer__input {
+  flex: 1;
+  background-color: var(--footer-input-bg);
+  border: 1px solid var(--footer-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--footer-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  direction: rtl;
+  min-width: 0;
+}
+
+.site-footer__input::placeholder {
+  color: var(--footer-text-dim);
+}
+
+.site-footer__input:focus {
+  outline: none;
+  border-color: var(--footer-primary);
+}
+
+.site-footer__submit {
+  background-color: var(--footer-primary);
+  color: var(--footer-text);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.site-footer__submit:hover {
+  background-color: var(--footer-primary-hover);
+}
+
+/* Bottom bar */
+.site-footer__bottom {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 2rem 1.5rem 0;
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text-dim);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.site-footer__bottom p {
+  margin: 0;
+}
