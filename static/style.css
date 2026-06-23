@@ -559,8 +559,13 @@ html, body { overflow-x: clip; }
 /* ----- Final CTA band ----- */
 .home-cta-band{
   position:relative; overflow:hidden;
-  background:var(--primary); border-radius:20px;
-  margin:56px 0; padding:56px 32px;
+  background:var(--primary);
+  /* full-bleed: break out of .container to span the whole viewport width;
+     html/body overflow-x:clip kills the 100vw scrollbar.
+     bottom:0 so the band sits flush against the footer (no grey strip). */
+  width:100vw;
+  margin:56px calc(50% - 50vw) 0;
+  padding:56px 32px;
 }
 .home-cta-band::before{
   content:""; position:absolute; inset:0; opacity:.12;
