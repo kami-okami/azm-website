@@ -907,3 +907,116 @@ html, body { overflow-x: clip; }
 .site-footer__bottom p {
   margin: 0;
 }
+
+/* ==========================================================================
+   Products page (frontend-rebuild) — plain-CSS translation of the Stitch
+   design. Uses existing CSS variables; no Tailwind.
+   ========================================================================== */
+
+/* ----- Hero ----- */
+.products-hero{
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  padding:64px 0;
+  margin-top:-28px; /* cancel main.container padding-top so it sits under the nav */
+}
+.products-hero__grid{
+  max-width:1120px; margin:0 auto; padding:0 18px;
+  display:grid; grid-template-columns:1fr; gap:40px; align-items:center;
+}
+@media (min-width:768px){
+  .products-hero{padding:96px 0}
+  .products-hero__grid{grid-template-columns:1fr 1fr; gap:48px}
+}
+.products-hero__text .page-title{margin:0 0 16px}
+.products-hero__text p{color:var(--muted); font-size:18px; line-height:1.9; margin:0; max-width:560px}
+.products-hero__media{position:relative; display:none}
+@media (min-width:768px){ .products-hero__media{display:block} }
+.products-hero__media-glow{
+  position:absolute; inset:-16px; z-index:0;
+  background:var(--primary-50); border-radius:40px; transform:rotate(-3deg);
+}
+.products-hero__media picture,.products-hero__media img{
+  position:relative; z-index:1; display:block; width:100%;
+  aspect-ratio:4 / 3; object-fit:cover;
+  border-radius:24px; box-shadow:0 22px 48px rgba(2,19,51,.18);
+  background:var(--primary-50);
+}
+
+/* ----- Sticky category filters ----- */
+.products-filters{
+  position:sticky; top:var(--header-h); z-index:40;
+  background:var(--bg); padding:24px 0;
+}
+.products-filters__inner{
+  max-width:1120px; margin:0 auto; padding:0 18px;
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px;
+}
+.filter-btn{
+  font-family:"Changa", sans-serif; font-weight:700; font-size:15px;
+  padding:10px 22px; border-radius:999px; cursor:pointer;
+  background:var(--card); color:var(--muted); border:1px solid var(--border);
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.filter-btn:hover{background:var(--primary-50); color:var(--primary); border-color:var(--primary-50)}
+.filter-btn.active{background:var(--primary); color:#fff; border-color:var(--primary)}
+
+/* ----- Product grid ----- */
+.products-grid-section{max-width:1120px; margin:0 auto; padding:0 18px 96px}
+.products-grid{display:grid; grid-template-columns:1fr; gap:32px}
+@media (min-width:768px){ .products-grid{grid-template-columns:1fr 1fr} }
+@media (min-width:1024px){ .products-grid{grid-template-columns:1fr 1fr 1fr} }
+
+.product-card{
+  display:flex; flex-direction:column;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.product-card:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(2,19,51,.12)}
+.product-card.is-hidden{display:none}
+.product-card__img{
+  display:block; width:100%; aspect-ratio:7 / 4; object-fit:cover;
+  background:var(--primary-50); /* gray placeholder until the image loads */
+}
+.product-card__body{display:flex; flex-direction:column; flex-grow:1; padding:24px}
+.product-card__tags{display:flex; margin-bottom:12px}
+.product-card__pill{
+  font-weight:700; font-size:12px; padding:4px 12px; border-radius:999px;
+  background:var(--primary-50); color:var(--primary-600);
+}
+.product-card__title{
+  font-family:"Changa", sans-serif; font-weight:700; font-size:20px;
+  margin:0 0 8px; color:var(--text);
+}
+.product-card__desc{color:var(--muted); font-size:15px; line-height:1.85; margin:0 0 24px; flex-grow:1}
+.product-card__cta{
+  display:block; text-align:center; text-decoration:none;
+  font-family:"Changa", sans-serif; font-weight:800; font-size:15px;
+  background:var(--primary); color:#fff;
+  padding:14px 16px; border-radius:14px;
+  transition:background .15s ease;
+}
+.product-card__cta:hover{background:var(--primary-600)}
+
+/* ----- CTA band (full-bleed, flush to footer) ----- */
+.products-cta{
+  background:var(--primary); color:#fff; text-align:center;
+  padding:64px 0;
+  width:100vw; margin:0 calc(50% - 50vw); /* full-bleed; bottom flush to footer */
+}
+.products-cta__inner{max-width:720px; margin:0 auto; padding:0 24px}
+.products-cta__inner h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:#fff;
+}
+.products-cta__inner p{font-size:18px; line-height:1.8; margin:0 0 28px; color:rgba(255,255,255,.9)}
+.products-cta__btn{
+  display:inline-block; text-decoration:none;
+  font-family:"Changa", sans-serif; font-weight:800;
+  background:#fff; color:var(--primary);
+  padding:16px 32px; border-radius:14px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.products-cta__btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,0,0,.22)}
