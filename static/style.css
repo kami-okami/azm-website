@@ -349,8 +349,10 @@ main.container{padding-top:28px}
   text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
-/* === Prevent tiny horizontal bleed from full-bleed hero inside .container === */
-.container { overflow-x: clip; }
+/* === Full-bleed safety net ===
+   html/body clip the tiny 100vw overflow (scrollbar width) so the full-bleed
+   hero produces no horizontal scrollbar. .container must NOT clip here, or it
+   would crop the full-bleed hero back to container width. */
 html, body { overflow-x: clip; }
 
 /* Ensure hero H1 is readable */
@@ -424,9 +426,12 @@ html, body { overflow-x: clip; }
   min-height:520px;
   display:flex;
   align-items:center;
-  border-radius:18px;
   overflow:hidden;
-  margin:32px 0;
+  /* full-bleed: break out of .container to span the whole viewport width.
+     top:-28px cancels main.container's padding-top so it sits flush
+     under the sticky header; html/body overflow-x:clip kills the 100vw scrollbar. */
+  width:100vw;
+  margin:-28px calc(50% - 50vw) 40px;
 }
 .home-hero__media{position:absolute; inset:0; z-index:0; display:block}
 .home-hero__media img{width:100%; height:100%; object-fit:cover; display:block}
@@ -501,6 +506,9 @@ html, body { overflow-x: clip; }
 }
 @media (min-width:960px){
   .home-why-grid{grid-template-columns:1fr 1fr; gap:64px}
+  /* mirror: text on the right, image on the left (RTL-safe, order only) */
+  .home-why-content{order:1}
+  .home-why-media{order:2}
 }
 .home-why-media{position:relative}
 .home-why-media picture,.home-why-media img{
@@ -511,7 +519,7 @@ html, body { overflow-x: clip; }
   box-shadow:0 22px 48px rgba(2,19,51,.22);
 }
 .home-why-badge{
-  position:absolute; bottom:-24px; left:-24px;
+  position:absolute; bottom:-24px; right:-24px;
   background:var(--primary); color:#fff;
   padding:22px 26px; border-radius:16px;
   box-shadow:0 16px 32px rgba(2,19,51,.28); max-width:260px;

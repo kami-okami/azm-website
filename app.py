@@ -503,15 +503,7 @@ def products():
 
 @app.route('/catalog')
 def catalog():
-    return render_template(
-        'catalog.html',
-        title="الكتالوج",
-        company=COMPANY_NAME,
-        active_page='catalog',
-        facebook_url=FACEBOOK_URL,
-        whatsapp_number=WHATSAPP_NUMBER,
-        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
-    )
+    return redirect(url_for("products"), code=301)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
