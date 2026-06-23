@@ -176,29 +176,36 @@
       </button>
 
       <nav id="primaryNav" class="nav">
-        {% if facebook_url %}
-        <div class="social">
-          <a class="icon-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="فيسبوك" title="صفحتنا على فيسبوك">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-              <path fill="currentColor" d="M22 12.06C22 6.49 17.52 2 12 2S2 6.49 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.78-3.88 1.1 0 2.25.2 2.25.2v2.48h-1.27c-1.25 0-1.64.78-1.64 1.58v1.9h2.79l-.45 2.9h-2.34V22c4.78-.78 8.44-4.93 8.44-9.94z"/>
-            </svg>
-          </a>
+        <div class="nav-links">
+          <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">الرئيسية</a>
+          <a href="{{ url_for('products') }}" class="{% if active_page == 'products' %}active{% endif %}">المنتجات</a>
+          <a href="{{ url_for('catalog') }}" class="{% if active_page == 'catalog' %}active{% endif %}">الكاتلوك</a>
+          <a href="#" class="nav-placeholder">عملاؤنا</a>
+          <a href="#" class="nav-placeholder">المدونة</a>
+          <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">من نحن</a>
         </div>
-        {% endif %}
 
-        <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">الرئيسية</a>
-        <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">من نحن</a>
-        <a href="{{ url_for('products') }}" class="{% if active_page == 'products' %}active{% endif %}">المنتجات</a>
-        <a href="{{ url_for('catalog') }}" class="{% if active_page == 'catalog' %}active{% endif %}">الكاتلوك</a>
-        <a class="btn small {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">تواصل معنا</a>
+        <div class="nav-actions">
+          <a class="nav-cta {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">اتصل بنا</a>
 
-        {% if session.get('logged_in') %}
-          <a href="{{ url_for('admin_messages') }}">لوحة الإدارة</a>
-          <form action="{{ url_for('logout') }}" method="post" style="display:inline">
-            <input type="hidden" name="_csrf" value="{{ csrf_token }}">
-            <button type="submit" style="background:none;border:none;color:#fff;font-weight:700;cursor:pointer">تسجيل الخروج</button>
-          </form>
-        {% endif %}
+          {% if facebook_url %}
+          <div class="social">
+            <a class="icon-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="فيسبوك" title="صفحتنا على فيسبوك">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path fill="currentColor" d="M22 12.06C22 6.49 17.52 2 12 2S2 6.49 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.78-3.88 1.1 0 2.25.2 2.25.2v2.48h-1.27c-1.25 0-1.64.78-1.64 1.58v1.9h2.79l-.45 2.9h-2.34V22c4.78-.78 8.44-4.93 8.44-9.94z"/>
+              </svg>
+            </a>
+          </div>
+          {% endif %}
+
+          {% if session.get('logged_in') %}
+            <a href="{{ url_for('admin_messages') }}">لوحة الإدارة</a>
+            <form action="{{ url_for('logout') }}" method="post" style="display:inline">
+              <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+              <button type="submit" class="nav-logout">تسجيل الخروج</button>
+            </form>
+          {% endif %}
+        </div>
       </nav>
     </div>
   </header>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Hero (Stitch rebuild): full-bleed image + overlay + CTAs -->
+<!-- Hero (Stitch rebuild): full-bleed image + overlay + CTAs + stats -->
 <section class="home-hero">
   <picture class="home-hero__media">
     <source
@@ -26,84 +26,136 @@
   </picture>
 
   <div class="home-hero__inner">
-    <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور في العراق</h1>
-    <p>
-      المزود الرائد في العراق لمعدات البناء الثقيلة، مفاصل التمدد، ومساند الارتكاز عالية الجودة.
-      نلتزم بأعلى معايير الهندسة لضمان متانة مشاريعكم الاستراتيجية.
-    </p>
+    <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور</h1>
+    <p>حلول موثوقة وجودة مضمونة لقطاع الإنشاءات الثقيلة والبنية التحتية في العراق.</p>
     <div class="home-hero__cta">
       <a class="home-hero__btn home-hero__btn--solid" href="{{ url_for('products') }}">تصفح المنتجات</a>
       <a class="home-hero__btn home-hero__btn--ghost" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
     </div>
+
+    <div class="home-hero__stats">
+      <div class="home-stat">
+        <span class="home-stat__num">15+</span>
+        <span class="home-stat__label">سنة من الخبرة</span>
+      </div>
+      <div class="home-stat">
+        <span class="home-stat__num">500+</span>
+        <span class="home-stat__label">مشروع منجز</span>
+      </div>
+      <div class="home-stat">
+        <span class="home-stat__num">100%</span>
+        <span class="home-stat__label">جودة مضمونة</span>
+      </div>
+      <div class="home-stat">
+        <span class="home-stat__num">24/7</span>
+        <span class="home-stat__label">دعم فني متخصص</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Service grid (Stitch rebuild) -->
-<section class="home-services" aria-label="خدماتنا">
-  <div class="home-service-card">
-    <div class="home-service-icon">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </div>
-    <h3>قطع غيار المعدات الثقيلة</h3>
-    <p>توفير قطع غيار أصلية وموثوقة لجميع أنواع المعدات الإنشائية والآليات الثقيلة لضمان استمرارية العمل.</p>
+<!-- Services (Stitch rebuild): section heading + 3 cards -->
+<section class="home-section" aria-label="خدماتنا">
+  <div class="home-section-head">
+    <h2>خدماتنا ومنتجاتنا الرئيسية</h2>
+    <span class="home-section-rule" aria-hidden="true"></span>
   </div>
-  <div class="home-service-card">
-    <div class="home-service-icon">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+
+  <div class="home-services">
+    <div class="home-service-card">
+      <div class="home-service-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <h3>قطع الغيار للمعدات الثقيلة</h3>
+      <p>توفير أجود أنواع قطع الغيار للمحركات والهيدروليك وأنظمة الحركة لجميع الماركات العالمية.</p>
+      <a class="home-service-link" href="{{ url_for('products') }}">
+        <span>عرض التفاصيل</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
     </div>
-    <h3>حلول الجسور التخصصية</h3>
-    <p>نقدم مفاصل التمدد ومساند الارتكاز المصنعة وفق أحدث التقنيات العالمية لدعم البنية التحتية الوطنية.</p>
-  </div>
-  <div class="home-service-card">
-    <div class="home-service-icon">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <div class="home-service-card">
+      <div class="home-service-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </div>
+      <h3>حلول الجسور والمنشآت</h3>
+      <p>متخصصون في مساند الارتكاز المطاطية وفواصل التمدد المعتمدة عالمياً لمشاريع الجسور العملاقة.</p>
+      <a class="home-service-link" href="{{ url_for('products') }}">
+        <span>عرض التفاصيل</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
     </div>
-    <h3>إعادة تأهيل الطرق</h3>
-    <p>توريد كافة المستلزمات والمواد اللازمة لمشاريع صيانة وتطوير شبكات الطرق والجسور في كافة محافظات العراق.</p>
+    <div class="home-service-card">
+      <div class="home-service-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <h3>إعادة تأهيل الطرق</h3>
+      <p>نقدم مستلزمات كشط الأسفلت وصب الخرسانة ومعدات السلامة المرورية الحديثة.</p>
+      <a class="home-service-link" href="{{ url_for('products') }}">
+        <span>عرض التفاصيل</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- Strategic partner (Stitch rebuild) -->
-<section class="home-partner" aria-label="شريككم الاستراتيجي">
-  <div class="home-partner-grid">
-    <div>
-      <span class="home-partner-pill">خبرة في السوق العراقي</span>
-      <h2>شريككم الاستراتيجي في الإعمار</h2>
-      <p class="home-partner-lead">
-        تتميز شركة عزم للتوريدات بقدرتها الفائقة على تلبية احتياجات كبرى شركات المقاولات والجهات الحكومية في العراق.
-        نحن متخصصون في توريد أجود المنتجات العالمية لضمان ديمومة المشاريع العملاقة:
-      </p>
-      <ul class="home-partner-list">
-        <li>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>مفاصل التمدد (Expansion Joints)</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>مساند ارتكاز (Bridge Bearings)</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>فلاتر وزيوت المعدات الثقيلة</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>أنظمة حماية وصيانة الجسور</span>
-        </li>
-      </ul>
-    </div>
-    <div class="home-partner-media">
+<!-- Why Azm (Stitch rebuild): media + floating badge + feature rows -->
+<section class="home-why" aria-label="لماذا تختار عزم">
+  <div class="home-why-grid">
+    <div class="home-why-media">
       <picture>
         <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
         <img src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
-             alt="مشاريع البنية التحتية والجسور في العراق"
+             alt="فريق هندسي يراجع مخططات مشاريع البنية التحتية والجسور في العراق"
              loading="lazy" decoding="async" width="1280" height="640">
       </picture>
+      <div class="home-why-badge">
+        <p class="home-why-badge__title">شريككم الموثوق</p>
+        <p class="home-why-badge__sub">نعمل مع كبرى شركات المقاولات في العراق</p>
+      </div>
+    </div>
+
+    <div class="home-why-content">
+      <span class="home-partner-pill">خبرة في السوق العراقي</span>
+      <h2>لماذا تختار عزم؟</h2>
+      <p class="home-why-lead">
+        نلتزم بتقديم حلول هندسية متكاملة تضمن ديمومة مشاريع البنى التحتية. خبرتنا الواسعة في
+        السوق العراقي تجعلنا الخيار الأول للمقاولين والجهات الحكومية.
+      </p>
+
+      <div class="home-why-features">
+        <div class="home-why-feature">
+          <div class="home-why-feature__icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div>
+            <h4>جودة مضمونة وشهادات مطابقة</h4>
+            <p>جميع منتجاتنا تخضع لأعلى معايير الفحص والرقابة الهندسية.</p>
+          </div>
+        </div>
+        <div class="home-why-feature">
+          <div class="home-why-feature__icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <h4>تجهيز سريع وشحن لجميع المحافظات</h4>
+            <p>نمتلك شبكة لوجستية فعالة تضمن وصول الطلبات في أوقات قياسية.</p>
+          </div>
+        </div>
+        <div class="home-why-feature">
+          <div class="home-why-feature__icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <div>
+            <h4>دعم فني واستشارات هندسية</h4>
+            <p>فريقنا من المهندسين مستعد لتقديم المشورة الفنية قبل وبعد البيع.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SEO content block (kept; moved below hero) -->
+<!-- SEO content block (kept for keyword coverage) -->
 <section class="home-seo" aria-label="تعريف الشركة">
   <h2>لمحة عن خدماتنا</h2>
 
@@ -146,7 +198,10 @@
 
 <!-- FAQ accordion (Stitch rebuild) -->
 <section class="home-faq" aria-label="الأسئلة الشائعة">
-  <h2>الأسئلة الشائعة</h2>
+  <div class="home-section-head">
+    <h2>الأسئلة الشائعة</h2>
+    <p class="home-faq-sub">كل ما تحتاج لمعرفته حول منتجاتنا وخدماتنا</p>
+  </div>
 
   <div class="home-faq-list">
     <details class="home-faq-item">
@@ -207,9 +262,24 @@
     </details>
   </div>
 
-  <p class="home-faq-cta">
-    لاستفسار سريع أو عرض سعر، تفضل بزيارة
-    <a href="{{ url_for('contact') }}?subject=استفسار%20FAQ">صفحة التواصل</a>.
-  </p>
+  <div class="home-faq-card">
+    <p>لديك سؤال آخر؟ نحن هنا للمساعدة.</p>
+    <a class="home-faq-card__link" href="{{ url_for('contact') }}?subject=استفسار%20FAQ">
+      <span>تواصل مع الدعم الفني</span>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- Final CTA band (Stitch rebuild) -->
+<section class="home-cta-band" aria-label="ابدأ مشروعك">
+  <div class="home-cta-band__inner">
+    <h2>جاهز لبدء مشروعك القادم؟</h2>
+    <p>احصل على استشارة فنية مجانية وعرض سعر تنافسي خلال ساعات قليلة.</p>
+    <a class="home-cta-band__btn" href="{{ url_for('contact') }}">
+      <span>طلب تسعيرة الآن</span>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+    </a>
+  </div>
 </section>
 {% endblock %}

@@ -41,8 +41,9 @@ main.container{padding-top:28px}
 /* ===== Header ===== */
 .site-header{
   position:sticky; top:0; z-index:50;
-  background:var(--primary);
-  box-shadow:0 2px 16px rgba(38,127,221,.22);
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(2,19,51,.06);
 
   /* STEP 2: lock header height to prevent CLS on font swap */
   min-height: var(--header-h);
@@ -53,26 +54,37 @@ main.container{padding-top:28px}
 }
 
 /* Brand (logo + name) */
-.brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:#fff}
+.brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--text)}
 .brand-logo{height:68px; width:auto; display:block}
 .brand-text{display:flex; flex-direction:column}
-.site-title{font-family:"Changa", sans-serif; font-weight:800; font-size:24px; color:#fff}
-.site-subtitle{color:rgba(255,255,255,.82); font-size:12px}
+.site-title{font-family:"Changa", sans-serif; font-weight:800; font-size:24px; color:var(--text)}
+.site-subtitle{color:var(--muted); font-size:12px}
 
 /* ===== Nav ===== */
 .nav{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
-.nav a{color:#fff; text-decoration:none; font-weight:700; position:relative}
-.nav a:hover{opacity:.9}
-.nav .btn.small{
-  padding:10px 14px; font-weight:800;
-  background:#fff; color:var(--primary)!important; border:none; box-shadow:var(--shadow);
-}
-.nav .btn.small:hover{background:#f8fbff; color:var(--primary-600)!important}
+.nav-links{display:flex; align-items:center; gap:26px}
+.nav-actions{display:flex; align-items:center; gap:14px}
+.nav a{color:var(--muted); text-decoration:none; font-weight:700; position:relative}
+.nav a:hover{color:var(--primary)}
+.nav-links a.active{color:var(--primary)}
+.nav-logout{background:none; border:none; color:var(--muted); font-weight:700; cursor:pointer}
+.nav-logout:hover{color:var(--primary)}
 
-/* Active page underline */
-.nav a.active::after{
+/* Stitch-style solid blue pill CTA */
+.nav-cta{
+  padding:10px 24px; border-radius:999px; font-weight:800;
+  background:var(--primary); color:#fff!important;
+  border:1px solid var(--primary);
+  transition:background .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+.nav-cta:hover{background:var(--primary-600); border-color:var(--primary-600); box-shadow:var(--shadow); color:#fff!important}
+.nav-cta:active{transform:scale(.96)}
+.nav-cta.active{background:var(--primary-600); border-color:var(--primary-600)}
+
+/* Active page underline (primary links only) */
+.nav-links a.active::after{
   content:''; position:absolute; bottom:-6px; left:0; right:0; height:3px;
-  background:#fff; border-radius:2px;
+  background:var(--primary); border-radius:2px;
 }
 
 /* Social (Facebook icon) */
@@ -80,11 +92,11 @@ main.container{padding-top:28px}
 .icon-link{
   display:inline-flex; align-items:center; justify-content:center;
   width:40px; height:40px; border-radius:50%;
-  background:transparent; border:1px solid rgba(255,255,255,.65);
-  color:#fff; text-decoration:none;
+  background:transparent; border:1px solid var(--border);
+  color:var(--primary); text-decoration:none;
   transition:transform .15s ease, border-color .15s ease, background .15s ease;
 }
-.icon-link:hover{transform:translateY(-1px); border-color:#fff; background:rgba(255,255,255,.14)}
+.icon-link:hover{transform:translateY(-1px); border-color:var(--primary); background:var(--primary-50)}
 
 /* ===== Buttons (general) ===== */
 .btn{
@@ -241,7 +253,7 @@ main.container{padding-top:28px}
 
 /* ===== Clean Hamburger (stacked bars, no borders) ===== */
 .hamburger{display:none; background:transparent; border:none; padding:0; cursor:pointer}
-.hamburger span{display:block; width:28px; height:3px; background:#fff; border-radius:3px}
+.hamburger span{display:block; width:28px; height:3px; background:var(--text); border-radius:3px}
 
 /* ===== Mobile tweaks ===== */
 @media (max-width: 900px){
@@ -255,10 +267,18 @@ main.container{padding-top:28px}
 
   .nav{
     position:absolute; inset-inline:0; top:80px;
-    background:var(--primary);
+    background:#fff;
     display:none; flex-direction:column; gap:12px; padding:14px 18px;
+    border-top:1px solid var(--border);
+    box-shadow:0 14px 26px rgba(2,19,51,.12);
   }
   .nav.open{display:flex}
+  .nav-links,
+  .nav-actions{
+    display:flex; flex-direction:column; align-items:stretch;
+    gap:12px; width:100%; margin:0;
+  }
+  .nav-cta{text-align:center}
 }
 
 @media (max-width: 768px){
@@ -281,7 +301,7 @@ main.container{padding-top:28px}
   .brand{gap:10px}
   .brand-logo{height:48px}
   .nav a{font-size:16px}
-  .nav .btn.small{padding:10px 12px}
+  .nav-cta{padding:10px 12px}
   .hero{padding:20px}
   .hero h2{font-size:26px}
   .cards{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
@@ -372,34 +392,17 @@ html, body { overflow-x: clip; }
   color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
-/* === HOTFIX: restore Facebook icon placement in the header nav === */
-.site-header .nav .social { margin-inline-start: 6px !important; order: initial !important; }
-
-/* (Optional) If the site title looked larger, lock it back to the intended size */
+/* Lock the site title to its intended size */
 .site-title { font-size: 24px !important; }
 
-/* === DESKTOP NAV HOTFIX: keep one row, CTA inline, Facebook last-left === */
+/* === DESKTOP NAV: three-zone layout — brand (right) · links (center) · actions (left) === */
 @media (min-width: 901px){
-  /* keep the nav on a single line */
-  .nav{ flex-wrap: nowrap; align-items:center; }
-
-  /* make sure items don't wrap individually */
-  .nav a,
-  .nav .btn.small,
-  .nav .social { white-space: nowrap; }
-
-  /* show CTA just before Facebook (and keep it in the same row) */
-  .nav .btn.small{ order: 98; }
-
-  /* push Facebook block to the far left and make it the last item */
-  .site-header .nav .social{
-    margin-inline-start: auto !important; /* in RTL this becomes margin-right:auto */
-    order: 99 !important;
-  }
+  .nav{ flex:1; flex-wrap:nowrap; }
+  .nav-links{ margin-inline:auto; }      /* center the primary links */
+  .nav-links a,
+  .nav-cta,
+  .nav-actions a{ white-space:nowrap; }
 }
-
-/* keep normal (compact) spacing */
-.site-header .nav .social { margin-inline-start: 6px; }
 
 /* === Step 6: tiny hero stabilizer for small screens (no visual change) === */
 @media (max-width: 900px){
@@ -456,6 +459,122 @@ html, body { overflow-x: clip; }
 .home-hero__btn--solid:hover{background:#f1f6ff}
 .home-hero__btn--ghost{border:2px solid #fff; color:#fff}
 .home-hero__btn--ghost:hover{background:rgba(255,255,255,.12)}
+
+/* ----- Hero stats bar ----- */
+.home-hero__stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  margin-top:40px; padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.22);
+}
+.home-stat{display:flex; flex-direction:column; gap:4px}
+.home-stat__num{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:34px;
+  line-height:1.1; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.home-stat__label{color:rgba(255,255,255,.85); font-size:13px}
+
+/* ----- Section heading (centered, accent rule) ----- */
+.home-section{margin:56px 0}
+.home-section-head{text-align:center; margin:0 auto 40px; max-width:720px}
+.home-section-head h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:var(--primary);
+}
+.home-section-rule{
+  display:block; width:96px; height:5px; border-radius:999px;
+  background:var(--primary); margin:0 auto;
+}
+
+/* ----- Service card link row ----- */
+.home-service-link{
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:16px; font-family:"Changa", sans-serif; font-weight:700;
+  color:var(--primary); text-decoration:none;
+}
+.home-service-link svg{transition:transform .2s ease}
+.home-service-card:hover .home-service-link svg{transform:translateX(-4px)}
+
+/* ----- Why Azm (media + floating badge + feature rows) ----- */
+.home-why{margin:56px 0}
+.home-why-grid{
+  display:grid; grid-template-columns:1fr; gap:40px; align-items:center;
+}
+@media (min-width:960px){
+  .home-why-grid{grid-template-columns:1fr 1fr; gap:64px}
+}
+.home-why-media{position:relative}
+.home-why-media picture,.home-why-media img{
+  display:block; width:100%; border-radius:18px;
+}
+.home-why-media img{
+  height:440px; object-fit:cover;
+  box-shadow:0 22px 48px rgba(2,19,51,.22);
+}
+.home-why-badge{
+  position:absolute; bottom:-24px; left:-24px;
+  background:var(--primary); color:#fff;
+  padding:22px 26px; border-radius:16px;
+  box-shadow:0 16px 32px rgba(2,19,51,.28); max-width:260px;
+}
+.home-why-badge__title{font-family:"Changa", sans-serif; font-weight:800; font-size:18px; margin:0 0 6px}
+.home-why-badge__sub{margin:0; font-size:13px; color:rgba(255,255,255,.85)}
+.home-why-content h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:12px 0 16px; color:var(--primary);
+}
+.home-why-lead{color:var(--muted); font-size:18px; line-height:1.9; margin:0 0 28px}
+.home-why-features{display:grid; gap:22px}
+.home-why-feature{display:flex; align-items:flex-start; gap:16px}
+.home-why-feature__icon{
+  flex:0 0 auto; width:48px; height:48px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.home-why-feature h4{font-family:"Changa", sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; color:var(--text)}
+.home-why-feature p{margin:0; color:var(--muted)}
+
+/* ----- FAQ section heading + contact card ----- */
+.home-faq-sub{color:var(--muted); margin:0; font-size:16px}
+.home-faq-card{
+  text-align:center; margin-top:32px; padding:32px 24px;
+  background:var(--primary-50); border:1px solid var(--border);
+  border-radius:18px;
+}
+.home-faq-card p{margin:0 0 14px; color:var(--text)}
+.home-faq-card__link{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:"Changa", sans-serif; font-weight:800;
+  color:var(--primary); text-decoration:none;
+}
+.home-faq-card__link:hover{text-decoration:underline}
+
+/* ----- Final CTA band ----- */
+.home-cta-band{
+  position:relative; overflow:hidden;
+  background:var(--primary); border-radius:20px;
+  margin:56px 0; padding:56px 32px;
+}
+.home-cta-band::before{
+  content:""; position:absolute; inset:0; opacity:.12;
+  background-image:radial-gradient(circle at 2px 2px, #fff 1px, transparent 0);
+  background-size:40px 40px;
+}
+.home-cta-band__inner{position:relative; z-index:1; text-align:center; max-width:640px; margin:0 auto}
+.home-cta-band__inner h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:#fff;
+}
+.home-cta-band__inner p{color:rgba(255,255,255,.9); font-size:18px; line-height:1.8; margin:0 0 28px}
+.home-cta-band__btn{
+  display:inline-flex; align-items:center; gap:10px;
+  background:#fff; color:var(--primary);
+  padding:16px 36px; border-radius:999px;
+  font-family:"Changa", sans-serif; font-weight:800; text-decoration:none;
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+  transition:transform .15s ease;
+}
+.home-cta-band__btn:hover{transform:scale(1.04)}
+.home-cta-band__btn:active{transform:scale(.97)}
 
 /* ----- SEO intro (light bg, dark text) ----- */
 .home-seo{max-width:1120px; margin:40px auto; padding:8px 0; line-height:1.9}
