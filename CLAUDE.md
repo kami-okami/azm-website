@@ -338,3 +338,24 @@ If processes remain, `Get-Process python | Stop-Process -Force` before restartin
 - Fonts: Changa (headings), Tajawal (body) — both Google Fonts, Arabic-capable
 - Phone numbers: Iraq format (075x/077x/078x/079x), normalized to E.164 (964XXXXXXXXX) for CAPI
 - Do not change text direction or font family without testing Arabic rendering
+
+---
+
+## Pending Pages
+
+### `/clients` — clients page (currently a stub)
+
+The `/clients` page is currently a stub ("coming soon" message).
+
+When real client names are ready:
+
+- Replace the stub section in `templates/clients.html` with the full client
+  logos grid + gallery design from the Stitch export (see `frontend-rebuild`
+  branch history or Stitch source).
+- Prioritize repeat buyers — they're the highest-trust signals.
+- Categorize each as "جهة حكومية" or "شركة مقاولات".
+- Get explicit permission from each client before listing them (a WhatsApp
+  message asking is enough; save the confirmation).
+- Add real photos to `/static/images/clients/` for any logos used.
+- Wire the nav/footer عملاؤنا placeholders (`href="#"` → `url_for('clients')`)
+  once the page is real — this requires editing the otherwise-final base.html.

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page header -->
+<header class="clients-header">
+  <h1 class="page-title">عملاؤنا</h1>
+  <p class="clients-header__sub">
+    نفخر بثقة شركات المقاولات والجهات الحكومية في العراق — من البصرة إلى كردستان.
+  </p>
+</header>
+
+<!-- Coming-soon stub -->
+<section class="clients-stub" aria-label="قائمة العملاء قريباً">
+  <div class="clients-stub__card">
+    <div class="clients-stub__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <h2 class="clients-stub__title">قائمة عملائنا قريباً</h2>
+    <p class="clients-stub__lead">
+      نعمل حالياً على نشر قائمة عملائنا وشركاء النجاح من شركات المقاولات والجهات الحكومية في العراق.
+    </p>
+    <p class="clients-stub__text">
+      هل تبحث عن مورد موثوق لمشروعك؟ تواصل معنا الآن.
+    </p>
+    <a class="clients-stub__btn" target="_blank" rel="noopener"
+       href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85">
+      تواصل معنا عبر واتساب
+    </a>
+  </div>
+</section>
+{% endblock %}

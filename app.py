@@ -501,6 +501,10 @@ def products():
         meta_description="المنتجات: مساند ارتكاز مطاطية، مفاصل تمدد للجسور، أسنان قشط وحفر، أسنان شفلات وحفارات، ومستلزمات إعادة تأهيل الطرق — توريد سريع داخل العراق."
     )
 
+@app.route("/clients")
+def clients():
+    return render_template("clients.html")
+
 @app.route('/catalog')
 def catalog():
     return redirect(url_for("products"), code=301)
