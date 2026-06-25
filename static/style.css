@@ -1270,3 +1270,99 @@ html, body { overflow-x: clip; }
 .blog-post__cta-btn:hover{ background:var(--primary-600); }
 .blog-post__cta-btn--wa{ background:var(--wa); }
 .blog-post__cta-btn--wa:hover{ background:#1da851; transform:translateY(-2px); }
+
+/* ==========================================================================
+   About page (من نحن) — plain-CSS BEM translation of the Stitch design.
+   Icons are inline SVG (Material Symbols is not loaded on this site). RTL.
+   ========================================================================== */
+
+/* --- Hero (full-bleed, lives in before_main) --- */
+.about-hero{
+  position:relative; isolation:isolate; overflow:hidden;
+  padding:96px 18px 80px;
+  min-height:clamp(320px, 46vh, 460px);
+  display:flex; align-items:center;
+}
+.about-hero__bg{
+  position:absolute; inset:0; z-index:-2;
+  background-size:cover; background-position:center; background-repeat:no-repeat;
+  background-color:var(--primary-600); /* fallback while image loads / if missing */
+}
+.about-hero__overlay{
+  position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.40) 100%);
+}
+.about-hero__inner{ max-width:1120px; margin:0 auto; width:100%; text-align:right; color:#fff; }
+.about-hero__title{
+  font-family:"Changa",sans-serif; font-weight:800; color:#fff;
+  font-size:clamp(28px, 4vw, 42px); line-height:1.4; margin:0 0 16px; max-width:780px;
+}
+.about-hero__sub{ color:rgba(255,255,255,.9); font-size:18px; line-height:1.9; margin:0; max-width:680px; }
+
+/* --- Mission & Vision --- */
+.about-mv{ max-width:1120px; margin:0 auto; padding:64px 18px 24px; }
+.about-mv__grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+@media (min-width:768px){ .about-mv__grid{ grid-template-columns:1fr 1fr; } }
+.about-mv__card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:18px; box-shadow:var(--shadow); padding:36px 32px; text-align:right;
+}
+.about-mv__icon{
+  width:60px; height:60px; border-radius:16px; margin-bottom:20px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.about-mv__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:24px; margin:0 0 14px; color:var(--text); }
+.about-mv__body{ color:var(--muted); font-size:16px; line-height:1.9; margin:0; }
+
+/* --- Values --- */
+.about-values{ max-width:1120px; margin:0 auto; padding:48px 18px; }
+.about-values__header{ text-align:center; margin-bottom:40px; }
+.about-values__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:30px; margin:0 0 14px; color:var(--text); }
+.about-values__rule{ display:block; width:64px; height:4px; border-radius:2px; margin:0 auto; background:var(--primary); }
+.about-values__grid{ display:grid; grid-template-columns:1fr; gap:24px; }
+@media (min-width:768px){ .about-values__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1024px){ .about-values__grid{ grid-template-columns:repeat(4,1fr); } }
+.about-values__card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; box-shadow:var(--shadow); padding:32px 24px; text-align:center;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.about-values__card:hover{ transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12); }
+.about-values__icon{
+  width:64px; height:64px; border-radius:999px; margin:0 auto 18px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.about-values__title{ font-family:"Changa",sans-serif; font-weight:700; font-size:19px; margin:0 0 12px; color:var(--text); }
+.about-values__body{ color:var(--muted); font-size:15px; line-height:1.8; margin:0; }
+
+/* --- Founding story (dark feature section) --- */
+.about-story{ max-width:1120px; margin:24px auto; padding:0 18px; }
+.about-story__grid{
+  background:var(--text); color:#fff; border-radius:22px; overflow:hidden;
+  display:grid; grid-template-columns:1fr; gap:0;
+}
+@media (min-width:768px){ .about-story__grid{ grid-template-columns:1fr 1fr; align-items:center; } }
+.about-story__text{ padding:48px 36px; text-align:right; }
+.about-story__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; margin:0 0 20px; color:#fff; }
+.about-story__body{ color:rgba(255,255,255,.82); font-size:16px; line-height:1.95; margin:0 0 18px; }
+.about-story__body:last-child{ margin-bottom:0; }
+.about-story__media{ height:100%; min-height:260px; }
+.about-story__img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* --- Final CTA --- */
+.about-cta{ max-width:1120px; margin:0 auto; padding:56px 18px 88px; }
+.about-cta__card{
+  background:var(--primary-50); border:1px solid var(--border);
+  border-radius:22px; padding:56px 40px; text-align:center;
+}
+.about-cta__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; margin:0 0 16px; color:var(--text); }
+.about-cta__body{ color:var(--muted); font-size:18px; line-height:1.9; margin:0 auto 28px; max-width:680px; }
+.about-cta__btn{
+  display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+  font-family:"Changa",sans-serif; font-weight:800; font-size:16px;
+  background:var(--primary); color:#fff; padding:16px 36px; border-radius:14px;
+  transition:background .15s ease, transform .15s ease;
+}
+.about-cta__btn:hover{ background:var(--primary-600); transform:translateY(-2px); }
