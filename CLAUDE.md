@@ -359,3 +359,79 @@ When real client names are ready:
 - Add real photos to `/static/images/clients/` for any logos used.
 - Wire the nav/footer عملاؤنا placeholders (`href="#"` → `url_for('clients')`)
   once the page is real — this requires editing the otherwise-final base.html.
+
+---
+
+## Blog system
+
+The blog reads markdown posts from `content/blog/*.md`. Each post is a single
+`.md` file with YAML frontmatter at the top and markdown body below. Posts are
+parsed and rendered server-side (`_load_blog_posts` / `get_blog_posts` in
+app.py); routes are `/blog` (list, with `?category=` filter) and `/blog/<slug>`
+(single post). Templates are `templates/blog.html` and `templates/blog_post.html`
+— both plain CSS (BEM `blog-*` classes in `static/style.css`), NOT Tailwind. The
+post body renders inside `.blog-prose`, which styles headings, lists, tables,
+images, video, iframes, blockquotes, and code.
+
+### To publish a new post
+
+1. Create `content/blog/<slug>.md` with this format:
+
+   ```markdown
+   ---
+   title: عنوان المقال
+   slug: post-url-slug
+   category: أدلة فنية          # or "مشاريع ومرجعيات" or "أخبار الصناعة"
+   date: 2026-06-25              # YYYY-MM-DD, used for sorting
+   hero_image: /static/images/blog/<slug>/hero.jpg
+   description: ملخص قصير يظهر في قائمة المقالات وفي الميتاداتا
+   reading_minutes: 8           # optional, integer
+   ---
+
+   Post content starts here. Paragraph text in Arabic...
+
+   ![alt text](/static/images/blog/<slug>/figure-1.jpg)
+
+   More paragraphs...
+
+   <video src="/static/videos/blog/<slug>/clip.mp4" controls></video>
+
+   ## Section heading
+
+   More content...
+   ```
+
+2. Save any images for the post in `static/images/blog/<slug>/`.
+3. Save any videos for the post in `static/videos/blog/<slug>/`.
+4. `git add . && git commit -m "blog: <slug>" && git push`.
+5. Render auto-deploys. Post is live at `/blog/<slug>`.
+
+### Notes
+
+- Categories must be one of: `أدلة فنية`, `مشاريع ومرجعيات`, `أخبار الصناعة`.
+  Posts with unknown categories will load but log a `BLOG_POST_UNKNOWN_CATEGORY`
+  warning. A post with no `title` is skipped with a warning.
+- The `date` string sorts lexicographically; `YYYY-MM-DD` format is required for
+  correct newest-first ordering.
+- Posts are reloaded from disk on every request in debug, cached in production
+  (restart/redeploy to pick up new posts in prod).
+- Video files are kept in the repo. Keep videos under 5 MB each. For larger
+  videos, use YouTube embeds via `<iframe>` instead of self-hosting.
+- The post body supports inline HTML (markdown's `md_in_html` extension), so
+  `<video>`, `<iframe>`, and other tags work.
+
+### TODO — Future blog admin panel
+
+Currently posts are added by editing markdown files and pushing to git. Future
+work: build a web-based blog admin under `/admin/blog` so posts can be written
+and edited from a browser. Reuse the existing admin auth from the contact form
+admin panel. Target: ~2 weeks after the rebuild ships.
+
+### TODO — Google Analytics 4
+
+GA4 is not yet set up (Kami doesn't have a measurement ID yet). When ready:
+
+1. Create a GA4 property at analytics.google.com.
+2. Get the measurement ID (format: `G-XXXXXXXXXX`).
+3. Add the GA4 `gtag.js` snippet to base.html in the `<head>` block.
+4. Verify pageviews in GA4's Realtime report.

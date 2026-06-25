@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 from flask import (
     Flask, render_template, request, redirect, url_for,
-    flash, session, g, send_from_directory, Response, make_response, jsonify  # === META CAPI: jsonify
+    flash, session, g, send_from_directory, Response, make_response, jsonify, abort  # === META CAPI: jsonify
 )
 from dotenv import load_dotenv
 import requests
@@ -21,6 +21,9 @@ import secrets
 from urllib.parse import urlsplit, urlunsplit  # <-- NEW
 import hashlib  # === META CAPI: hashing
 import uuid     # === META CAPI: event_id
+import markdown
+import frontmatter
+from pathlib import Path
 
 load_dotenv()
 
@@ -473,6 +476,82 @@ def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_
 # =================================================
 # === END CAPI HELPERS ===
 
+# ==========================================================================
+# Blog system — loads posts from content/blog/*.md
+# ==========================================================================
+
+BLOG_CONTENT_DIR = Path(__file__).parent / "content" / "blog"
+BLOG_CATEGORIES = ["أدلة فنية", "مشاريع ومرجعيات", "أخبار الصناعة"]
+
+# In-memory cache of loaded posts. Reloaded on each request in development,
+# cached in production.
+_blog_posts_cache = None
+
+def _markdown_to_html(md_text):
+    """Convert markdown body to HTML, allowing inline HTML for video tags etc."""
+    return markdown.markdown(
+        md_text,
+        extensions=["fenced_code", "tables", "attr_list", "md_in_html"],
+        output_format="html5",
+    )
+
+def _load_blog_posts():
+    """Read all markdown files in content/blog/, parse frontmatter + body."""
+    posts = []
+    if not BLOG_CONTENT_DIR.exists():
+        return posts
+
+    for md_path in BLOG_CONTENT_DIR.glob("*.md"):
+        try:
+            post = frontmatter.load(md_path)
+            metadata = post.metadata or {}
+
+            # Required fields
+            slug = metadata.get("slug") or md_path.stem
+            title = metadata.get("title", "").strip()
+            if not title:
+                app.logger.warning("BLOG_POST_MISSING_TITLE path=%s", md_path)
+                continue
+
+            category = metadata.get("category", "").strip()
+            if category and category not in BLOG_CATEGORIES:
+                app.logger.warning(
+                    "BLOG_POST_UNKNOWN_CATEGORY path=%s category=%r",
+                    md_path, category
+                )
+
+            # Optional fields
+            date_str = metadata.get("date", "")
+            if hasattr(date_str, "strftime"):
+                date_str = date_str.strftime("%Y-%m-%d")
+            else:
+                date_str = str(date_str) if date_str else ""
+
+            posts.append({
+                "slug": slug,
+                "title": title,
+                "category": category,
+                "date": date_str,
+                "hero_image": metadata.get("hero_image", ""),
+                "description": metadata.get("description", ""),
+                "reading_minutes": metadata.get("reading_minutes", ""),
+                "body_html": _markdown_to_html(post.content),
+            })
+        except Exception:
+            app.logger.exception("BLOG_POST_LOAD_FAILED path=%s", md_path)
+            continue
+
+    # Sort newest first by date string (YYYY-MM-DD sorts correctly)
+    posts.sort(key=lambda p: p["date"], reverse=True)
+    return posts
+
+def get_blog_posts(force_reload=False):
+    """Return all posts. Cached in production, reloaded each call in debug."""
+    global _blog_posts_cache
+    if app.debug or force_reload or _blog_posts_cache is None:
+        _blog_posts_cache = _load_blog_posts()
+    return _blog_posts_cache
+
 # --------------- Routes ---------------
 @app.route('/')
 def home():
@@ -516,6 +595,37 @@ def products():
 @app.route("/clients")
 def clients():
     return render_template("clients.html")
+
+@app.route("/blog")
+def blog():
+    """Blog list page with category filter via ?category= query param."""
+    posts = get_blog_posts()
+    selected_category = request.args.get("category", "").strip()
+
+    if selected_category and selected_category in BLOG_CATEGORIES:
+        filtered = [p for p in posts if p["category"] == selected_category]
+    else:
+        filtered = posts
+        selected_category = ""
+
+    return render_template(
+        "blog.html",
+        posts=filtered,
+        categories=BLOG_CATEGORIES,
+        selected_category=selected_category,
+        total_posts=len(posts),
+        active_page="blog",
+        title="المدونة",
+    )
+
+@app.route("/blog/<slug>")
+def blog_post(slug):
+    """Single post page."""
+    posts = get_blog_posts()
+    post = next((p for p in posts if p["slug"] == slug), None)
+    if post is None:
+        abort(404)
+    return render_template("blog_post.html", post=post, active_page="blog")
 
 @app.route('/catalog')
 def catalog():

@@ -180,7 +180,7 @@
           <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">الرئيسية</a>
           <a href="{{ url_for('products') }}" class="{% if active_page == 'products' %}active{% endif %}">المنتجات</a>
           <a href="{{ url_for('clients') }}" class="{% if active_page == 'clients' %}active{% endif %}">عملاؤنا</a>
-          <a href="#" class="nav-placeholder">المدونة</a>
+          <a href="{{ url_for('blog') }}">المدونة</a>
           <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">من نحن</a>
         </div>
 
@@ -209,6 +209,7 @@
     </div>
   </header>
 
+  {% block before_main %}{% endblock %}
   <main class="container">
   <!-- === BEGIN FLASH MESSAGES — DO NOT MODIFY === -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -255,7 +256,7 @@
             <ul class="site-footer__list">
               <li><a href="{{ url_for('about') }}">من نحن</a></li>
               <li><a href="{{ url_for('clients') }}">عملاؤنا</a></li>
-              <li><a href="#">المدونة</a></li>      {# TODO: replace with url_for('blog') when page is built #}
+              <li><a href="{{ url_for('blog') }}">المدونة</a></li>
             </ul>
           </div>
 

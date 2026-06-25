@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block before_main %}
+<!-- Blog hero -->
+<section class="blog-hero" aria-label="مدونة عزم">
+  <div class="blog-hero__inner">
+    <h1 class="page-title blog-hero__title">مدونة عزم</h1>
+    <p class="blog-hero__sub">
+      أدلة فنية، مشاريع، وأخبار من قطاع الإنشاءات في العراق — كل ما تحتاجه لاتخاذ قرارات مدروسة في مشروعك القادم.
+    </p>
+  </div>
+</section>
+
+<!-- Category filter -->
+<section class="blog-filters" aria-label="تصفية حسب التصنيف">
+  <div class="blog-filters__inner">
+    <span class="blog-filters__label">التصنيفات:</span>
+    <a class="blog-filter-btn {% if not selected_category %}active{% endif %}"
+       href="{{ url_for('blog') }}">الكل</a>
+    {% for cat in categories %}
+      <a class="blog-filter-btn {% if selected_category == cat %}active{% endif %}"
+         href="{{ url_for('blog', category=cat) }}">{{ cat }}</a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+
+{% if posts %}
+<!-- Blog grid -->
+<section class="blog-grid-section" aria-label="قائمة المقالات">
+  <div class="blog-grid">
+    {% for post in posts %}
+    <article class="blog-card">
+      <a class="blog-card__link" href="{{ url_for('blog_post', slug=post.slug) }}">
+        <div class="blog-card__media">
+          {% if post.hero_image %}
+          <img class="blog-card__img" src="{{ post.hero_image }}" alt="{{ post.title }}"
+               loading="lazy" decoding="async">
+          {% endif %}
+          {% if post.category %}
+          <span class="blog-card__category">{{ post.category }}</span>
+          {% endif %}
+        </div>
+        <div class="blog-card__body">
+          <div class="blog-card__meta">
+            {% if post.date %}
+            <svg class="blog-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span dir="ltr">{{ post.date }}</span>
+            {% endif %}
+            {% if post.reading_minutes %}
+            <span class="blog-card__dot">•</span>
+            <svg class="blog-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+            </svg>
+            <span>{{ post.reading_minutes }} دقائق قراءة</span>
+            {% endif %}
+          </div>
+          <h3 class="blog-card__title">{{ post.title }}</h3>
+          {% if post.description %}
+          <p class="blog-card__desc">{{ post.description }}</p>
+          {% endif %}
+          <span class="blog-card__more">
+            <span>إقرأ المزيد</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<!-- Empty state -->
+<section class="blog-empty" aria-label="المدونة قيد الإطلاق">
+  <div class="blog-empty__card">
+    <div class="blog-empty__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/>
+      </svg>
+    </div>
+    <h2 class="blog-empty__title">المدونة قيد الإطلاق</h2>
+    <p class="blog-empty__text">
+      قريباً سنشارككم أدلة فنية ومشاريع وأخبار من قطاع الإنشاءات في العراق. ترقبوا أول مقال خلال الأسابيع القادمة.
+    </p>
+    <a class="blog-empty__btn" href="{{ url_for('contact') }}">تواصل معنا</a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
