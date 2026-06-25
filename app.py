@@ -72,6 +72,18 @@ ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()
 RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
 RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")
 
+# Hosts allowed in reCAPTCHA's siteverify "hostname" field.
+# Comma-separated env var; falls back to production hosts only.
+# Local dev: add "localhost,127.0.0.1" to this var in .env.
+RECAPTCHA_ALLOWED_HOSTS = {
+    h.strip()
+    for h in os.getenv(
+        "RECAPTCHA_ALLOWED_HOSTS",
+        "azmsupply.com,www.azmsupply.com"
+    ).split(",")
+    if h.strip()
+}
+
 # --- Optional Email (SMTP) ---
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587") or 587)
@@ -289,7 +301,7 @@ def verify_recaptcha(token):
             app.logger.warning("RECAPTCHA_FAIL: %s", data)
             return False
         host = data.get("hostname", "")
-        if host not in {"azmsupply.com", "www.azmsupply.com"}:
+        if host not in RECAPTCHA_ALLOWED_HOSTS:
             app.logger.warning("RECAPTCHA_HOST_MISMATCH: %r", host)
             return False
         return True
