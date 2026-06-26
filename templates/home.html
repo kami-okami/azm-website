@@ -29,8 +29,18 @@
     <h1 class="page-title">عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور</h1>
     <p>حلول موثوقة وجودة مضمونة لقطاع الإنشاءات الثقيلة والبنية التحتية في العراق.</p>
     <div class="home-hero__cta">
-      <a class="home-hero__btn home-hero__btn--solid" href="{{ url_for('products') }}">تصفح المنتجات</a>
-      <a class="home-hero__btn home-hero__btn--ghost" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
+      {% if whatsapp_number %}
+      <a class="home-hero__btn home-hero__btn--wa"
+         href="https://wa.me/{{ whatsapp_number }}?text={{ whatsapp_text_encoded }}"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M19.11 17.09c-.29-.15-1.7-.84-1.96-.93-.27-.1-.47-.15-.66.15-.19.29-.76.93-.93 1.12-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.86-.76-1.45-1.7-1.62-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.59-.9-2.17-.24-.58-.49-.5-.66-.51-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.78.36-.27.29-1.03 1.01-1.03 2.46 0 1.45 1.06 2.85 1.21 3.04.15.19 2.09 3.19 5.06 4.47.71.31 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.09 1.7-.69 1.94-1.36.24-.67.24-1.25.17-1.39-.07-.14-.26-.22-.55-.36zM16 3C8.83 3 3 8.83 3 16c0 2.3.6 4.46 1.66 6.35L3 29l6.81-1.78C11.6 28.4 13.75 29 16 29c7.17 0 13-5.83 13-13S23.17 3 16 3z"/>
+        </svg>
+        <span>تواصل عبر واتساب</span>
+      </a>
+      {% endif %}
+      <a class="home-hero__btn home-hero__btn--solid" href="{{ url_for('contact') }}">اطلب عرض سعر</a>
+      <a class="home-hero__btn home-hero__btn--ghost" href="{{ url_for('products') }}">تصفح المنتجات</a>
     </div>
 
     <div class="home-hero__stats">

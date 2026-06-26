@@ -464,6 +464,14 @@ html, body { overflow-x: clip; }
 .home-hero__btn--solid:hover{background:#f1f6ff}
 .home-hero__btn--ghost{border:2px solid #fff; color:#fff}
 .home-hero__btn--ghost:hover{background:rgba(255,255,255,.12)}
+/* WhatsApp = primary hero action. Dark ink on --wa green for WCAG AA (white on #25D366 is only ~2:1). */
+.home-hero__btn--wa{
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--wa); color:#0a2e1e;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.home-hero__btn--wa:hover{background:#1da851}
+.home-hero__btn--wa svg{flex:0 0 auto}
 
 /* ----- Hero stats bar ----- */
 .home-hero__stats{
