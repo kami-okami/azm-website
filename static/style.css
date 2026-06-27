@@ -473,18 +473,16 @@ html, body { overflow-x: clip; }
 .home-hero__btn--wa:hover{background:#1da851}
 .home-hero__btn--wa svg{flex:0 0 auto}
 
-/* ----- Hero stats bar ----- */
-.home-hero__stats{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
-  margin-top:40px; padding-top:24px;
-  border-top:1px solid rgba(255,255,255,.22);
+/* Keyboard focus rings (a11y): white on dark/image surfaces, brand-blue on light. */
+.home-hero__btn:focus-visible,
+.home-cta-band__btn:focus-visible{
+  outline:3px solid #fff; outline-offset:3px;
 }
-.home-stat{display:flex; flex-direction:column; gap:4px}
-.home-stat__num{
-  font-family:"Changa", sans-serif; font-weight:800; font-size:34px;
-  line-height:1.1; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+.home-service-link:focus-visible,
+.home-faq-card__link:focus-visible,
+.home-faq-item > summary:focus-visible{
+  outline:3px solid var(--primary); outline-offset:3px;
 }
-.home-stat__label{color:rgba(255,255,255,.85); font-size:13px}
 
 /* ----- Section heading (centered, accent rule) ----- */
 .home-section{margin:56px 0}
@@ -528,12 +526,12 @@ html, body { overflow-x: clip; }
 }
 .home-why-badge{
   position:absolute; bottom:-24px; right:-24px;
-  background:var(--primary); color:#fff;
+  background:var(--primary-600); color:#fff;
   padding:22px 26px; border-radius:16px;
   box-shadow:0 16px 32px rgba(2,19,51,.28); max-width:260px;
 }
 .home-why-badge__title{font-family:"Changa", sans-serif; font-weight:800; font-size:18px; margin:0 0 6px}
-.home-why-badge__sub{margin:0; font-size:13px; color:rgba(255,255,255,.85)}
+.home-why-badge__sub{margin:0; font-size:13px; color:rgba(255,255,255,.92)}
 .home-why-content h2{
   font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
   margin:12px 0 16px; color:var(--primary);
