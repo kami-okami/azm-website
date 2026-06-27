@@ -1372,3 +1372,18 @@ html, body { overflow-x: clip; }
   transition:background .15s ease, transform .15s ease;
 }
 .about-cta__btn:hover{ background:var(--primary-600); transform:translateY(-2px); }
+
+/* ==========================================================================
+   Reduced motion: honor the OS "reduce motion" setting site-wide.
+   Neutralizes decorative hover lifts, scale presses, and chevron rotation.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
