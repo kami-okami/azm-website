@@ -481,7 +481,12 @@ def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_
 # ==========================================================================
 
 BLOG_CONTENT_DIR = Path(__file__).parent / "content" / "blog"
-BLOG_CATEGORIES = ["أدلة فنية", "مشاريع ومرجعيات", "أخبار الصناعة"]
+# Known/suggested category labels. NOT a strict whitelist — posts may use any
+# category (see _load_blog_posts): an unlisted one still publishes, it only logs
+# a spell-check warning. Add a label here once you'll reuse it so future typos
+# of it get caught. There is no on-site category filter; the label is shown as a
+# per-post badge only.
+BLOG_CATEGORIES = ["أدلة فنية", "مشاريع"]
 
 # In-memory cache of loaded posts. Reloaded on each request in development,
 # cached in production.
@@ -598,22 +603,10 @@ def clients():
 
 @app.route("/blog")
 def blog():
-    """Blog list page with category filter via ?category= query param."""
-    posts = get_blog_posts()
-    selected_category = request.args.get("category", "").strip()
-
-    if selected_category and selected_category in BLOG_CATEGORIES:
-        filtered = [p for p in posts if p["category"] == selected_category]
-    else:
-        filtered = posts
-        selected_category = ""
-
+    """Blog list page — reverse-chronological list of posts (no category filter)."""
     return render_template(
         "blog.html",
-        posts=filtered,
-        categories=BLOG_CATEGORIES,
-        selected_category=selected_category,
-        total_posts=len(posts),
+        posts=get_blog_posts(),
         active_page="blog",
         title="المدونة",
     )

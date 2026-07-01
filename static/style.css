@@ -1083,22 +1083,6 @@ html, body { overflow-x: clip; }
 .blog-hero__title{ color:#fff; margin:0 0 16px; max-width:680px; }
 .blog-hero__sub{ color:rgba(255,255,255,.9); font-size:18px; line-height:1.9; margin:0; max-width:620px; }
 
-/* --- Category filter --- */
-.blog-filters{ border-bottom:1px solid var(--border); background:var(--card); }
-.blog-filters__inner{
-  max-width:1120px; margin:0 auto; padding:20px 18px;
-  display:flex; flex-wrap:wrap; align-items:center; gap:10px;
-}
-.blog-filters__label{ font-weight:700; color:var(--muted); margin-inline-end:6px; }
-.blog-filter-btn{
-  padding:8px 20px; border-radius:999px; text-decoration:none;
-  font-weight:700; font-size:15px;
-  background:var(--bg); color:var(--muted); border:1px solid var(--border);
-  transition:background .15s ease, color .15s ease, border-color .15s ease;
-}
-.blog-filter-btn:hover{ background:var(--primary-50); color:var(--primary); border-color:var(--primary-50); }
-.blog-filter-btn.active{ background:var(--primary); color:#fff; border-color:var(--primary); }
-
 /* --- Blog grid --- */
 .blog-grid-section{ max-width:1120px; margin:0 auto; padding:56px 18px 96px; }
 .blog-grid{ display:grid; grid-template-columns:1fr; gap:28px; }
@@ -1119,9 +1103,8 @@ html, body { overflow-x: clip; }
 .blog-card:hover .blog-card__img{ transform:scale(1.06); }
 .blog-card__category{
   position:absolute; top:12px; right:12px;
-  background:rgba(38,127,221,.92); color:#fff;
+  background:var(--primary-600); color:#fff;
   padding:5px 12px; border-radius:10px; font-size:13px; font-weight:700;
-  backdrop-filter:blur(4px);
 }
 .blog-card__body{ padding:24px; }
 .blog-card__meta{
@@ -1174,12 +1157,11 @@ html, body { overflow-x: clip; }
 .blog-post__header{ background:var(--card); border-bottom:1px solid var(--border); }
 .blog-post__header-inner{ max-width:760px; margin:0 auto; padding:56px 18px 32px; text-align:right; }
 .blog-post__category{
-  display:inline-block; text-decoration:none;
-  background:var(--primary-50); color:var(--primary);
+  display:inline-block;
+  background:var(--primary-50); color:var(--primary-600);
   padding:6px 16px; border-radius:999px; font-size:14px; font-weight:700;
-  margin-bottom:16px; transition:background .15s ease;
+  margin-bottom:16px;
 }
-.blog-post__category:hover{ background:#dbeafe; }
 .blog-post__title{ margin:0 0 16px; }
 .blog-post__desc{ color:var(--muted); font-size:19px; line-height:1.85; margin:0 0 16px; }
 .blog-post__meta{

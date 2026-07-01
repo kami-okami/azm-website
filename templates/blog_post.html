@@ -6,8 +6,7 @@
   <header class="blog-post__header">
     <div class="blog-post__header-inner">
       {% if post.category %}
-      <a class="blog-post__category"
-         href="{{ url_for('blog', category=post.category) }}">{{ post.category }}</a>
+      <span class="blog-post__category">{{ post.category }}</span>
       {% endif %}
       <h1 class="page-title blog-post__title">{{ post.title }}</h1>
       {% if post.description %}

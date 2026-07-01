@@ -10,19 +10,6 @@
     </p>
   </div>
 </section>
-
-<!-- Category filter -->
-<section class="blog-filters" aria-label="تصفية حسب التصنيف">
-  <div class="blog-filters__inner">
-    <span class="blog-filters__label">التصنيفات:</span>
-    <a class="blog-filter-btn {% if not selected_category %}active{% endif %}"
-       href="{{ url_for('blog') }}">الكل</a>
-    {% for cat in categories %}
-      <a class="blog-filter-btn {% if selected_category == cat %}active{% endif %}"
-         href="{{ url_for('blog', category=cat) }}">{{ cat }}</a>
-    {% endfor %}
-  </div>
-</section>
 {% endblock %}
 
 {% block content %}
