@@ -14,14 +14,14 @@ Flask app deployed at https://www.azmsupply.com — Arabic RTL, Iraq market.
 | Styling | Plain CSS (static/style.css, v41+) |
 | Database | SQLite (messages.db — contact form submissions) |
 | Production server | Gunicorn |
-| Third-party | Meta Pixel + CAPI, Google reCAPTCHA v3, SMTP email |
+| Third-party | Meta Pixel + CAPI, Google reCAPTCHA v2, SMTP email |
 
 ---
 
 ## Project Layout
 
 ```
-app.py                  — All backend logic (~896 lines)
+app.py                  — All backend logic (~1044 lines)
 static/
   style.css             — All styles (CSS variables, RTL, responsive)
   logo.svg              — Company logo
@@ -76,7 +76,7 @@ requirements.txt        — Python dependencies
 ### Security features (app.py)
 - CSRF token validation (contact, login, logout routes)
 - Rate limiting: 3 contact POSTs / 60 sec per IP; 8 login attempts / 600 sec per IP
-- reCAPTCHA v3 server-side verification
+- reCAPTCHA v2 server-side verification
 - Session hardening (HTTPOnly, SameSite=Lax, 8hr lifetime, Secure in production)
 - Security headers (CSP, X-Frame-Options, etc.) in after_request hook
 
@@ -248,7 +248,10 @@ If Claude Code's output looks wrong, the first move is `git status` + `git diff 
 | `/` | GET | — | Home page |
 | `/about` | GET | — | About page |
 | `/products` | GET | — | Products page |
-| `/catalog` | GET | — | Catalog + PDF download |
+| `/clients` | GET | — | Clients page (stub) |
+| `/blog` | GET | — | Blog list |
+| `/blog/<slug>` | GET | — | Single blog post |
+| `/catalog` | GET | — | 301 redirect to `/products` |
 | `/contact` | GET/POST | — | Contact form |
 | `/thank-you` | GET | — | Success page |
 | `/login` | GET/POST | — | Admin login |
@@ -258,6 +261,7 @@ If Claude Code's output looks wrong, the first move is `git status` + `git diff 
 | `/capi/track` | POST | — | Browser → Meta CAPI relay |
 | `/robots.txt` | GET | — | SEO |
 | `/sitemap.xml` | GET | — | SEO |
+| `/debug/env` | GET | — | Debug: dumps Meta Pixel/CAPI env var presence |
 
 ---
 
@@ -267,8 +271,8 @@ If Claude Code's output looks wrong, the first move is `git status` + `git diff 
 FLASK_SECRET              — Flask session secret key
 ADMIN_USER                — Admin username
 ADMIN_PASSWORD_HASH       — pbkdf2:sha256 hash of admin password
-RECAPTCHA_SITE_KEY        — Google reCAPTCHA v3 site key
-RECAPTCHA_SECRET_KEY      — Google reCAPTCHA v3 secret
+RECAPTCHA_SITE_KEY        — Google reCAPTCHA v2 site key
+RECAPTCHA_SECRET_KEY      — Google reCAPTCHA v2 secret
 META_PIXEL_ID             — Facebook/Meta Pixel ID
 META_CAPI_TOKEN           — Meta Conversions API access token
 META_GRAPH_VERSION        — Meta Graph API version (e.g. v20.0)
@@ -357,8 +361,6 @@ When real client names are ready:
 - Get explicit permission from each client before listing them (a WhatsApp
   message asking is enough; save the confirmation).
 - Add real photos to `/static/images/clients/` for any logos used.
-- Wire the nav/footer عملاؤنا placeholders (`href="#"` → `url_for('clients')`)
-  once the page is real — this requires editing the otherwise-final base.html.
 
 ---
 
@@ -367,7 +369,7 @@ When real client names are ready:
 The blog reads markdown posts from `content/blog/*.md`. Each post is a single
 `.md` file with YAML frontmatter at the top and markdown body below. Posts are
 parsed and rendered server-side (`_load_blog_posts` / `get_blog_posts` in
-app.py); routes are `/blog` (list, with `?category=` filter) and `/blog/<slug>`
+app.py); routes are `/blog` (list, no category filter) and `/blog/<slug>`
 (single post). Templates are `templates/blog.html` and `templates/blog_post.html`
 — both plain CSS (BEM `blog-*` classes in `static/style.css`), NOT Tailwind. The
 post body renders inside `.blog-prose`, which styles headings, lists, tables,
@@ -381,7 +383,7 @@ images, video, iframes, blockquotes, and code.
    ---
    title: عنوان المقال
    slug: post-url-slug
-   category: أدلة فنية          # or "مشاريع ومرجعيات" or "أخبار الصناعة"
+   category: أدلة فنية          # or "مشاريع"
    date: 2026-06-25              # YYYY-MM-DD, used for sorting
    hero_image: /static/images/blog/<slug>/hero.jpg
    description: ملخص قصير يظهر في قائمة المقالات وفي الميتاداتا
@@ -408,9 +410,10 @@ images, video, iframes, blockquotes, and code.
 
 ### Notes
 
-- Categories must be one of: `أدلة فنية`, `مشاريع ومرجعيات`, `أخبار الصناعة`.
-  Posts with unknown categories will load but log a `BLOG_POST_UNKNOWN_CATEGORY`
-  warning. A post with no `title` is skipped with a warning.
+- Known categories (in `BLOG_CATEGORIES`, app.py) are: `أدلة فنية`, `مشاريع`.
+  This is not a strict whitelist — posts may use any category — but an unlisted
+  one still logs a `BLOG_POST_UNKNOWN_CATEGORY` warning, so add new labels here
+  once you'll reuse them. A post with no `title` is skipped with a warning.
 - The `date` string sorts lexicographically; `YYYY-MM-DD` format is required for
   correct newest-first ordering.
 - Posts are reloaded from disk on every request in debug, cached in production
