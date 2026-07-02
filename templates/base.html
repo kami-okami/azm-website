@@ -180,7 +180,7 @@
           <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">الرئيسية</a>
           <a href="{{ url_for('products') }}" class="{% if active_page == 'products' %}active{% endif %}">المنتجات</a>
           <a href="{{ url_for('clients') }}" class="{% if active_page == 'clients' %}active{% endif %}">عملاؤنا</a>
-          <a href="{{ url_for('blog') }}">المدونة</a>
+          <a href="{{ url_for('blog') }}" class="{% if active_page == 'blog' %}active{% endif %}">المدونة</a>
           <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">من نحن</a>
         </div>
 

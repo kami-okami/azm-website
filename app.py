@@ -599,7 +599,15 @@ def products():
 
 @app.route("/clients")
 def clients():
-    return render_template("clients.html")
+    return render_template(
+        "clients.html",
+        title="عملاؤنا",
+        company=COMPANY_NAME,
+        active_page='clients',
+        facebook_url=FACEBOOK_URL,
+        whatsapp_number=WHATSAPP_NUMBER,
+        whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
+    )
 
 @app.route("/blog")
 def blog():
