@@ -333,12 +333,6 @@ main.container{padding-top:28px}
 .seo-intro ul{ padding-inline-start:1.2em; margin:8px 0; }
 .seo-intro li{ margin:4px 0; }
 
-/* two-column on desktop, single on mobile */
-.seo-grid{ display:grid; gap:14px; }
-@media (min-width: 900px){
-  .seo-grid{ grid-template-columns: 1fr 1fr; }
-}
-
 /* Color override for SEO block text on hero */
 .seo-intro,
 .seo-intro h2,
@@ -595,13 +589,31 @@ html, body { overflow-x: clip; }
 .home-cta-band__btn:hover{transform:scale(1.04)}
 .home-cta-band__btn:active{transform:scale(.97)}
 
-/* ----- SEO intro (light bg, dark text) ----- */
-.home-seo{max-width:1120px; margin:40px auto; padding:8px 0; line-height:1.9}
-.home-seo h2{font-family:"Changa", sans-serif; font-weight:800; font-size:26px; margin:0 0 12px; color:var(--text)}
-.home-seo h3{font-family:"Changa", sans-serif; font-weight:700; font-size:18px; margin:16px 0 8px; color:var(--text)}
-.home-seo p{margin:10px 0; color:var(--muted)}
-.home-seo ul{padding-inline-start:1.2em; margin:8px 0}
-.home-seo li{margin:4px 0; color:var(--muted)}
+/* ----- SEO intro (framed evidence panels) ----- */
+.home-seo{max-inline-size:1120px; margin:40px auto; padding:8px 0;}
+.home-seo__head h2{font-family:"Changa", sans-serif; font-weight:800; font-size:30px; line-height:1.2; letter-spacing:.2px; color:var(--primary); margin:0 0 12px; text-wrap:balance;}
+.home-seo__head .home-section-rule{margin:0;}
+.home-seo__intro{max-inline-size:860px; margin:18px auto 30px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px 28px; box-shadow:var(--shadow);}
+.home-seo__intro p{margin:12px 0; color:var(--muted); font-size:16px; line-height:1.95; text-wrap:pretty;}
+.home-seo__intro p:first-child{margin-top:0;}
+.home-seo__intro p:last-child{margin-bottom:0;}
+.home-seo__grid{display:grid; gap:20px;}
+.home-seo__card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:var(--shadow); transition:transform .16s cubic-bezier(.22,1,.36,1), box-shadow .16s cubic-bezier(.22,1,.36,1);}
+.home-seo__card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12);}
+.home-seo__card h3{font-family:"Changa", sans-serif; font-weight:700; font-size:18px; color:var(--text); margin:0 0 12px;}
+.home-seo__card ul{padding-inline-start:1.2em; margin:0;}
+.home-seo__card li{margin:8px 0; color:var(--muted); line-height:1.7;}
+@media (min-width:900px){ .home-seo__grid{grid-template-columns:1fr 1fr;} }
+@media (prefers-reduced-motion: reduce){ .home-seo__card{transition:none;} .home-seo__card:hover{transform:none;} }
+
+/* ----- SEO intro: full-width match (live-mode accepted) ----- */
+.home-seo__intro--wide{max-inline-size:1120px;}
+
+/* ----- SEO intro: merged prose + evidence fact-strip (live-mode accepted) ----- */
+.home-seo__intro--merged p{margin-bottom:16px;}
+.home-seo__intro--merged .home-seo__facts{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px;}
+.home-seo__intro--merged .home-seo__fact{background:var(--primary-50); color:var(--primary-600); font-weight:700; font-size:13px; padding:6px 14px; border-radius:999px;}
+.home-seo__intro--merged .home-seo__fact:nth-child(n+4){display:none;}
 
 /* ----- Service grid ----- */
 .home-services{
