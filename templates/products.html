@@ -23,77 +23,69 @@
   </div>
 </section>
 
-<!-- Category filters (sticky under the nav) -->
-<section class="products-filters" aria-label="تصفية حسب الفئة">
-  <div class="products-filters__inner">
-    <button class="filter-btn active" data-filter="all">الكل</button>
-    <button class="filter-btn" data-filter="heavy">قطع غيار المعدات الثقيلة</button>
-    <button class="filter-btn" data-filter="bridge">حلول الجسور</button>
-    <button class="filter-btn" data-filter="road">إعادة تأهيل الطرق</button>
-  </div>
-</section>
-
 <!-- Product grid -->
 <section class="products-grid-section" aria-label="قائمة المنتجات">
-  <div class="products-grid">
 
-    <!-- Bridge bearings -->
-    <article class="product-card" data-category="bridge">
-      <img class="product-card__img"
-           src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
-           alt="مساند ارتكاز للجسور" loading="lazy" decoding="async" width="1184" height="864">
-      <div class="product-card__body">
-        <div class="product-card__tags"><span class="product-card__pill">حلول الجسور</span></div>
-        <h3 class="product-card__title">مساند ارتكاز للجسور</h3>
-        <p class="product-card__desc">مساند مطاطية وفولاذية لجميع أنواع الجسور، تتحمل الأحمال الديناميكية وحركة التمدد الحراري. تصاميم متعددة (Pot Bearings، Elastomeric، Spherical) حسب متطلبات المشروع والاستشاري.</p>
-        <a class="product-card__cta" target="_blank" rel="noopener"
-           href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D8%B3%D8%A7%D9%86%D8%AF%20%D8%A7%D8%B1%D8%AA%D9%83%D8%A7%D8%B2%20%D9%84%D9%84%D8%AC%D8%B3%D9%88%D8%B1">اطلب عرض سعر</a>
-      </div>
-    </article>
+  <div class="products-grid products-grid--dense">
 
-    <!-- Expansion joints -->
-    <article class="product-card" data-category="bridge">
-      <img class="product-card__img"
-           src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
-           alt="فواصل تمدد للجسور" loading="lazy" decoding="async" width="1184" height="864">
-      <div class="product-card__body">
-        <div class="product-card__tags"><span class="product-card__pill">حلول الجسور</span></div>
-        <h3 class="product-card__title">فواصل تمدد للجسور</h3>
-        <p class="product-card__desc">فواصل تمدد معدنية ومطاطية لاستيعاب حركة الجسر وحماية سطح الطريق. متوفرة بقياسات وحركة تمدد تناسب جسور المدن والطرق السريعة، مع ضمان مطابقة المواصفات الفنية للجهة المشرفة على المشروع.</p>
-        <a class="product-card__cta" target="_blank" rel="noopener"
-           href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%81%D9%88%D8%A7%D8%B5%D9%84%20%D8%AA%D9%85%D8%AF%D8%AF%20%D9%84%D9%84%D8%AC%D8%B3%D9%88%D8%B1">اطلب عرض سعر</a>
-      </div>
-    </article>
+      <!-- Bridge bearings -->
+      <article class="product-card">
+        <img class="product-card__img"
+             src="{{ url_for('static', filename='img/products/elastomeric-bearings.png') }}"
+             alt="مساند ارتكاز للجسور" loading="lazy" decoding="async" width="1184" height="864">
+        <div class="product-card__body">
+          <div class="product-card__tags"><span class="product-card__pill">حلول الجسور</span></div>
+          <h3 class="product-card__title">مساند ارتكاز للجسور</h3>
+          <p class="product-card__desc">مساند مطاطية وفولاذية لجميع أنواع الجسور، تتحمل الأحمال الديناميكية وحركة التمدد الحراري. تصاميم متعددة (Pot Bearings، Elastomeric، Spherical) حسب متطلبات المشروع والاستشاري.</p>
+          <a class="product-card__cta" target="_blank" rel="noopener"
+             href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D8%B3%D8%A7%D9%86%D8%AF%20%D8%A7%D8%B1%D8%AA%D9%83%D8%A7%D8%B2%20%D9%84%D9%84%D8%AC%D8%B3%D9%88%D8%B1">اطلب عرض سعر</a>
+        </div>
+      </article>
 
-    <!-- Milling bits -->
-    <article class="product-card" data-category="road">
-      <img class="product-card__img"
-           src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
-           alt="رؤوس قشط أسفلت وحاملاتها" loading="lazy" decoding="async" width="1344" height="768">
-      <div class="product-card__body">
-        <div class="product-card__tags"><span class="product-card__pill">إعادة تأهيل الطرق</span></div>
-        <h3 class="product-card__title">رؤوس قشط أسفلت وحاملاتها</h3>
-        <p class="product-card__desc">أسنان قشط فولاذية معززة وحاملاتها لآليات تأهيل الطرق. متوفرة بمواصفات تناسب موديلات Wirtgen وغيرها من معدات القشط، بأطوال وزوايا قطع مختلفة حسب طبيعة الأسفلت.</p>
-        <a class="product-card__cta" target="_blank" rel="noopener"
-           href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%B1%D8%A4%D9%88%D8%B3%20%D9%82%D8%B4%D8%B7%20%D8%A3%D8%B3%D9%81%D9%84%D8%AA">اطلب عرض سعر</a>
-      </div>
-    </article>
+      <!-- Expansion joints -->
+      <article class="product-card">
+        <img class="product-card__img"
+             src="{{ url_for('static', filename='img/products/expansion-joints.png') }}"
+             alt="فواصل تمدد للجسور" loading="lazy" decoding="async" width="1184" height="864">
+        <div class="product-card__body">
+          <div class="product-card__tags"><span class="product-card__pill">حلول الجسور</span></div>
+          <h3 class="product-card__title">فواصل تمدد للجسور</h3>
+          <p class="product-card__desc">فواصل تمدد معدنية ومطاطية لاستيعاب حركة الجسر وحماية سطح الطريق. متوفرة بقياسات وحركة تمدد تناسب جسور المدن والطرق السريعة، مع ضمان مطابقة المواصفات الفنية للجهة المشرفة على المشروع.</p>
+          <a class="product-card__cta" target="_blank" rel="noopener"
+             href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%81%D9%88%D8%A7%D8%B5%D9%84%20%D8%AA%D9%85%D8%AF%D8%AF%20%D9%84%D9%84%D8%AC%D8%B3%D9%88%D8%B1">اطلب عرض سعر</a>
+        </div>
+      </article>
 
-    <!-- Track pads -->
-    <article class="product-card" data-category="heavy">
-      <img class="product-card__img"
-           src="{{ url_for('static', filename='img/products/track-pads.jpg') }}"
-           alt="لباد جنزير للمعدات الثقيلة" loading="lazy" decoding="async" width="1200" height="675">
-      <div class="product-card__body">
-        <div class="product-card__tags"><span class="product-card__pill">قطع غيار المعدات الثقيلة</span></div>
-        <h3 class="product-card__title">لباد جنزير للمعدات الثقيلة</h3>
-        <p class="product-card__desc">لباد جنزير مطاطية وفولاذية للحفارات والآليات الزاحفة، تحمي سطح الأسفلت أثناء العمل في المناطق العمرانية. متوفرة بقياسات تناسب الموديلات الشائعة في السوق العراقية.</p>
-        <a class="product-card__cta" target="_blank" rel="noopener"
-           href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%84%D8%A8%D8%A7%D8%AF%20%D8%AC%D9%86%D8%B2%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B9%D8%AF%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AB%D9%82%D9%8A%D9%84%D8%A9">اطلب عرض سعر</a>
-      </div>
-    </article>
+      <!-- Milling bits -->
+      <article class="product-card">
+        <img class="product-card__img"
+             src="{{ url_for('static', filename='img/products/road-rehab.png') }}"
+             alt="رؤوس قشط أسفلت وحاملاتها" loading="lazy" decoding="async" width="1344" height="768">
+        <div class="product-card__body">
+          <div class="product-card__tags"><span class="product-card__pill">إعادة تأهيل الطرق</span></div>
+          <h3 class="product-card__title">رؤوس قشط أسفلت وحاملاتها</h3>
+          <p class="product-card__desc">أسنان قشط فولاذية معززة وحاملاتها لآليات تأهيل الطرق. متوفرة بمواصفات تناسب موديلات Wirtgen وغيرها من معدات القشط، بأطوال وزوايا قطع مختلفة حسب طبيعة الأسفلت.</p>
+          <a class="product-card__cta" target="_blank" rel="noopener"
+             href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%B1%D8%A4%D9%88%D8%B3%20%D9%82%D8%B4%D8%B7%20%D8%A3%D8%B3%D9%81%D9%84%D8%AA">اطلب عرض سعر</a>
+        </div>
+      </article>
 
-  </div>
+      <!-- Track pads -->
+      <article class="product-card">
+        <img class="product-card__img"
+             src="{{ url_for('static', filename='img/products/track-pads.jpg') }}"
+             alt="لباد جنزير للمعدات الثقيلة" loading="lazy" decoding="async" width="1200" height="675">
+        <div class="product-card__body">
+          <div class="product-card__tags"><span class="product-card__pill">قطع غيار المعدات الثقيلة</span></div>
+          <h3 class="product-card__title">لباد جنزير للمعدات الثقيلة</h3>
+          <p class="product-card__desc">لباد جنزير مطاطية وفولاذية للحفارات والآليات الزاحفة، تحمي سطح الأسفلت أثناء العمل في المناطق العمرانية. متوفرة بقياسات تناسب الموديلات الشائعة في السوق العراقية.</p>
+          <a class="product-card__cta" target="_blank" rel="noopener"
+             href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%84%D8%A8%D8%A7%D8%AF%20%D8%AC%D9%86%D8%B2%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B9%D8%AF%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AB%D9%82%D9%8A%D9%84%D8%A9">اطلب عرض سعر</a>
+        </div>
+      </article>
+
+    </div>
+
 </section>
 
 <!-- CTA band -->
@@ -105,25 +97,4 @@
        href="https://wa.me/{{ whatsapp_number }}?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D9%84%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D9%88%D8%A7%D8%B5%D9%81%D8%A7%D8%AA%20%D9%81%D9%86%D9%8A%D8%A9%20%D8%AE%D8%A7%D8%B5%D8%A9">تواصل مع فريق المبيعات</a>
   </div>
 </section>
-
-<!-- Category filter script -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const productCards = document.querySelectorAll('.product-card');
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const filter = btn.getAttribute('data-filter');
-        productCards.forEach(card => {
-          const show = filter === 'all' || card.getAttribute('data-category') === filter;
-          card.classList.toggle('is-hidden', !show);
-        });
-      });
-    });
-  });
-</script>
 {% endblock %}

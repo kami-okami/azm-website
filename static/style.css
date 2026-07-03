@@ -907,29 +907,15 @@ html, body { overflow-x: clip; }
   background:var(--primary-50);
 }
 
-/* ----- Sticky category filters ----- */
-.products-filters{
-  position:sticky; top:var(--header-h); z-index:40;
-  background:var(--bg); padding:24px 0;
-}
-.products-filters__inner{
-  max-width:1120px; margin:0 auto; padding:0 18px;
-  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px;
-}
-.filter-btn{
-  font-family:"Changa", sans-serif; font-weight:700; font-size:15px;
-  padding:10px 22px; border-radius:999px; cursor:pointer;
-  background:var(--card); color:var(--muted); border:1px solid var(--border);
-  transition:background .15s ease, color .15s ease, border-color .15s ease;
-}
-.filter-btn:hover{background:var(--primary-50); color:var(--primary); border-color:var(--primary-50)}
-.filter-btn.active{background:var(--primary); color:#fff; border-color:var(--primary)}
-
 /* ----- Product grid ----- */
 .products-grid-section{max-width:1120px; margin:0 auto; padding:0 18px 96px}
 .products-grid{display:grid; grid-template-columns:1fr; gap:32px}
 @media (min-width:768px){ .products-grid{grid-template-columns:1fr 1fr} }
 @media (min-width:1024px){ .products-grid{grid-template-columns:1fr 1fr 1fr} }
+
+/* ----- Product grid: dense scanning layout (live-mode accepted) ----- */
+.products-grid--dense{gap:20px;}
+@media (min-width:1280px){ .products-grid--dense{grid-template-columns:repeat(4,1fr);} }
 
 .product-card{
   display:flex; flex-direction:column;
@@ -939,7 +925,6 @@ html, body { overflow-x: clip; }
   transition:transform .3s ease, box-shadow .3s ease;
 }
 .product-card:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(2,19,51,.12)}
-.product-card.is-hidden{display:none}
 .product-card__img{
   display:block; width:100%; aspect-ratio:7 / 4; object-fit:cover;
   background:var(--primary-50); /* gray placeholder until the image loads */
