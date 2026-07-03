@@ -109,10 +109,10 @@
 
   <!-- NEW: Preload stylesheet to shorten render-blocking wait -->
   <!-- === BEGIN STYLESHEET — VERSION QUERY (?v=N) MAY BE BUMPED, NOTHING ELSE === -->
-  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=45">
+  <link rel="preload" as="style" href="{{ url_for('static', filename='style.css') }}?v=47">
 
-  <!-- cache-buster v=45 -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=45">
+  <!-- cache-buster v=47 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=47">
   <!-- === END STYLESHEET === -->
 
   <!-- === BEGIN META PIXEL BASE — DO NOT MODIFY === -->
@@ -446,5 +446,8 @@
 <!-- === END CAPI WIRING === -->
 
   {% block extra_scripts %}{% endblock %}
+<!-- impeccable-live-start -->
+<script src="http://localhost:8400/live.js"></script>
+<!-- impeccable-live-end -->
 </body>
 </html>
