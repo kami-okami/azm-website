@@ -239,6 +239,28 @@ def inject_meta_vars():
     return {"META_PIXEL_ID": META_PIXEL_ID}
 # ========================================================================
 
+# DEV-ONLY: let the impeccable "live" helper (http://localhost:8400) through
+# the CSP. Registered BEFORE set_security_headers so it runs AFTER it (Flask
+# executes after_request hooks in reverse registration order), letting it append
+# to the CSP that the protected block sets. Never active when FLASK_ENV=production.
+@app.after_request
+def _impeccable_live_csp_dev(resp):
+    if os.getenv("FLASK_ENV") != "production":
+        csp = resp.headers.get("Content-Security-Policy")
+        if csp and "localhost:8400" not in csp:
+            csp = csp.replace(
+                "script-src 'self'",
+                "script-src 'self' http://localhost:8400",
+            ).replace(
+                "connect-src 'self'",
+                "connect-src 'self' http://localhost:8400 ws://localhost:8400",
+            ).replace(
+                "style-src 'self'",
+                "style-src 'self' http://localhost:8400",
+            )
+            resp.headers["Content-Security-Policy"] = csp
+    return resp
+
 # Set strong headers (CSP, etc.)
 # === BEGIN SECURITY HEADERS — DO NOT MODIFY ===
 @app.after_request
