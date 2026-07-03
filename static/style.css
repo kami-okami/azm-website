@@ -922,7 +922,7 @@ html, body { overflow-x: clip; }
   background:var(--card); border:1px solid var(--border);
   border-radius:16px; overflow:hidden;
   box-shadow:var(--shadow);
-  transition:transform .3s ease, box-shadow .3s ease;
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
 }
 .product-card:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(2,19,51,.12)}
 .product-card__img{
@@ -943,11 +943,12 @@ html, body { overflow-x: clip; }
 .product-card__cta{
   display:block; text-align:center; text-decoration:none;
   font-family:"Changa", sans-serif; font-weight:800; font-size:15px;
-  background:var(--primary); color:#fff;
+  background:var(--primary-600); color:#fff; /* primary-600, not primary: white-on-primary is 4.07:1, under AA's 4.5:1 floor at this size */
   padding:14px 16px; border-radius:14px;
-  transition:background .15s ease;
+  transition:filter .15s cubic-bezier(.22,1,.36,1);
 }
-.product-card__cta:hover{background:var(--primary-600)}
+.product-card__cta:hover{filter:brightness(.9)}
+.product-card__cta:focus-visible{outline:3px solid var(--primary); outline-offset:3px}
 
 /* ----- CTA band (full-bleed, flush to footer) ----- */
 .products-cta{
@@ -960,15 +961,16 @@ html, body { overflow-x: clip; }
   font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
   margin:0 0 16px; color:#fff;
 }
-.products-cta__inner p{font-size:18px; line-height:1.8; margin:0 0 28px; color:rgba(255,255,255,.9)}
+.products-cta__inner p{font-size:19px; font-weight:700; line-height:1.8; margin:0 0 28px; color:#fff} /* solid white + bold 19px clears WCAG's large-text 3:1 floor; rgba(.9) white at 18px regular measured 3.6:1 */
 .products-cta__btn{
   display:inline-block; text-decoration:none;
   font-family:"Changa", sans-serif; font-weight:800;
-  background:#fff; color:var(--primary);
+  background:#fff; color:var(--primary-600); /* primary-600, not primary: same 4.07:1 shortfall as the button above, symmetric either direction */
   padding:16px 32px; border-radius:14px;
-  transition:transform .15s ease, box-shadow .15s ease;
+  transition:transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s cubic-bezier(.22,1,.36,1);
 }
 .products-cta__btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.products-cta__btn:focus-visible{outline:3px solid #fff; outline-offset:3px}
 
 /* ==========================================================================
    Clients page (stub) — plain-CSS translation of the Stitch "coming soon".
