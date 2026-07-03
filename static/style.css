@@ -305,7 +305,7 @@ main.container{padding-top:28px}
   .hero{padding:20px}
   .hero h2{font-size:26px}
   .cards{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-  .whatsapp-fab{right:16px; left:auto; width:60px; height:60px}
+  .whatsapp-fab{width:60px; height:60px}
   .icon-link{width:40px; height:40px}
 }
 
