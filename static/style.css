@@ -1292,19 +1292,19 @@ html, body { overflow-x: clip; }
 .about-values__title{ font-family:"Changa",sans-serif; font-weight:700; font-size:19px; margin:0 0 12px; color:var(--text); }
 .about-values__body{ color:var(--muted); font-size:15px; line-height:1.8; margin:0; }
 
-/* --- Founding story (dark feature section) --- */
+/* --- Founding story (dark feature section): full-width statement, no photo
+   dependency. Heading + blue section-rule (the site's signature marker) over a
+   two-column text split inside the dark plaque. (live-mode accepted) --- */
 .about-story{ max-width:1120px; margin:24px auto; padding:0 18px; }
-.about-story__grid{
+.about-story__panel{
   background:var(--text); color:#fff; border-radius:22px; overflow:hidden;
-  display:grid; grid-template-columns:1fr; gap:0;
+  padding:62px 53px; text-align:center;
 }
-@media (min-width:768px){ .about-story__grid{ grid-template-columns:1fr 1fr; align-items:center; } }
-.about-story__text{ padding:48px 36px; text-align:right; }
-.about-story__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; margin:0 0 20px; color:#fff; }
-.about-story__body{ color:rgba(255,255,255,.82); font-size:16px; line-height:1.95; margin:0 0 18px; }
-.about-story__body:last-child{ margin-bottom:0; }
-.about-story__media{ height:100%; min-height:260px; }
-.about-story__img{ width:100%; height:100%; object-fit:cover; display:block; }
+.about-story__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:30px; margin:0 0 16px; color:#fff; }
+.about-story__rule{ width:96px; height:5px; background:var(--primary); border-radius:999px; margin:0 auto 35px auto; }
+.about-story__cols{ display:grid; grid-template-columns:1fr; gap:22px; text-align:right; }
+@media (min-width:700px){ .about-story__cols{ grid-template-columns:1fr 1fr; } }
+.about-story__body{ color:rgba(255,255,255,.82); font-size:16px; line-height:1.95; margin:0; }
 
 /* --- Final CTA --- */
 .about-cta{ max-width:1120px; margin:0 auto; padding:56px 18px 88px; }

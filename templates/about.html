@@ -97,11 +97,12 @@
     </div>
   </section>
 
-  <!-- Founding story: dark feature section, no fake stats badge -->
+  <!-- Founding story: dark feature section, no fake stats badge, no photo dependency -->
   <section class="about-story">
-    <div class="about-story__grid">
-      <div class="about-story__text">
-        <h2 class="about-story__heading">من نحن</h2>
+    <div class="about-story__panel">
+      <h2 class="about-story__heading">من نحن</h2>
+      <div class="about-story__rule"></div>
+      <div class="about-story__cols">
         <p class="about-story__body">
           تأسست عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور على يد فريق من
           المهندسين والخبراء الذين يمتلكون خبرة واسعة في قطاع الطرق والبنية التحتية.
@@ -113,12 +114,6 @@
           موثوقين من داخل العراق وخارجه، ونعتمد معايير فنية دقيقة لضمان الأداء
           المتين وطول العمر التشغيلي لمنتجاتنا.
         </p>
-      </div>
-      <div class="about-story__media">
-        <img src="{{ url_for('static', filename='images/about/founding.jpg') }}"
-             alt="فريق عزم في موقع عمل"
-             class="about-story__img"
-             onerror="this.style.display='none'">
       </div>
     </div>
   </section>
