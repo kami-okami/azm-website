@@ -1,7 +1,7 @@
 ---
 title: "الأعمال الترابية في إنشاء الطرق: ما لا يراه المستخدم لكنه يحدد عمر الطريق"
 slug: earthwork-iraq
-category: أدلة فنية
+category: اعمال التربة
 date: 2026-07-01
 hero_image: /static/images/blog/earthwork-iraq/hero.jpg
 description: لماذا تبدأ أعطال الطرق تحت الأسفلت لا فيه، وكيف تحدد الأعمال الترابية عمر الطريق.
