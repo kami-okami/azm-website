@@ -1,12 +1,15 @@
 # TODO — azm_secure_site
 
-## Missing product images (products page rebuild)
+## Product images (products page rebuild)
 
-The products page (`templates/products.html`, frontend-rebuild) reuses
-existing real photos from `static/img/products/` for all 4 cards and
-the project hero image for the hero.
+The products page (`templates/products.html`, frontend-rebuild) now ships
+7 real-photo cards from `static/img/products/` (all `.jpg`) and reuses the
+home hero image for the products-page hero.
 
 - [x] `static/img/products/track-pads.jpg` — لباد جنزير للمعدات الثقيلة (track pads / heavy-equipment category) — added 2026-07-03
+- [x] `أسنان دلاء الحفارات` (bucket teeth), `قطع غيار المحركات` (engine parts),
+      `رؤوس ومعدات حفر الأرضيات` (drilling picks) — 3 new cards added 2026-07-03
+      using photos that were sitting unused in the repo.
 
 ### Notes
 - The Stitch design originally referenced 5 images under `static/images/products/`
@@ -21,7 +24,8 @@ the project hero image for the hero.
 - 2026-07-03: the 3 bridge/road photos above were originally oversized PNGs
   (1.8–2.3MB each at 1184–1344px wide) despite displaying at ~540px max in a
   card — re-encoded to ~1000px JPEGs (quality 82) for the mobile-data-first
-  requirement in PRODUCT.md.
+  requirement in PRODUCT.md. `ground-drilling-picks.png` (904KB) was the same
+  issue and got the same treatment → `ground-drilling-picks.jpg`.
 
 - In Render dashboard → your service → Environment tab, confirm:
   1. FLASK_ENV=production (NOT development)
