@@ -10,6 +10,9 @@ home hero image for the products-page hero.
 - [x] `أسنان دلاء الحفارات` (bucket teeth), `قطع غيار المحركات` (engine parts),
       `رؤوس ومعدات حفر الأرضيات` (drilling picks) — 3 new cards added 2026-07-03
       using photos that were sitting unused in the repo.
+- [ ] Dedicated products-hero photo instead of reusing the home hero image.
+      Deferred by choice (2026-07-03) — not blocking, revisit when a real
+      products-specific photo is available.
 
 ### Notes
 - The Stitch design originally referenced 5 images under `static/images/products/`

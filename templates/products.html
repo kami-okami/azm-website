@@ -1,24 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Products hero -->
+<!-- Products hero (full-bleed image + directional overlay) -->
 <section class="products-hero" aria-label="منتجاتنا">
-  <div class="products-hero__grid">
+  <picture class="products-hero__media">
+    <source
+      type="image/webp"
+      srcset="
+        {{ url_for('static', filename='img/hero/hero-640.webp') }}   640w,
+        {{ url_for('static', filename='img/hero/hero-1280.webp') }} 1280w,
+        {{ url_for('static', filename='img/hero/hero-1920.webp') }} 1920w"
+      sizes="100vw">
+    <img
+      src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
+      srcset="
+        {{ url_for('static', filename='img/hero/hero-640.png') }}   640w,
+        {{ url_for('static', filename='img/hero/hero-1280.png') }} 1280w,
+        {{ url_for('static', filename='img/hero/hero-1920.png') }} 1920w"
+      sizes="100vw"
+      fetchpriority="high" decoding="async" loading="eager"
+      alt="معدات وقطع غيار عزم لمشاريع الجسور والطرق في العراق"
+      width="1920" height="640">
+  </picture>
+
+  <div class="products-hero__inner">
     <div class="products-hero__text">
       <h1 class="page-title">منتجاتنا</h1>
       <p>
         نحن ملتزمون بتوفير أفضل قطع الغيار والحلول الهندسية للمعدات الثقيلة، الجسور،
         والطرق في جميع أنحاء العراق. جودة استثنائية لدعم مشاريع البنية التحتية الكبرى.
       </p>
-    </div>
-    <div class="products-hero__media">
-      <span class="products-hero__media-glow" aria-hidden="true"></span>
-      <picture>
-        <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/hero-1280.webp') }}">
-        <img src="{{ url_for('static', filename='img/hero/hero-1280.png') }}"
-             alt="معدات وقطع غيار عزم لمشاريع الجسور والطرق في العراق"
-             loading="eager" decoding="async" width="1280" height="640">
-      </picture>
     </div>
   </div>
 </section>
