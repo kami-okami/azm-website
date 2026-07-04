@@ -923,12 +923,17 @@ html, body { overflow-x: clip; }
 @media (min-width:768px){ .products-hero__inner{padding:96px 18px} }
 .products-hero__text{max-width:560px}
 .products-hero__text .page-title{
+  font-size:28px; line-height:1.2;
   margin:0 0 16px; letter-spacing:.2px; text-wrap:balance;
   color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
 }
 .products-hero__text p{
-  color:rgba(255,255,255,.92); font-size:18px; line-height:1.9; margin:0;
+  color:rgba(255,255,255,.92); font-size:16px; line-height:1.85; margin:0;
   text-wrap:pretty; text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+@media (min-width:768px){
+  .products-hero__text .page-title{font-size:38px}
+  .products-hero__text p{font-size:18px}
 }
 
 /* ----- Product grid ----- */
@@ -1047,8 +1052,12 @@ html, body { overflow-x: clip; }
 }
 @media (min-width:768px){ .contact-hero{ padding:96px 18px; min-height:520px; } }
 .contact-hero__inner{ max-width:1120px; margin:0 auto; }
-.contact-hero__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:38px; margin:0 0 16px; color:#fff; }
-.contact-hero__sub{ font-size:18px; line-height:1.85; margin:0 auto; max-width:640px; color:#fff; opacity:.9; }
+.contact-hero__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; line-height:1.2; margin:0 0 16px; color:#fff; }
+.contact-hero__sub{ font-size:16px; line-height:1.85; margin:0 auto; max-width:640px; color:#fff; opacity:.9; }
+@media (min-width:768px){
+  .contact-hero__title{font-size:38px}
+  .contact-hero__sub{font-size:18px}
+}
 
 .contact-section{ max-width:1120px; margin:0 auto; padding:56px 18px 96px; }
 .contact-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:start; }
@@ -1097,8 +1106,12 @@ html, body { overflow-x: clip; }
 }
 @media (min-width:768px){ .blog-hero{ min-height:520px; } }
 .blog-hero__inner{ max-width:1120px; margin:0 auto; text-align:right; }
-.blog-hero__title{ color:#fff; margin:0 0 16px; max-width:680px; }
-.blog-hero__sub{ color:rgba(255,255,255,.9); font-size:18px; line-height:1.9; margin:0; max-width:620px; }
+.blog-hero__title{ font-size:28px; line-height:1.2; color:#fff; margin:0 0 16px; max-width:680px; }
+.blog-hero__sub{ color:rgba(255,255,255,.9); font-size:16px; line-height:1.85; margin:0; max-width:620px; }
+@media (min-width:768px){
+  .blog-hero__title{font-size:38px}
+  .blog-hero__sub{font-size:18px}
+}
 
 /* --- Thank-you hero (text-only tier: no imagery, same height band as Contact/Blog) --- */
 .thankyou-hero{
@@ -1110,8 +1123,12 @@ html, body { overflow-x: clip; }
 }
 @media (min-width:768px){ .thankyou-hero{ padding:96px 18px; min-height:520px; } }
 .thankyou-hero__inner{ max-width:640px; margin:0 auto; }
-.thankyou-hero h2{ font-family:"Changa", sans-serif; font-weight:800; font-size:32px; margin:0 0 12px; color:#fff; }
-.thankyou-hero p{ font-size:17px; line-height:1.8; margin:0 0 20px; color:rgba(255,255,255,.92); }
+.thankyou-hero h2{ font-family:"Changa", sans-serif; font-weight:800; font-size:28px; line-height:1.2; margin:0 0 12px; color:#fff; }
+.thankyou-hero p{ font-size:16px; line-height:1.85; margin:0 0 20px; color:rgba(255,255,255,.92); }
+@media (min-width:768px){
+  .thankyou-hero h2{font-size:38px}
+  .thankyou-hero p{font-size:18px}
+}
 .thankyou-hero .cta-row{ display:flex; justify-content:center; }
 .thankyou-hero .btn{ background:#fff; color:var(--primary); border-color:#fff; }
 .thankyou-hero .btn:hover{ background:#f1f6ff; color:var(--primary-600); }
@@ -1275,9 +1292,13 @@ html, body { overflow-x: clip; }
 .about-hero__inner{ max-width:1120px; margin:0 auto; width:100%; text-align:right; color:#fff; }
 .about-hero__title{
   font-family:"Changa",sans-serif; font-weight:800; color:#fff;
-  font-size:clamp(28px, 4vw, 42px); line-height:1.4; margin:0 0 16px; max-width:780px;
+  font-size:28px; line-height:1.2; margin:0 0 16px; max-width:780px;
 }
-.about-hero__sub{ color:rgba(255,255,255,.9); font-size:18px; line-height:1.9; margin:0; max-width:680px; }
+.about-hero__sub{ color:rgba(255,255,255,.9); font-size:16px; line-height:1.85; margin:0; max-width:680px; }
+@media (min-width:768px){
+  .about-hero__title{font-size:38px}
+  .about-hero__sub{font-size:18px}
+}
 
 /* --- Mission & Vision --- */
 .about-mv{ max-width:1120px; margin:0 auto; padding:64px 18px 24px; }
