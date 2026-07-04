@@ -937,7 +937,7 @@ html, body { overflow-x: clip; }
 }
 
 /* ----- Product grid ----- */
-.products-grid-section{max-width:1120px; margin:0 auto; padding:0 18px 96px}
+.products-grid-section{max-width:1120px; margin:0 auto; padding:56px 18px 96px}
 
 /* ----- Product grid: media tiles. Each tile is a fixed 3:4 crop regardless of the
    source photo's natural proportions (object-fit:cover), so every card in the grid
