@@ -1012,13 +1012,28 @@ html, body { overflow-x: clip; }
   display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;
 }
 .clients-logos__card{
+  height:100%; cursor:pointer; perspective:1400px;
+  transition:transform .2s ease;
+}
+.clients-logos__card:hover{transform:translateY(-4px)}
+.clients-logos__card:focus-visible{outline:3px solid var(--primary); outline-offset:4px; border-radius:16px}
+.clients-logos__card-inner{
+  height:100%; display:grid;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+  transform-style:preserve-3d;
+}
+.clients-logos__card.is-flipped .clients-logos__card-inner{transform:rotateY(180deg)}
+.clients-logos__card-face{
+  grid-area:1 / 1;
   display:flex; flex-direction:column; align-items:center; gap:18px;
   background:var(--card); border:1px solid var(--border);
   border-radius:16px; box-shadow:var(--shadow); padding:36px 28px 30px;
-  text-align:center;
-  transition:transform .2s ease, box-shadow .2s ease;
+  text-align:center; backface-visibility:hidden;
 }
-.clients-logos__card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.clients-logos__card.is-flipped .clients-logos__card-face{box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.clients-logos__card-face--back{transform:rotateY(180deg); justify-content:center; gap:16px}
+.clients-logos__card:not(.is-flipped) .clients-logos__card-face--back{pointer-events:none}
+.clients-logos__card.is-flipped .clients-logos__card-face--front{pointer-events:none}
 .clients-logos__badge{
   align-self:flex-start; font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px;
   padding:4px 12px; border-radius:999px;
@@ -1029,6 +1044,25 @@ html, body { overflow-x: clip; }
 }
 .clients-logos__logo-wrap img{max-width:100%; max-height:100%; object-fit:contain}
 .clients-logos__name{margin:0; font-family:"Changa", sans-serif; font-weight:700; font-size:18px; color:var(--text)}
+.clients-logos__hint{
+  display:flex; align-items:center; gap:6px;
+  font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px; color:var(--muted);
+}
+.clients-logos__hint svg{flex:0 0 auto}
+.clients-logos__back-name{margin:0; font-family:"Changa", sans-serif; font-weight:700; font-size:17px; color:var(--text)}
+.clients-logos__back-row{
+  display:flex; align-items:center; gap:8px; margin:0;
+  font-family:"Tajawal", sans-serif; font-size:15px; color:var(--muted);
+}
+.clients-logos__back-row svg{flex:0 0 auto; color:var(--primary)}
+.clients-logos__back-phone{
+  display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+  font-family:"Tajawal", sans-serif; font-weight:700; font-size:15px;
+  color:var(--primary-600); background:var(--primary-50); border:1px solid var(--border);
+  padding:8px 18px; border-radius:999px;
+  transition:background .15s ease, color .15s ease;
+}
+.clients-logos__back-phone:hover{background:var(--primary); color:#fff}
 
 @media (max-width:900px){
   .clients-logos__grid{grid-template-columns:repeat(2, 1fr)}
