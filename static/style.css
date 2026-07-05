@@ -1006,6 +1006,37 @@ html, body { overflow-x: clip; }
 .clients-header .page-title{margin:0 0 16px}
 .clients-header__sub{color:var(--muted); font-size:18px; line-height:1.9; margin:0 auto; max-width:600px}
 
+.clients-logos{padding:8px 18px 40px}
+.clients-logos__grid{
+  max-width:1260px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;
+}
+.clients-logos__card{
+  display:flex; flex-direction:column; align-items:center; gap:18px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; box-shadow:var(--shadow); padding:36px 28px 30px;
+  text-align:center;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.clients-logos__card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.clients-logos__badge{
+  align-self:flex-start; font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px;
+  padding:4px 12px; border-radius:999px;
+  background:var(--primary-50); color:var(--primary-600); border:1px solid var(--border);
+}
+.clients-logos__logo-wrap{
+  width:100%; height:160px; display:flex; align-items:center; justify-content:center;
+}
+.clients-logos__logo-wrap img{max-width:100%; max-height:100%; object-fit:contain}
+.clients-logos__name{margin:0; font-family:"Changa", sans-serif; font-weight:700; font-size:18px; color:var(--text)}
+
+@media (max-width:900px){
+  .clients-logos__grid{grid-template-columns:repeat(2, 1fr)}
+}
+@media (max-width:520px){
+  .clients-logos__grid{grid-template-columns:1fr}
+}
+
 .clients-stub{padding:24px 18px 96px}
 .clients-stub__card{
   max-width:640px; margin:0 auto; text-align:center;
