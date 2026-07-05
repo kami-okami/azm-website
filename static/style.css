@@ -1071,31 +1071,22 @@ html, body { overflow-x: clip; }
   .clients-logos__grid{grid-template-columns:1fr}
 }
 
-.clients-stub{padding:24px 18px 96px}
-.clients-stub__card{
-  max-width:640px; margin:0 auto; text-align:center;
-  background:var(--card); border:1px solid var(--border);
-  border-radius:16px; box-shadow:var(--shadow); padding:48px 40px;
-}
-.clients-stub__icon{
-  width:80px; height:80px; margin:0 auto 24px; border-radius:999px;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--primary-50); color:var(--primary);
-}
-.clients-stub__title{
+.clients-gallery{padding:8px 18px 96px}
+.clients-gallery__header{text-align:center; max-width:680px; margin:0 auto 32px}
+.clients-gallery__title{
   font-family:"Changa", sans-serif; font-weight:800; font-size:26px;
-  margin:0 0 16px; color:var(--text);
+  margin:0 0 12px; color:var(--text);
 }
-.clients-stub__lead{color:var(--muted); font-size:18px; line-height:1.9; margin:0 0 20px}
-.clients-stub__text{color:var(--muted); font-size:15px; line-height:1.8; margin:0 0 28px}
-.clients-stub__btn{
-  display:inline-block; text-decoration:none;
-  font-family:"Changa", sans-serif; font-weight:800;
-  background:var(--primary); color:#fff;
-  padding:16px 32px; border-radius:14px;
-  transition:background .15s ease;
+.clients-gallery__sub{color:var(--muted); font-size:16px; line-height:1.85; margin:0}
+.clients-gallery__grid{
+  max-width:1260px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;
 }
-.clients-stub__btn:hover{background:var(--primary-600)}
+.clients-gallery__tile{
+  aspect-ratio:1 / 1; border-radius:16px; overflow:hidden;
+  background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow);
+}
+.clients-gallery__tile img{width:100%; height:100%; object-fit:cover; display:block}
 
 /* ==========================================================================
    Contact page (frontend-rebuild) — plain-CSS translation of the Stitch
