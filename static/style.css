@@ -243,7 +243,7 @@ main.container{padding-top:28px}
 
 /* ===== WhatsApp FAB ===== */
 .whatsapp-fab{
-  position:fixed; left:18px; bottom:18px;
+  position:fixed; left:18px; bottom:18px; z-index:60;
   width:56px; height:56px; border-radius:50%;
   background:var(--wa); color:#fff; display:flex; align-items:center; justify-content:center;
   box-shadow:var(--shadow); text-decoration:none;
