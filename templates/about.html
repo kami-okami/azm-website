@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 
 {% block before_main %}
-  <!-- Full-bleed hero with background image overlay -->
+  <!-- Full-bleed hero: flat brand-blue background, matches Blog/Contact/Thank-you -->
   <section class="about-hero" aria-label="من نحن">
-    <div class="about-hero__bg"
-         style="background-image:url('{{ url_for('static', filename='images/about/hero.jpg') }}');">
-    </div>
-    <div class="about-hero__overlay"></div>
     <div class="about-hero__inner">
       <h1 class="about-hero__title">عزم — شريككم في مشاريع الطرق والجسور في العراق</h1>
       <p class="about-hero__sub">
