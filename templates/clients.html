@@ -178,7 +178,11 @@
     <h2 class="clients-gallery__title">جاهزون للتوريد</h2>
     <p class="clients-gallery__sub">من مستودعاتنا إلى مواقع الشحن — منتجات حقيقية بانتظار عملائنا القادمين.</p>
   </div>
-  <div class="clients-gallery__grid">
+  <div class="clients-gallery__slider">
+    <button type="button" class="clients-gallery__arrow clients-gallery__arrow--prev" aria-label="الصورة السابقة">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="10 6 16 12 10 18"/></svg>
+    </button>
+    <div class="clients-gallery__grid">
     <div class="clients-gallery__tile">
       <span class="clients-gallery__tag">مساند ارتكاز</span>
       <div class="clients-gallery__photo">
@@ -239,6 +243,10 @@
         <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-10.webp') }}" alt="اسنان حفر ركائز مربوطة وجاهزة للشحن" loading="lazy" width="1206" height="1211">
       </div>
     </div>
+    </div>
+    <button type="button" class="clients-gallery__arrow clients-gallery__arrow--next" aria-label="الصورة التالية">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14 6 8 12 14 18"/></svg>
+    </button>
   </div>
 </section>
 {% endblock %}
@@ -275,6 +283,55 @@
       }
     });
   });
+})();
+</script>
+
+<script>
+(function () {
+  var slider = document.querySelector('.clients-gallery__grid');
+  var prevBtn = document.querySelector('.clients-gallery__arrow--prev');
+  var nextBtn = document.querySelector('.clients-gallery__arrow--next');
+  if (!slider) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sign convention: modern browsers report scrollLeft as 0 (start) going
+  // negative toward the end in an RTL container, so -1 = forward/"next".
+  function step(dir) {
+    var tile = slider.querySelector('.clients-gallery__tile');
+    var amount = tile ? tile.getBoundingClientRect().width + 20 : slider.clientWidth * 0.8;
+    slider.scrollBy({ left: dir * amount, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { step(1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { step(-1); });
+
+  if (!reduceMotion) {
+    var AUTO_MS = 1500;
+    var timer = null;
+
+    function atEnd() {
+      var maxScroll = slider.scrollWidth - slider.clientWidth;
+      return Math.abs(maxScroll - Math.abs(slider.scrollLeft)) < 4;
+    }
+
+    function advance() {
+      if (atEnd()) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        step(-1);
+      }
+    }
+
+    function start() { if (!timer) timer = setInterval(advance, AUTO_MS); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    start();
+    ['mouseenter', 'touchstart', 'pointerdown'].forEach(function (evt) {
+      slider.addEventListener(evt, stop, { passive: true });
+    });
+    slider.addEventListener('mouseleave', start);
+  }
 })();
 </script>
 {% endblock %}

@@ -1079,15 +1079,42 @@ html, body { overflow-x: clip; }
   margin:0 0 12px; color:var(--text);
 }
 .clients-gallery__sub{color:var(--muted); font-size:16px; line-height:1.85; margin:0}
+.clients-gallery__slider{ position:relative; max-width:1260px; margin:0 auto; }
 .clients-gallery__grid{
-  max-width:1260px; margin:0 auto; align-items:start;
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;
+  max-width:none; margin:0;
+  display:flex; gap:20px;
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; scroll-padding-inline:18px;
+  padding-block:6px 16px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
 }
+.clients-gallery__arrow{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+  width:52px; height:52px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary); border:none; box-shadow:0 8px 20px rgba(2,19,51,.28);
+  color:#fff; cursor:pointer; padding:0;
+  transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.clients-gallery__arrow:hover{ background:var(--primary-600); box-shadow:0 12px 28px rgba(2,19,51,.34); }
+.clients-gallery__arrow:active{ transform:translateY(-50%) scale(.94); }
+.clients-gallery__arrow:focus-visible{ outline:3px solid var(--primary); outline-offset:3px; }
+.clients-gallery__arrow--prev{ right:4px; }
+.clients-gallery__arrow--next{ left:4px; }
+@media (max-width:640px){ .clients-gallery__arrow{ display:none; } }
+.clients-gallery__grid::-webkit-scrollbar{ height:8px; }
+.clients-gallery__grid::-webkit-scrollbar-track{ background:transparent; }
+.clients-gallery__grid::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
+.clients-gallery__grid::-webkit-scrollbar-thumb:hover{ background:var(--primary-50); }
 .clients-gallery__tile{
+  flex:0 0 auto; width:min(240px, 72vw);
+  scroll-snap-align:start;
   display:flex; flex-direction:column; align-items:center; gap:10px;
   background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow);
   border-radius:16px; padding:14px;
 }
+@media (min-width:640px){ .clients-gallery__tile{ width:220px; } }
 .clients-gallery__tag{
   font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px; text-align:center;
   padding:4px 12px; border-radius:999px;
