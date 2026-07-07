@@ -915,7 +915,8 @@ def sitemap():
         ('home','daily'),
         ('about','weekly'),
         ('products','weekly'),
-        ('catalog','weekly'),   # ← new
+        ('clients','weekly'),
+        ('blog','weekly'),
         ('contact','monthly'),
     ]
     base = request.url_root.rstrip('/')
@@ -925,6 +926,12 @@ def sitemap():
         loc = f"{base}{url_for(endpoint)}"
         out.append(
             f"<url><loc>{loc}</loc><changefreq>{freq}</changefreq><lastmod>{today}</lastmod></url>"
+        )
+    for post in get_blog_posts():
+        loc = f"{base}{url_for('blog_post', slug=post['slug'])}"
+        lastmod = post['date'] or today
+        out.append(
+            f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><lastmod>{lastmod}</lastmod></url>"
         )
     out.append("</urlset>")
     return Response("\n".join(out), mimetype="application/xml; charset=utf-8")
