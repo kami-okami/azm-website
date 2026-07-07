@@ -639,6 +639,8 @@ def blog():
         posts=get_blog_posts(),
         active_page="blog",
         title="المدونة",
+        company=COMPANY_NAME,
+        meta_description="مدونة عزم: أدلة فنية ومقالات عن قطع الغيار ومستلزمات الطرق والجسور في العراق — نصائح هندسية وتجارب مشاريع لدعم قرارات التنفيذ."
     )
 
 @app.route("/blog/<slug>")
@@ -648,7 +650,14 @@ def blog_post(slug):
     post = next((p for p in posts if p["slug"] == slug), None)
     if post is None:
         abort(404)
-    return render_template("blog_post.html", post=post, active_page="blog")
+    return render_template(
+        "blog_post.html",
+        post=post,
+        active_page="blog",
+        title=post["title"],
+        company=COMPANY_NAME,
+        meta_description=post["description"]
+    )
 
 @app.route('/catalog')
 def catalog():
