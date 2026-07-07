@@ -59,7 +59,13 @@
     "url": "{{ request.url_root.rstrip('/') }}",
     "email": "mailto:info@azmsupply.com",
     "telephone": ["+9647802280589","+9647740818896","+9647518232611"],
-    "address": { "@type": "PostalAddress", "addressCountry": "IQ" },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "المنطقة الصناعية، هوانة",
+      "addressLocality": "السليمانية",
+      "addressRegion": "السليمانية",
+      "addressCountry": "IQ"
+    },
     "areaServed": "IQ",
     "logo": "{{ url_for('static', filename='logo.png', _external=True) }}",
     "image": "{{ url_for('static', filename='logo.png', _external=True) }}",
@@ -246,6 +252,7 @@
               <a href="tel:+9647518232611">07518232611</a>
             </div>
             <a class="site-footer__email" href="mailto:info@azmsupply.com" dir="ltr">info@azmsupply.com</a>
+            <p class="site-footer__address">السليمانية، المنطقة الصناعية، هوانة</p>
           </div>
         </div>
 
