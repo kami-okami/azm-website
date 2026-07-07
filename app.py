@@ -882,6 +882,8 @@ def capi_track():
 # ========================================================================
 @app.route("/debug/env")
 def debug_env():
+    if not is_logged_in():
+        return redirect(url_for('home'))
     import os
     return {
         "META_PIXEL_ID": os.getenv("META_PIXEL_ID"),
