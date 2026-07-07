@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="thankyou-hero">
+  <div class="thankyou-hero__inner">
+    <h2>404 — الصفحة غير موجودة</h2>
+    <p>الرابط الذي حاولت فتحه غير متوفر أو تم نقله. تحقق من الرابط، أو عد إلى الصفحة الرئيسية.</p>
+    <div class="cta-row">
+      <a class="btn" href="{{ url_for('home') }}">العودة للرئيسية</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

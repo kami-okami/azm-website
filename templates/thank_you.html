@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero">
-  <h2>شكراً لتواصلكم</h2>
-  <p>تم استلام رسالتكم بنجاح. سنقوم بالرد في أقرب وقت ممكن.</p>
-  <div class="cta-row">
-    <a class="btn" href="{{ url_for('home') }}">العودة للرئيسية</a>
-  </div>
+<section class="thankyou-hero">
+  <div class="thankyou-hero__inner">
+    <h2>شكراً لتواصلكم</h2>
+    <p>تم استلام رسالتكم بنجاح. سنقوم بالرد في أقرب وقت ممكن.</p>
+    <div class="cta-row">
+      <a class="btn" href="{{ url_for('home') }}">العودة للرئيسية</a>
+    </div>
 
-  {# Provide lead_event_id to JS without putting Jinja inside JS #}
-  <div id="lead-dedupe" data-lead-id="{{ lead_event_id or '' }}" hidden></div>
+    {# Provide lead_event_id to JS without putting Jinja inside JS #}
+    <div id="lead-dedupe" data-lead-id="{{ lead_event_id or '' }}" hidden></div>
+  </div>
 </section>
 {% endblock %}
 

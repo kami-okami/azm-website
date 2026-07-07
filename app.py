@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 from flask import (
     Flask, render_template, request, redirect, url_for,
-    flash, session, g, send_from_directory, Response, make_response, jsonify  # === META CAPI: jsonify
+    flash, session, g, send_from_directory, Response, make_response, jsonify, abort  # === META CAPI: jsonify
 )
 from dotenv import load_dotenv
 import requests
@@ -21,6 +21,9 @@ import secrets
 from urllib.parse import urlsplit, urlunsplit  # <-- NEW
 import hashlib  # === META CAPI: hashing
 import uuid     # === META CAPI: event_id
+import markdown
+import frontmatter
+from pathlib import Path
 
 load_dotenv()
 
@@ -71,6 +74,18 @@ ADMIN_PASSWORD_HASH = (os.getenv("ADMIN_PASSWORD_HASH", "") or "").strip()
 # --- reCAPTCHA ---
 RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
 RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")
+
+# Hosts allowed in reCAPTCHA's siteverify "hostname" field.
+# Comma-separated env var; falls back to production hosts only.
+# Local dev: add "localhost,127.0.0.1" to this var in .env.
+RECAPTCHA_ALLOWED_HOSTS = {
+    h.strip()
+    for h in os.getenv(
+        "RECAPTCHA_ALLOWED_HOSTS",
+        "azmsupply.com,www.azmsupply.com"
+    ).split(",")
+    if h.strip()
+}
 
 # --- Optional Email (SMTP) ---
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
@@ -207,7 +222,7 @@ def validate_csrf(token_from_form):
 
 @app.context_processor
 def inject_globals():
-    return dict(csrf_token=get_csrf_token())
+    return dict(csrf_token=get_csrf_token(), current_year=datetime.now().year)
 
 # NEW: make facebook_url / whatsapp_number / whatsapp_text_encoded available everywhere
 @app.context_processor
@@ -224,7 +239,30 @@ def inject_meta_vars():
     return {"META_PIXEL_ID": META_PIXEL_ID}
 # ========================================================================
 
+# DEV-ONLY: let the impeccable "live" helper (http://localhost:8400) through
+# the CSP. Registered BEFORE set_security_headers so it runs AFTER it (Flask
+# executes after_request hooks in reverse registration order), letting it append
+# to the CSP that the protected block sets. Never active when FLASK_ENV=production.
+@app.after_request
+def _impeccable_live_csp_dev(resp):
+    if os.getenv("FLASK_ENV") != "production":
+        csp = resp.headers.get("Content-Security-Policy")
+        if csp and "localhost:8400" not in csp:
+            csp = csp.replace(
+                "script-src 'self'",
+                "script-src 'self' http://localhost:8400",
+            ).replace(
+                "connect-src 'self'",
+                "connect-src 'self' http://localhost:8400 ws://localhost:8400",
+            ).replace(
+                "style-src 'self'",
+                "style-src 'self' http://localhost:8400",
+            )
+            resp.headers["Content-Security-Policy"] = csp
+    return resp
+
 # Set strong headers (CSP, etc.)
+# === BEGIN SECURITY HEADERS — DO NOT MODIFY ===
 @app.after_request
 def set_security_headers(resp):
     csp = (
@@ -248,6 +286,7 @@ def set_security_headers(resp):
         resp.headers["Pragma"] = "no-cache"
         resp.headers["X-Robots-Tag"] = "noindex, nofollow"
     return resp
+# === END SECURITY HEADERS ===
 
 # --------------- Validation ---------------
 IRAQ_ALLOWED_PREFIXES = {"75", "77", "78", "79"}
@@ -287,7 +326,7 @@ def verify_recaptcha(token):
             app.logger.warning("RECAPTCHA_FAIL: %s", data)
             return False
         host = data.get("hostname", "")
-        if host not in {"azmsupply.com", "www.azmsupply.com"}:
+        if host not in RECAPTCHA_ALLOWED_HOSTS:
             app.logger.warning("RECAPTCHA_HOST_MISMATCH: %r", host)
             return False
         return True
@@ -372,6 +411,7 @@ def is_logged_in():
     return bool(session.get('logged_in'))
 
 # === META CAPI: helpers for hashing + sender ===
+# === BEGIN CAPI HELPERS — DO NOT MODIFY ===
 def _sha256(v):
     if not v:
         return None
@@ -456,6 +496,88 @@ def _send_to_capi(event_name, event_id, user_data=None, custom_data=None, event_
     except Exception as e:
         return 500, f"request_error: {e}"
 # =================================================
+# === END CAPI HELPERS ===
+
+# ==========================================================================
+# Blog system — loads posts from content/blog/*.md
+# ==========================================================================
+
+BLOG_CONTENT_DIR = Path(__file__).parent / "content" / "blog"
+# Known/suggested category labels. NOT a strict whitelist — posts may use any
+# category (see _load_blog_posts): an unlisted one still publishes, it only logs
+# a spell-check warning. Add a label here once you'll reuse it so future typos
+# of it get caught. There is no on-site category filter; the label is shown as a
+# per-post badge only.
+BLOG_CATEGORIES = ["أدلة فنية", "مشاريع"]
+
+# In-memory cache of loaded posts. Reloaded on each request in development,
+# cached in production.
+_blog_posts_cache = None
+
+def _markdown_to_html(md_text):
+    """Convert markdown body to HTML, allowing inline HTML for video tags etc."""
+    return markdown.markdown(
+        md_text,
+        extensions=["fenced_code", "tables", "attr_list", "md_in_html"],
+        output_format="html5",
+    )
+
+def _load_blog_posts():
+    """Read all markdown files in content/blog/, parse frontmatter + body."""
+    posts = []
+    if not BLOG_CONTENT_DIR.exists():
+        return posts
+
+    for md_path in BLOG_CONTENT_DIR.glob("*.md"):
+        try:
+            post = frontmatter.load(md_path)
+            metadata = post.metadata or {}
+
+            # Required fields
+            slug = metadata.get("slug") or md_path.stem
+            title = metadata.get("title", "").strip()
+            if not title:
+                app.logger.warning("BLOG_POST_MISSING_TITLE path=%s", md_path)
+                continue
+
+            category = metadata.get("category", "").strip()
+            if category and category not in BLOG_CATEGORIES:
+                app.logger.warning(
+                    "BLOG_POST_UNKNOWN_CATEGORY path=%s category=%r",
+                    md_path, category
+                )
+
+            # Optional fields
+            date_str = metadata.get("date", "")
+            if hasattr(date_str, "strftime"):
+                date_str = date_str.strftime("%Y-%m-%d")
+            else:
+                date_str = str(date_str) if date_str else ""
+
+            posts.append({
+                "slug": slug,
+                "title": title,
+                "category": category,
+                "date": date_str,
+                "hero_image": metadata.get("hero_image", ""),
+                "description": metadata.get("description", ""),
+                "reading_minutes": metadata.get("reading_minutes", ""),
+                "body_html": _markdown_to_html(post.content),
+            })
+        except Exception:
+            app.logger.exception("BLOG_POST_LOAD_FAILED path=%s", md_path)
+            continue
+
+    # Sort newest first by date string (YYYY-MM-DD sorts correctly)
+    posts.sort(key=lambda p: p["date"], reverse=True)
+    return posts
+
+def get_blog_posts(force_reload=False):
+    """Return all posts. Cached in production, reloaded each call in debug."""
+    global _blog_posts_cache
+    if app.debug or force_reload or _blog_posts_cache is None:
+        _blog_posts_cache = _load_blog_posts()
+    return _blog_posts_cache
 
 # --------------- Routes ---------------
 @app.route('/')
@@ -497,17 +619,49 @@ def products():
         meta_description="المنتجات: مساند ارتكاز مطاطية، مفاصل تمدد للجسور، أسنان قشط وحفر، أسنان شفلات وحفارات، ومستلزمات إعادة تأهيل الطرق — توريد سريع داخل العراق."
     )
 
-@app.route('/catalog')
-def catalog():
+@app.route("/clients")
+def clients():
     return render_template(
-        'catalog.html',
-        title="الكتالوج",
+        "clients.html",
+        title="عملاؤنا",
         company=COMPANY_NAME,
-        active_page='catalog',
+        active_page='clients',
         facebook_url=FACEBOOK_URL,
         whatsapp_number=WHATSAPP_NUMBER,
         whatsapp_text_encoded=requests.utils.quote(WHATSAPP_MESSAGE, safe='')
     )
+
+@app.route("/blog")
+def blog():
+    """Blog list page — reverse-chronological list of posts (no category filter)."""
+    return render_template(
+        "blog.html",
+        posts=get_blog_posts(),
+        active_page="blog",
+        title="المدونة",
+        company=COMPANY_NAME,
+        meta_description="مدونة عزم: أدلة فنية ومقالات عن قطع الغيار ومستلزمات الطرق والجسور في العراق — نصائح هندسية وتجارب مشاريع لدعم قرارات التنفيذ."
+    )
+
+@app.route("/blog/<slug>")
+def blog_post(slug):
+    """Single post page."""
+    posts = get_blog_posts()
+    post = next((p for p in posts if p["slug"] == slug), None)
+    if post is None:
+        abort(404)
+    return render_template(
+        "blog_post.html",
+        post=post,
+        active_page="blog",
+        title=post["title"],
+        company=COMPANY_NAME,
+        meta_description=post["description"]
+    )
+
+@app.route('/catalog')
+def catalog():
+    return redirect(url_for("products"), code=301)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -559,6 +713,7 @@ def contact():
         except Exception:
             app.logger.exception("CONTACT_EMAIL_UNHANDLED")
 
+        # === BEGIN SERVER-SIDE LEAD EVENT — DO NOT MODIFY ===
         # === META CAPI: Server-side Lead with hashed PII + cookie fbp/fbc
         try:
             event_id = str(uuid.uuid4())
@@ -602,6 +757,7 @@ def contact():
         except Exception as e:
             app.logger.warning("CAPI Lead send failed: %s", e)
         # === /META CAPI
+        # === END SERVER-SIDE LEAD EVENT ===
 
         return redirect(url_for('thank_you'))
 
@@ -759,7 +915,8 @@ def sitemap():
         ('home','daily'),
         ('about','weekly'),
         ('products','weekly'),
-        ('catalog','weekly'),   # ← new
+        ('clients','weekly'),
+        ('blog','weekly'),
         ('contact','monthly'),
     ]
     base = request.url_root.rstrip('/')
@@ -770,8 +927,24 @@ def sitemap():
         out.append(
             f"<url><loc>{loc}</loc><changefreq>{freq}</changefreq><lastmod>{today}</lastmod></url>"
         )
+    for post in get_blog_posts():
+        loc = f"{base}{url_for('blog_post', slug=post['slug'])}"
+        lastmod = post['date'] or today
+        out.append(
+            f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><lastmod>{lastmod}</lastmod></url>"
+        )
     out.append("</urlset>")
     return Response("\n".join(out), mimetype="application/xml; charset=utf-8")
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template(
+        '404.html',
+        title="الصفحة غير موجودة",
+        company=COMPANY_NAME,
+        active_page=None,
+        meta_description="الصفحة التي تبحث عنها غير موجودة على موقع عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور."
+    ), 404
 
 
 # --- Icon routes at root (fix mobile/Google 404s) ---
@@ -814,6 +987,7 @@ def cache_icons(resp):
     return resp
 
 # === META CAPI: public endpoint the frontend calls (from base.html JS) ===
+# === BEGIN CAPI RELAY ROUTE — DO NOT MODIFY ===
 @app.post("/capi/track")
 def capi_track():
     """
@@ -880,6 +1054,7 @@ def capi_track():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 200
 # ========================================================================
+# === END CAPI RELAY ROUTE ===
 @app.route("/debug/env")
 def debug_env():
     if not is_logged_in():

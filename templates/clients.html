@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page header -->
+<header class="clients-header">
+  <h1 class="page-title">عملاؤنا</h1>
+  <p class="clients-header__sub">
+    نفخر بثقة شركات المقاولات والجهات الحكومية في العراق — من البصرة إلى كردستان.
+  </p>
+</header>
+
+<!-- Client logos grid -->
+
+<section class="clients-logos" aria-label="شعارات عملائنا">
+  <div class="clients-logos__grid">
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض موقع بلدية بردرش">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge clients-logos__badge--gov">جهة حكومية</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/bardarash.webp') }}" alt="بلدية بردرش" loading="lazy" width="300" height="300">
+          </div>
+          <p class="clients-logos__name">بلدية بردرش</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض الموقع
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">بلدية بردرش</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة دهوك
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض تفاصيل نجم الزاهر للمقاولات العامة">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge">شركة مقاولات</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/najimalzahr.webp') }}" alt="نجم الزاهر للمقاولات العامة" loading="lazy" width="297" height="300">
+          </div>
+          <p class="clients-logos__name">نجم الزاهر للمقاولات العامة</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض التفاصيل
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">نجم الزاهر للمقاولات العامة</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة البصرة
+          </p>
+          <a class="clients-logos__back-phone" href="tel:+9647810479602" tabindex="-1">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            07810479602
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض موقع المصدر للمقاولات العامة">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge">شركة مقاولات</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/masdar.webp') }}" alt="المصدر للمقاولات العامة" loading="lazy" width="296" height="300">
+          </div>
+          <p class="clients-logos__name">المصدر للمقاولات العامة</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض الموقع
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">المصدر للمقاولات العامة</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة العمارة
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض تفاصيل نهج المستقبل للمقاولات والاستثمار">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge">شركة مقاولات</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/nahjalmustqbal.webp') }}" alt="نهج المستقبل للمقاولات والاستثمار" loading="lazy" width="300" height="245">
+          </div>
+          <p class="clients-logos__name">نهج المستقبل للمقاولات والاستثمار</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض التفاصيل
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">نهج المستقبل للمقاولات والاستثمار</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة كركوك
+          </p>
+          <a class="clients-logos__back-phone" href="tel:+9647507747350" tabindex="-1">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            07507747350
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض تفاصيل الأمل لحفر الكيبل الضوئي">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge">شركة مقاولات</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/amal.webp') }}" alt="الأمل لحفر الكيبل الضوئي" loading="lazy" width="257" height="300">
+          </div>
+          <p class="clients-logos__name">الأمل لحفر الكيبل الضوئي</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض التفاصيل
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">الأمل لحفر الكيبل الضوئي</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة السليمانية
+          </p>
+          <a class="clients-logos__back-phone" href="tel:+9647704407474" tabindex="-1">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            07704407474
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-logos__card" tabindex="0" role="button" aria-pressed="false" aria-label="عرض تفاصيل المسرة للاساسات">
+      <div class="clients-logos__card-inner">
+        <div class="clients-logos__card-face clients-logos__card-face--front">
+          <span class="clients-logos__badge">شركة مقاولات</span>
+          <div class="clients-logos__logo-wrap">
+            <img src="{{ url_for('static', filename='images/clients/clients_logos/masara_asasat.webp') }}" alt="المسرة للاساسات" loading="lazy" width="300" height="291">
+          </div>
+          <p class="clients-logos__name">المسرة للاساسات</p>
+          <span class="clients-logos__hint">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            اضغط لعرض التفاصيل
+          </span>
+        </div>
+        <div class="clients-logos__card-face clients-logos__card-face--back" aria-hidden="true">
+          <p class="clients-logos__back-name">المسرة للاساسات</p>
+          <p class="clients-logos__back-row">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            محافظة بغداد
+          </p>
+          <a class="clients-logos__back-phone" href="tel:+9647807632450" tabindex="-1">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            07807632450
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Shipping / warehouse evidence gallery -->
+<section class="clients-gallery" aria-label="صور شحن منتجاتنا">
+  <div class="clients-gallery__header">
+    <h2 class="clients-gallery__title">جاهزون للتوريد</h2>
+    <p class="clients-gallery__sub">من مستودعاتنا إلى مواقع الشحن — منتجات حقيقية بانتظار عملائنا القادمين.</p>
+  </div>
+  <div class="clients-gallery__slider">
+    <button type="button" class="clients-gallery__arrow clients-gallery__arrow--prev" aria-label="الصورة السابقة">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="10 6 16 12 10 18"/></svg>
+    </button>
+    <div class="clients-gallery__grid">
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">مساند ارتكاز</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-1.webp') }}" alt="مساند ارتكاز جاهزة للشحن" loading="lazy" width="1400" height="1050">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">مفاصل تمدد</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-2.webp') }}" alt="مفاصل تمدد جاهزة للشحن" loading="lazy" width="960" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">اسنان قشط اسفلت</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-3.webp') }}" alt="اسنان قشط اسفلت معبأة" loading="lazy" width="960" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">مفاصل تمدد</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-4.webp') }}" alt="مفاصل تمدد مغلفة على منصة خشبية" loading="lazy" width="720" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">اسنان قشط اسفلت</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-5.webp') }}" alt="اسنان قشط اسفلت معبأة في المستودع" loading="lazy" width="960" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">مفاصل تمدد</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-6.webp') }}" alt="مفاصل تمدد في موقع الشحن" loading="lazy" width="1400" height="1050">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">قطع غيار آليات ثقيلة</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-7.webp') }}" alt="قطع غيار آليات ثقيلة مغلفة وجاهزة للشحن" loading="lazy" width="720" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">اسنان حفر ركائز و هولدرات</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-8.webp') }}" alt="اسنان حفر ركائز وهولدرات معبأة على منصة نقل" loading="lazy" width="1280" height="720">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">باد قبقاب</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-9.webp') }}" alt="باد قبقاب في المستودع قبل الشحن" loading="lazy" width="720" height="1280">
+      </div>
+    </div>
+    <div class="clients-gallery__tile">
+      <span class="clients-gallery__tag">اسنان حفر ركائز</span>
+      <div class="clients-gallery__photo">
+        <img src="{{ url_for('static', filename='images/clients/site_photos/shipping-10.webp') }}" alt="اسنان حفر ركائز مربوطة وجاهزة للشحن" loading="lazy" width="1206" height="1211">
+      </div>
+    </div>
+    </div>
+    <button type="button" class="clients-gallery__arrow clients-gallery__arrow--next" aria-label="الصورة التالية">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14 6 8 12 14 18"/></svg>
+    </button>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+  var cards = document.querySelectorAll('.clients-logos__card');
+  cards.forEach(function (card) {
+    var front = card.querySelector('.clients-logos__card-face--front');
+    var back = card.querySelector('.clients-logos__card-face--back');
+    var phoneLink = back ? back.querySelector('a') : null;
+
+    function setFlipped(flipped) {
+      card.classList.toggle('is-flipped', flipped);
+      card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
+      if (front) front.setAttribute('aria-hidden', flipped ? 'true' : 'false');
+      if (back) back.setAttribute('aria-hidden', flipped ? 'false' : 'true');
+      if (phoneLink) phoneLink.setAttribute('tabindex', flipped ? '0' : '-1');
+    }
+
+    setFlipped(false);
+
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      setFlipped(!card.classList.contains('is-flipped'));
+    });
+
+    card.addEventListener('keydown', function (e) {
+      if (e.target !== card) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setFlipped(!card.classList.contains('is-flipped'));
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var slider = document.querySelector('.clients-gallery__grid');
+  var prevBtn = document.querySelector('.clients-gallery__arrow--prev');
+  var nextBtn = document.querySelector('.clients-gallery__arrow--next');
+  if (!slider) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Sign convention: modern browsers report scrollLeft as 0 (start) going
+  // negative toward the end in an RTL container, so -1 = forward/"next".
+  function step(dir) {
+    var tile = slider.querySelector('.clients-gallery__tile');
+    var amount = tile ? tile.getBoundingClientRect().width + 20 : slider.clientWidth * 0.8;
+    slider.scrollBy({ left: dir * amount, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { step(1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { step(-1); });
+
+  if (!reduceMotion) {
+    var AUTO_MS = 1500;
+    var timer = null;
+
+    function atEnd() {
+      var maxScroll = slider.scrollWidth - slider.clientWidth;
+      return Math.abs(maxScroll - Math.abs(slider.scrollLeft)) < 4;
+    }
+
+    function advance() {
+      if (atEnd()) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        step(-1);
+      }
+    }
+
+    function start() { if (!timer) timer = setInterval(advance, AUTO_MS); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    start();
+    ['mouseenter', 'touchstart', 'pointerdown'].forEach(function (evt) {
+      slider.addEventListener(evt, stop, { passive: true });
+    });
+    slider.addEventListener('mouseleave', start);
+  }
+})();
+</script>
+{% endblock %}

@@ -41,8 +41,9 @@ main.container{padding-top:28px}
 /* ===== Header ===== */
 .site-header{
   position:sticky; top:0; z-index:50;
-  background:var(--primary);
-  box-shadow:0 2px 16px rgba(38,127,221,.22);
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(2,19,51,.06);
 
   /* STEP 2: lock header height to prevent CLS on font swap */
   min-height: var(--header-h);
@@ -53,26 +54,37 @@ main.container{padding-top:28px}
 }
 
 /* Brand (logo + name) */
-.brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:#fff}
+.brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--text)}
 .brand-logo{height:68px; width:auto; display:block}
 .brand-text{display:flex; flex-direction:column}
-.site-title{font-family:"Changa", sans-serif; font-weight:800; font-size:24px; color:#fff}
-.site-subtitle{color:rgba(255,255,255,.82); font-size:12px}
+.site-title{font-family:"Changa", sans-serif; font-weight:800; font-size:24px; color:var(--text)}
+.site-subtitle{color:var(--muted); font-size:12px}
 
 /* ===== Nav ===== */
 .nav{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
-.nav a{color:#fff; text-decoration:none; font-weight:700; position:relative}
-.nav a:hover{opacity:.9}
-.nav .btn.small{
-  padding:10px 14px; font-weight:800;
-  background:#fff; color:var(--primary)!important; border:none; box-shadow:var(--shadow);
-}
-.nav .btn.small:hover{background:#f8fbff; color:var(--primary-600)!important}
+.nav-links{display:flex; align-items:center; gap:26px}
+.nav-actions{display:flex; align-items:center; gap:14px}
+.nav a{color:var(--muted); text-decoration:none; font-weight:700; position:relative}
+.nav a:hover{color:var(--primary)}
+.nav-links a.active{color:var(--primary)}
+.nav-logout{background:none; border:none; color:var(--muted); font-weight:700; cursor:pointer}
+.nav-logout:hover{color:var(--primary)}
 
-/* Active page underline */
-.nav a.active::after{
+/* Stitch-style solid blue pill CTA */
+.nav-cta{
+  padding:10px 24px; border-radius:999px; font-weight:800;
+  background:var(--primary); color:#fff!important;
+  border:1px solid var(--primary);
+  transition:background .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+.nav-cta:hover{background:var(--primary-600); border-color:var(--primary-600); box-shadow:var(--shadow); color:#fff!important}
+.nav-cta:active{transform:scale(.96)}
+.nav-cta.active{background:var(--primary-600); border-color:var(--primary-600)}
+
+/* Active page underline (primary links only) */
+.nav-links a.active::after{
   content:''; position:absolute; bottom:-6px; left:0; right:0; height:3px;
-  background:#fff; border-radius:2px;
+  background:var(--primary); border-radius:2px;
 }
 
 /* Social (Facebook icon) */
@@ -80,11 +92,11 @@ main.container{padding-top:28px}
 .icon-link{
   display:inline-flex; align-items:center; justify-content:center;
   width:40px; height:40px; border-radius:50%;
-  background:transparent; border:1px solid rgba(255,255,255,.65);
-  color:#fff; text-decoration:none;
+  background:transparent; border:1px solid var(--border);
+  color:var(--primary); text-decoration:none;
   transition:transform .15s ease, border-color .15s ease, background .15s ease;
 }
-.icon-link:hover{transform:translateY(-1px); border-color:#fff; background:rgba(255,255,255,.14)}
+.icon-link:hover{transform:translateY(-1px); border-color:var(--primary); background:var(--primary-50)}
 
 /* ===== Buttons (general) ===== */
 .btn{
@@ -231,7 +243,7 @@ main.container{padding-top:28px}
 
 /* ===== WhatsApp FAB ===== */
 .whatsapp-fab{
-  position:fixed; left:18px; bottom:18px;
+  position:fixed; left:18px; bottom:18px; z-index:60;
   width:56px; height:56px; border-radius:50%;
   background:var(--wa); color:#fff; display:flex; align-items:center; justify-content:center;
   box-shadow:var(--shadow); text-decoration:none;
@@ -241,7 +253,7 @@ main.container{padding-top:28px}
 
 /* ===== Clean Hamburger (stacked bars, no borders) ===== */
 .hamburger{display:none; background:transparent; border:none; padding:0; cursor:pointer}
-.hamburger span{display:block; width:28px; height:3px; background:#fff; border-radius:3px}
+.hamburger span{display:block; width:28px; height:3px; background:var(--text); border-radius:3px}
 
 /* ===== Mobile tweaks ===== */
 @media (max-width: 900px){
@@ -255,10 +267,18 @@ main.container{padding-top:28px}
 
   .nav{
     position:absolute; inset-inline:0; top:80px;
-    background:var(--primary);
+    background:#fff;
     display:none; flex-direction:column; gap:12px; padding:14px 18px;
+    border-top:1px solid var(--border);
+    box-shadow:0 14px 26px rgba(2,19,51,.12);
   }
   .nav.open{display:flex}
+  .nav-links,
+  .nav-actions{
+    display:flex; flex-direction:column; align-items:stretch;
+    gap:12px; width:100%; margin:0;
+  }
+  .nav-cta{text-align:center}
 }
 
 @media (max-width: 768px){
@@ -281,11 +301,11 @@ main.container{padding-top:28px}
   .brand{gap:10px}
   .brand-logo{height:48px}
   .nav a{font-size:16px}
-  .nav .btn.small{padding:10px 12px}
+  .nav-cta{padding:10px 12px}
   .hero{padding:20px}
   .hero h2{font-size:26px}
   .cards{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-  .whatsapp-fab{right:16px; left:auto; width:60px; height:60px}
+  .whatsapp-fab{width:60px; height:60px}
   .icon-link{width:40px; height:40px}
 }
 
@@ -313,12 +333,6 @@ main.container{padding-top:28px}
 .seo-intro ul{ padding-inline-start:1.2em; margin:8px 0; }
 .seo-intro li{ margin:4px 0; }
 
-/* two-column on desktop, single on mobile */
-.seo-grid{ display:grid; gap:14px; }
-@media (min-width: 900px){
-  .seo-grid{ grid-template-columns: 1fr 1fr; }
-}
-
 /* Color override for SEO block text on hero */
 .seo-intro,
 .seo-intro h2,
@@ -329,8 +343,10 @@ main.container{padding-top:28px}
   text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
-/* === Prevent tiny horizontal bleed from full-bleed hero inside .container === */
-.container { overflow-x: clip; }
+/* === Full-bleed safety net ===
+   html/body clip the tiny 100vw overflow (scrollbar width) so the full-bleed
+   hero produces no horizontal scrollbar. .container must NOT clip here, or it
+   would crop the full-bleed hero back to container width. */
 html, body { overflow-x: clip; }
 
 /* Ensure hero H1 is readable */
@@ -372,34 +388,17 @@ html, body { overflow-x: clip; }
   color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
-/* === HOTFIX: restore Facebook icon placement in the header nav === */
-.site-header .nav .social { margin-inline-start: 6px !important; order: initial !important; }
-
-/* (Optional) If the site title looked larger, lock it back to the intended size */
+/* Lock the site title to its intended size */
 .site-title { font-size: 24px !important; }
 
-/* === DESKTOP NAV HOTFIX: keep one row, CTA inline, Facebook last-left === */
+/* === DESKTOP NAV: three-zone layout — brand (right) · links (center) · actions (left) === */
 @media (min-width: 901px){
-  /* keep the nav on a single line */
-  .nav{ flex-wrap: nowrap; align-items:center; }
-
-  /* make sure items don't wrap individually */
-  .nav a,
-  .nav .btn.small,
-  .nav .social { white-space: nowrap; }
-
-  /* show CTA just before Facebook (and keep it in the same row) */
-  .nav .btn.small{ order: 98; }
-
-  /* push Facebook block to the far left and make it the last item */
-  .site-header .nav .social{
-    margin-inline-start: auto !important; /* in RTL this becomes margin-right:auto */
-    order: 99 !important;
-  }
+  .nav{ flex:1; flex-wrap:nowrap; }
+  .nav-links{ margin-inline:auto; }      /* center the primary links */
+  .nav-links a,
+  .nav-cta,
+  .nav-actions a{ white-space:nowrap; }
 }
-
-/* keep normal (compact) spacing */
-.site-header .nav .social { margin-inline-start: 6px; }
 
 /* === Step 6: tiny hero stabilizer for small screens (no visual change) === */
 @media (max-width: 900px){
@@ -408,3 +407,1064 @@ html, body { overflow-x: clip; }
 
 /* ensures zero gaps & no layout jump */
 .product-media img { display:block; width:100%; height:auto; }
+
+/* =========================================================
+   Home rebuild (frontend-rebuild) — Stitch integration.
+   Additive only; new selectors are .home-* or scoped under
+   .hero so other pages are unaffected.
+   ========================================================= */
+
+/* ----- Hero (full-bleed image + overlay + CTAs) ----- */
+.home-hero{
+  position:relative;
+  min-height:520px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  /* full-bleed: break out of .container to span the whole viewport width.
+     top:-28px cancels main.container's padding-top so it sits flush
+     under the sticky header; html/body overflow-x:clip kills the 100vw scrollbar. */
+  width:100vw;
+  margin:-28px calc(50% - 50vw) 40px;
+}
+.home-hero__media{position:absolute; inset:0; z-index:0; display:block}
+.home-hero__media img{width:100%; height:100%; object-fit:cover; display:block}
+.home-hero::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(rgba(8,18,40,.72), rgba(8,18,40,.45));
+}
+.home-hero__inner{
+  position:relative; z-index:2;
+  padding:48px 36px; max-width:760px; width:100%;
+}
+.home-hero .page-title{
+  font-family:"Changa", sans-serif; font-weight:800;
+  font-size:38px; line-height:1.2; margin:0 0 20px;
+  color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.home-hero p{
+  color:rgba(255,255,255,.92); font-size:18px; line-height:1.85;
+  margin:0 0 28px; max-width:620px;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.home-hero__cta{display:flex; flex-wrap:wrap; gap:16px}
+.home-hero__btn{
+  display:inline-block; padding:14px 32px; border-radius:14px;
+  font-family:"Changa", sans-serif; font-weight:800; text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.home-hero__btn:active{transform:scale(.97)}
+.home-hero__btn--solid{background:#fff; color:var(--primary); box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.home-hero__btn--solid:hover{background:#f1f6ff}
+.home-hero__btn--ghost{border:2px solid #fff; color:#fff}
+.home-hero__btn--ghost:hover{background:rgba(255,255,255,.12)}
+/* WhatsApp = primary hero action. Dark ink on --wa green for WCAG AA (white on #25D366 is only ~2:1). */
+.home-hero__btn--wa{
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--wa); color:#0a2e1e;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.home-hero__btn--wa:hover{background:#1da851}
+.home-hero__btn--wa svg{flex:0 0 auto}
+
+/* Keyboard focus rings (a11y): white on dark/image surfaces, brand-blue on light. */
+.home-hero__btn:focus-visible,
+.home-cta-band__btn:focus-visible{
+  outline:3px solid #fff; outline-offset:3px;
+}
+.home-service-link:focus-visible,
+.home-faq-card__link:focus-visible,
+.home-faq-item > summary:focus-visible{
+  outline:3px solid var(--primary); outline-offset:3px;
+}
+
+/* ----- Section heading (centered, accent rule) ----- */
+.home-section{margin:56px 0}
+.home-section-head{text-align:center; margin:0 auto 40px; max-width:720px}
+.home-section-head h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:var(--primary);
+}
+.home-section-rule{
+  display:block; width:96px; height:5px; border-radius:999px;
+  background:var(--primary); margin:0 auto;
+}
+
+/* ----- Service card link row ----- */
+.home-service-link{
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:12px; min-height:44px; font-family:"Changa", sans-serif; font-weight:700;
+  color:var(--primary); text-decoration:none;
+}
+.home-service-link svg{transition:transform .2s ease}
+.home-service-card:hover .home-service-link svg{transform:translateX(-4px)}
+
+/* ----- Why Azm (media + floating badge + feature rows) ----- */
+.home-why{margin:56px 0}
+.home-why-grid{
+  display:grid; grid-template-columns:1fr; gap:40px; align-items:center;
+}
+@media (min-width:960px){
+  .home-why-grid{grid-template-columns:1fr 1fr; gap:64px}
+  /* mirror: text on the right, image on the left (RTL-safe, order only) */
+  .home-why-content{order:1}
+  .home-why-media{order:2}
+}
+.home-why-media{position:relative}
+.home-why-media picture,.home-why-media img{
+  display:block; width:100%; border-radius:18px;
+}
+.home-why-media img{
+  height:440px; object-fit:cover;
+  box-shadow:0 22px 48px rgba(2,19,51,.22);
+}
+.home-why-badge{
+  position:absolute; bottom:-24px; right:-24px;
+  background:var(--primary-600); color:#fff;
+  padding:22px 26px; border-radius:16px;
+  box-shadow:0 16px 32px rgba(2,19,51,.28); max-width:260px;
+}
+.home-why-badge__title{font-family:"Changa", sans-serif; font-weight:800; font-size:18px; margin:0 0 6px}
+.home-why-badge__sub{margin:0; font-size:13px; color:rgba(255,255,255,.92)}
+.home-why-content h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:12px 0 16px; color:var(--primary);
+}
+.home-why-lead{color:var(--muted); font-size:18px; line-height:1.9; margin:0 0 28px}
+.home-why-features{display:grid; gap:22px}
+.home-why-feature{display:flex; align-items:flex-start; gap:16px}
+.home-why-feature__icon{
+  flex:0 0 auto; width:48px; height:48px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.home-why-feature h4{font-family:"Changa", sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; color:var(--text)}
+.home-why-feature p{margin:0; color:var(--muted)}
+
+/* ----- FAQ section heading + contact card ----- */
+.home-faq-sub{color:var(--muted); margin:0; font-size:16px}
+.home-faq-card{
+  text-align:center; margin-top:32px; padding:32px 24px;
+  background:var(--primary-50); border:1px solid var(--border);
+  border-radius:18px;
+}
+.home-faq-card p{margin:0 0 14px; color:var(--text)}
+.home-faq-card__link{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:"Changa", sans-serif; font-weight:800;
+  color:var(--primary); text-decoration:none;
+}
+.home-faq-card__link:hover{text-decoration:underline}
+
+/* ----- Final CTA band ----- */
+.home-cta-band{
+  position:relative; overflow:hidden;
+  background:var(--primary);
+  /* full-bleed: break out of .container to span the whole viewport width;
+     html/body overflow-x:clip kills the 100vw scrollbar.
+     bottom:0 so the band sits flush against the footer (no grey strip). */
+  width:100vw;
+  margin:56px calc(50% - 50vw) 0;
+  padding:56px 32px;
+}
+.home-cta-band::before{
+  content:""; position:absolute; inset:0; opacity:.12;
+  background-image:radial-gradient(circle at 2px 2px, #fff 1px, transparent 0);
+  background-size:40px 40px;
+}
+.home-cta-band__inner{position:relative; z-index:1; text-align:center; max-width:640px; margin:0 auto}
+.home-cta-band__inner h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:#fff;
+}
+.home-cta-band__inner p{color:rgba(255,255,255,.9); font-size:18px; line-height:1.8; margin:0 0 28px}
+.home-cta-band__btn{
+  display:inline-flex; align-items:center; gap:10px;
+  background:#fff; color:var(--primary);
+  padding:16px 36px; border-radius:14px;
+  font-family:"Changa", sans-serif; font-weight:800; text-decoration:none;
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+  transition:transform .15s ease;
+}
+.home-cta-band__btn:hover{transform:scale(1.04)}
+.home-cta-band__btn:active{transform:scale(.97)}
+
+/* ----- SEO intro (framed evidence panels) ----- */
+.home-seo{max-inline-size:1120px; margin:40px auto; padding:8px 0;}
+.home-seo__head h2{font-family:"Changa", sans-serif; font-weight:800; font-size:30px; line-height:1.2; letter-spacing:.2px; color:var(--primary); margin:0 0 12px; text-wrap:balance;}
+.home-seo__head .home-section-rule{margin:0;}
+.home-seo__intro{max-inline-size:860px; margin:18px auto 30px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px 28px; box-shadow:var(--shadow);}
+.home-seo__intro p{margin:12px 0; color:var(--muted); font-size:16px; line-height:1.95; text-wrap:pretty;}
+.home-seo__intro p:first-child{margin-top:0;}
+.home-seo__intro p:last-child{margin-bottom:0;}
+.home-seo__grid{display:grid; gap:20px;}
+.home-seo__card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:var(--shadow); transition:transform .16s cubic-bezier(.22,1,.36,1), box-shadow .16s cubic-bezier(.22,1,.36,1);}
+.home-seo__card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12);}
+.home-seo__card h3{font-family:"Changa", sans-serif; font-weight:700; font-size:18px; color:var(--text); margin:0 0 12px;}
+.home-seo__card ul{padding-inline-start:1.2em; margin:0;}
+.home-seo__card li{margin:8px 0; color:var(--muted); line-height:1.7;}
+@media (min-width:900px){ .home-seo__grid{grid-template-columns:1fr 1fr;} }
+@media (prefers-reduced-motion: reduce){ .home-seo__card{transition:none;} .home-seo__card:hover{transform:none;} }
+
+/* ----- SEO intro: full-width match (live-mode accepted) ----- */
+.home-seo__intro--wide{max-inline-size:1120px;}
+
+/* ----- SEO intro: merged prose + evidence fact-strip (live-mode accepted) ----- */
+.home-seo__intro--merged p{margin-bottom:16px;}
+.home-seo__intro--merged .home-seo__facts{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px;}
+.home-seo__intro--merged .home-seo__fact{background:var(--primary-50); color:var(--primary-600); font-weight:700; font-size:13px; padding:6px 14px; border-radius:999px;}
+.home-seo__intro--merged .home-seo__fact:nth-child(n+4){display:none;}
+
+/* ----- Service grid ----- */
+.home-services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+  margin:32px 0;
+}
+.home-service-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.home-service-card:hover{transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.home-service-icon{
+  width:52px; height:52px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:12px;
+  background:var(--primary-50);
+  color:var(--primary);
+  margin-bottom:16px;
+}
+.home-service-card h3{
+  font-family:"Changa", sans-serif; font-weight:700; font-size:20px; margin:0 0 8px;
+}
+.home-service-card p{margin:0; color:var(--muted)}
+
+/* ----- "Why Azm" eyebrow pill (only surviving .home-partner-* rule) ----- */
+.home-partner-pill{
+  display:inline-block;
+  background:var(--primary); color:#fff;
+  padding:6px 16px; border-radius:999px;
+  font-weight:700; font-size:13px;
+  margin-bottom:16px;
+}
+
+/* ----- FAQ accordion (scoped to .home-faq; catalog .acc untouched) ----- */
+.home-faq{max-width:760px; margin:32px auto; padding:8px 0}
+.home-faq h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  text-align:center; margin:0 0 24px;
+}
+.home-faq-list{display:grid; gap:14px}
+.home-faq-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.home-faq-item > summary{
+  list-style:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:18px 22px;
+  font-family:"Changa", sans-serif; font-weight:700; font-size:18px;
+  color:var(--text);
+}
+.home-faq-item > summary::-webkit-details-marker{display:none}
+.home-faq-chev{flex:0 0 auto; color:var(--muted); transition:transform .25s ease}
+.home-faq-item[open] .home-faq-chev{transform:rotate(180deg)}
+.home-faq-answer{margin:0; padding:0 22px 20px; color:var(--muted)}
+.home-faq-cta{text-align:center; margin-top:20px; color:var(--muted)}
+
+/* ----- Responsive ----- */
+@media (max-width:768px){
+  .home-hero{min-height:420px}
+  .home-hero__inner{padding:32px 20px}
+  .home-hero .page-title{font-size:28px}
+  .home-hero p{font-size:16px}
+  .home-hero__btn{padding:12px 22px}
+  .home-faq h2{font-size:26px}
+  .home-faq-item > summary{font-size:16px; padding:16px 18px}
+}
+
+/* ==========================================================================
+   Site Footer
+   ========================================================================== */
+
+:root {
+  --footer-bg: #1a1d24;
+  --footer-text: #ffffff;
+  --footer-text-muted: rgba(255, 255, 255, 0.7);
+  --footer-text-dim: rgba(255, 255, 255, 0.5);
+  --footer-border: rgba(255, 255, 255, 0.1);
+  --footer-primary: #267FDD;        /* matches --primary, the nav "اتصل بنا" button */
+  --footer-primary-hover: #1f6bb8;  /* matches --primary-600 */
+  --footer-input-bg: rgba(255, 255, 255, 0.08);
+}
+
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 4rem 0 2rem;
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.site-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Brand */
+.site-footer__brand-name {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.site-footer__tagline {
+  color: var(--footer-text-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Contact info inside brand column */
+.site-footer__contact {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.site-footer__phones {
+  color: var(--footer-text-muted);
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.site-footer__phones a,
+.site-footer__email {
+  color: var(--footer-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer__phones a:hover,
+.site-footer__email:hover {
+  color: var(--footer-primary);
+}
+
+.site-footer__sep {
+  margin: 0 0.4rem;
+  color: var(--footer-text-dim);
+}
+
+.site-footer__email {
+  font-size: 0.95rem;
+  text-align: right;
+  display: inline-block;
+}
+
+/* Links */
+.site-footer__links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.site-footer__heading {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--footer-text);
+}
+
+.site-footer__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer__list li {
+  margin-bottom: 0.75rem;
+}
+
+.site-footer__list a {
+  color: var(--footer-text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.site-footer__list a:hover {
+  color: var(--footer-primary);
+}
+
+/* Newsletter */
+.site-footer__newsletter-desc {
+  color: var(--footer-text-muted);
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.site-footer__form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.site-footer__input {
+  flex: 1;
+  background-color: var(--footer-input-bg);
+  border: 1px solid var(--footer-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--footer-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  direction: rtl;
+  min-width: 0;
+}
+
+.site-footer__input::placeholder {
+  color: var(--footer-text-dim);
+}
+
+.site-footer__input:focus {
+  outline: none;
+  border-color: var(--footer-primary);
+}
+
+.site-footer__submit {
+  background-color: var(--footer-primary);
+  color: var(--footer-text);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.site-footer__submit:hover {
+  background-color: var(--footer-primary-hover);
+}
+
+/* Bottom bar */
+.site-footer__bottom {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 2rem 1.5rem 0;
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text-dim);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.site-footer__bottom p {
+  margin: 0;
+}
+
+/* ==========================================================================
+   Products page (frontend-rebuild) — plain-CSS translation of the Stitch
+   design. Uses existing CSS variables; no Tailwind.
+   ========================================================================== */
+
+/* ----- Hero (full-bleed image + directional overlay: dark behind the text,
+   fading to transparent toward the open image — same full-bleed breakout
+   technique as .home-hero, but a horizontal reveal instead of a uniform tint) ----- */
+.products-hero{
+  position:relative;
+  min-height:420px;
+  display:flex; align-items:center;
+  overflow:hidden;
+  width:100vw;
+  margin:-28px calc(50% - 50vw) 0; /* cancel main.container padding-top so it sits under the nav */
+}
+@media (min-width:768px){ .products-hero{min-height:520px} }
+.products-hero__media{position:absolute; inset:0; z-index:0; display:block}
+.products-hero__media img{width:100%; height:100%; object-fit:cover; display:block}
+.products-hero::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  /* mobile: fairly uniform tint so text stays legible edge-to-edge on a narrow viewport */
+  background:linear-gradient(rgba(15,23,42,.8), rgba(15,23,42,.62));
+}
+@media (min-width:768px){
+  .products-hero::before{
+    /* desktop: dark behind the text (inline-start/right in RTL), lighting up to fully
+       transparent as it crosses toward the open image on the left */
+    background:linear-gradient(to left, rgba(15,23,42,.86) 0%, rgba(15,23,42,.6) 42%, rgba(15,23,42,0) 78%);
+  }
+}
+.products-hero__inner{
+  position:relative; z-index:2;
+  width:100%;
+  padding:64px 18px;
+}
+@media (min-width:768px){ .products-hero__inner{padding:96px 18px} }
+.products-hero__text{max-width:560px}
+.products-hero__text .page-title{
+  font-size:28px; line-height:1.2;
+  margin:0 0 16px; letter-spacing:.2px; text-wrap:balance;
+  color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.products-hero__text p{
+  color:rgba(255,255,255,.92); font-size:16px; line-height:1.85; margin:0;
+  text-wrap:pretty; text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+@media (min-width:768px){
+  .products-hero__text .page-title{font-size:38px}
+  .products-hero__text p{font-size:18px}
+}
+
+/* ----- Product grid ----- */
+.products-grid-section{max-width:1120px; margin:0 auto; padding:56px 18px 96px}
+
+/* ----- Product grid: media tiles. Each tile is a fixed 3:4 crop regardless of the
+   source photo's natural proportions (object-fit:cover), so every card in the grid
+   reads as the same size no matter which image ships behind it. Title/CTA sit on a
+   scrim over the photo instead of a separate body block. (live-mode accepted) ----- */
+.products-tile-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:18px;
+}
+.product-tile{
+  position:relative; border-radius:16px; overflow:hidden;
+  box-shadow:var(--shadow); aspect-ratio:3 / 4;
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.product-tile:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(2,19,51,.12)}
+.product-tile img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.product-tile__scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(15,23,42,.88) 0%, rgba(15,23,42,.35) 45%, rgba(15,23,42,0) 70%);
+}
+.product-tile__content{
+  position:absolute; inset-inline:0; bottom:0; padding:18px;
+  display:flex; flex-direction:column; gap:8px; align-items:flex-start;
+}
+.product-tile__pill{
+  font-weight:700; font-size:11px; padding:3px 10px; border-radius:999px;
+  background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.3);
+}
+.product-tile__title{
+  font-family:"Changa", sans-serif; font-weight:700; font-size:17px; line-height:1.3;
+  margin:0; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.product-tile__cta{
+  text-decoration:none; font-family:"Changa", sans-serif; font-weight:800; font-size:13px;
+  background:#fff; color:var(--primary-600); padding:8px 16px; border-radius:10px;
+  transition:filter .15s cubic-bezier(.22,1,.36,1);
+}
+.product-tile__cta:hover{filter:brightness(.94)}
+.product-tile__cta:focus-visible{outline:3px solid #fff; outline-offset:3px}
+
+/* ----- CTA band (full-bleed, flush to footer) ----- */
+.products-cta{
+  background:var(--primary); color:#fff; text-align:center;
+  padding:64px 0;
+  width:100vw; margin:0 calc(50% - 50vw); /* full-bleed; bottom flush to footer */
+}
+.products-cta__inner{max-width:720px; margin:0 auto; padding:0 24px}
+.products-cta__inner h2{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:30px;
+  margin:0 0 16px; color:#fff;
+}
+.products-cta__inner p{font-size:19px; font-weight:700; line-height:1.8; margin:0 0 28px; color:#fff} /* solid white + bold 19px clears WCAG's large-text 3:1 floor; rgba(.9) white at 18px regular measured 3.6:1 */
+.products-cta__btn{
+  display:inline-block; text-decoration:none;
+  font-family:"Changa", sans-serif; font-weight:800;
+  background:#fff; color:var(--primary-600); /* primary-600, not primary: same 4.07:1 shortfall as the button above, symmetric either direction */
+  padding:16px 32px; border-radius:14px;
+  transition:transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s cubic-bezier(.22,1,.36,1);
+}
+.products-cta__btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.products-cta__btn:focus-visible{outline:3px solid #fff; outline-offset:3px}
+
+/* ==========================================================================
+   Clients page (stub) — plain-CSS translation of the Stitch "coming soon".
+   ========================================================================== */
+.clients-header{text-align:center; max-width:760px; margin:0 auto; padding:64px 18px 32px}
+.clients-header .page-title{margin:0 0 16px; font-size:28px}
+.clients-header__sub{color:var(--muted); font-size:18px; line-height:1.9; margin:0 auto; max-width:600px}
+@media (min-width:768px){ .clients-header .page-title{font-size:38px} }
+
+.clients-logos{padding:8px 18px 40px}
+.clients-logos__grid{
+  max-width:1260px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;
+}
+.clients-logos__card{
+  height:100%; cursor:pointer; perspective:1400px;
+  transition:transform .2s ease;
+}
+.clients-logos__card:hover{transform:translateY(-4px)}
+.clients-logos__card:focus-visible{outline:3px solid var(--primary); outline-offset:4px; border-radius:16px}
+.clients-logos__card-inner{
+  height:100%; display:grid;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+  transform-style:preserve-3d;
+}
+.clients-logos__card.is-flipped .clients-logos__card-inner{transform:rotateY(180deg)}
+.clients-logos__card-face{
+  grid-area:1 / 1;
+  display:flex; flex-direction:column; align-items:center; gap:18px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; box-shadow:var(--shadow); padding:36px 28px 30px;
+  text-align:center; backface-visibility:hidden;
+}
+.clients-logos__card.is-flipped .clients-logos__card-face{box-shadow:0 12px 28px rgba(2,19,51,.12)}
+.clients-logos__card-face--back{transform:rotateY(180deg); justify-content:center; gap:16px}
+.clients-logos__card:not(.is-flipped) .clients-logos__card-face--back{pointer-events:none}
+.clients-logos__card.is-flipped .clients-logos__card-face--front{pointer-events:none}
+.clients-logos__badge{
+  align-self:flex-start; font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px;
+  padding:4px 12px; border-radius:999px;
+  background:var(--primary-50); color:var(--primary-600); border:1px solid var(--border);
+}
+.clients-logos__logo-wrap{
+  width:100%; height:160px; display:flex; align-items:center; justify-content:center;
+}
+.clients-logos__logo-wrap img{max-width:100%; max-height:100%; object-fit:contain}
+.clients-logos__name{margin:0; font-family:"Changa", sans-serif; font-weight:700; font-size:18px; color:var(--text)}
+.clients-logos__hint{
+  display:flex; align-items:center; gap:6px;
+  font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px; color:var(--muted);
+}
+.clients-logos__hint svg{flex:0 0 auto}
+.clients-logos__back-name{margin:0; font-family:"Changa", sans-serif; font-weight:700; font-size:17px; color:var(--text)}
+.clients-logos__back-row{
+  display:flex; align-items:center; gap:8px; margin:0;
+  font-family:"Tajawal", sans-serif; font-size:15px; color:var(--muted);
+}
+.clients-logos__back-row svg{flex:0 0 auto; color:var(--primary)}
+.clients-logos__back-phone{
+  display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+  font-family:"Tajawal", sans-serif; font-weight:700; font-size:15px;
+  color:var(--primary-600); background:var(--primary-50); border:1px solid var(--border);
+  padding:8px 18px; border-radius:999px;
+  transition:background .15s ease, color .15s ease;
+}
+.clients-logos__back-phone:hover{background:var(--primary); color:#fff}
+
+@media (max-width:900px){
+  .clients-logos__grid{grid-template-columns:repeat(2, 1fr)}
+}
+@media (max-width:520px){
+  .clients-logos__grid{grid-template-columns:1fr}
+}
+
+.clients-gallery{padding:8px 18px 96px}
+.clients-gallery__header{text-align:center; max-width:680px; margin:0 auto 32px}
+.clients-gallery__title{
+  font-family:"Changa", sans-serif; font-weight:800; font-size:26px;
+  margin:0 0 12px; color:var(--text);
+}
+.clients-gallery__sub{color:var(--muted); font-size:16px; line-height:1.85; margin:0}
+.clients-gallery__slider{ position:relative; max-width:1260px; margin:0 auto; }
+.clients-gallery__grid{
+  max-width:none; margin:0;
+  display:flex; gap:20px;
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; scroll-padding-inline:18px;
+  padding-block:6px 16px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
+}
+.clients-gallery__arrow{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+  width:52px; height:52px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary); border:none; box-shadow:0 8px 20px rgba(2,19,51,.28);
+  color:#fff; cursor:pointer; padding:0;
+  transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.clients-gallery__arrow:hover{ background:var(--primary-600); box-shadow:0 12px 28px rgba(2,19,51,.34); }
+.clients-gallery__arrow:active{ transform:translateY(-50%) scale(.94); }
+.clients-gallery__arrow:focus-visible{ outline:3px solid var(--primary); outline-offset:3px; }
+.clients-gallery__arrow--prev{ right:4px; }
+.clients-gallery__arrow--next{ left:4px; }
+@media (max-width:640px){ .clients-gallery__arrow{ display:none; } }
+.clients-gallery__grid::-webkit-scrollbar{ height:8px; }
+.clients-gallery__grid::-webkit-scrollbar-track{ background:transparent; }
+.clients-gallery__grid::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
+.clients-gallery__grid::-webkit-scrollbar-thumb:hover{ background:var(--primary-50); }
+.clients-gallery__tile{
+  flex:0 0 auto; width:min(240px, 72vw);
+  scroll-snap-align:start;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow);
+  border-radius:16px; padding:14px;
+}
+@media (min-width:640px){ .clients-gallery__tile{ width:220px; } }
+.clients-gallery__tag{
+  font-family:"Tajawal", sans-serif; font-weight:700; font-size:12px; text-align:center;
+  padding:4px 12px; border-radius:999px;
+  background:var(--primary-50); color:var(--primary-600); border:1px solid var(--border);
+}
+.clients-gallery__photo{width:100%; aspect-ratio:1 / 1; border-radius:12px; overflow:hidden}
+.clients-gallery__photo img{width:100%; height:100%; object-fit:cover; display:block}
+
+/* ==========================================================================
+   Contact page (frontend-rebuild) — plain-CSS translation of the Stitch
+   design. Utilities below match the values specified in the task.
+   ========================================================================== */
+
+/* Contact page utilities (from Stitch) */
+.hero-bg { background-color: var(--primary); }
+.btn-primary { background-color: var(--primary); color: #ffffff; border-radius: 14px; padding: 12px 18px; font-weight: 800; }
+.btn-whatsapp { background-color: var(--wa); }
+.custom-shadow { box-shadow: var(--shadow); }
+
+/* Contact page layout */
+.contact-hero{
+  position:relative; width:100vw; margin:-28px calc(50% - 50vw) 0;
+  padding:64px 18px; min-height:420px;
+  display:flex; align-items:center;
+  text-align:right; color:#fff;
+}
+@media (min-width:768px){ .contact-hero{ padding:96px 18px; min-height:520px; } }
+.contact-hero__inner{ max-width:760px; width:100%; }
+.contact-hero__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; line-height:1.2; margin:0 0 16px; color:#fff; }
+.contact-hero__sub{ font-size:16px; line-height:1.85; margin:0 auto; max-width:640px; color:#fff; opacity:.9; }
+@media (min-width:768px){
+  .contact-hero__title{font-size:38px}
+  .contact-hero__sub{font-size:18px}
+}
+
+.contact-section{ max-width:1120px; margin:0 auto; padding:56px 18px 96px; }
+.contact-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:start; }
+@media (min-width:768px){ .contact-grid{ grid-template-columns:5fr 7fr; } }
+
+.contact-info{ display:flex; flex-direction:column; gap:24px; }
+.contact-card{ display:flex; align-items:flex-start; gap:16px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px; }
+.contact-card__icon{ flex:0 0 auto; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--primary-50); color:var(--primary); }
+.contact-card__icon--wa{ color:#25D366; }
+.contact-card__title{ font-family:"Changa",sans-serif; font-weight:700; font-size:18px; margin:0 0 8px; color:var(--text); }
+.contact-card__phones{ margin:0; color:var(--muted); font-size:15px; }
+.contact-card__phones a,.contact-card__email{ color:var(--muted); text-decoration:none; transition:color .15s ease; }
+.contact-card__phones a:hover{ color:var(--primary); }
+.contact-card__sep{ margin:0 6px; color:var(--border); }
+.contact-card__email{ color:var(--primary); font-size:15px; }
+.contact-card__email:hover{ text-decoration:underline; }
+.contact-wa-btn{ display:inline-flex; align-items:center; justify-content:center; color:#0a2e1e; text-decoration:none; border-radius:14px; padding:12px 18px; font-family:"Changa",sans-serif; font-weight:800; transition:transform .15s ease; }
+.contact-wa-btn:hover{ transform:translateY(-2px); }
+
+.contact-form-wrap{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px; }
+@media (min-width:768px){ .contact-form-wrap{ padding:32px; } }
+.contact-form__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:24px; margin:0 0 24px; color:var(--text); }
+.contact-form{ display:flex; flex-direction:column; gap:20px; max-width:none; }
+.contact-form__row{ display:grid; grid-template-columns:1fr; gap:20px; }
+@media (min-width:768px){ .contact-form__row{ grid-template-columns:1fr 1fr; } }
+.contact-field{ display:flex; flex-direction:column; gap:8px; }
+.contact-label{ font-size:14px; font-weight:700; color:var(--muted); }
+.contact-input{ width:100%; padding:12px 16px; background:#fff; color:var(--text); border:1px solid var(--border); border-radius:10px; font-family:inherit; font-size:15px; transition:border-color .15s ease, box-shadow .15s ease; }
+.contact-input:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(38,127,221,.18); }
+.contact-textarea{ resize:vertical; min-height:120px; }
+.contact-submit{ width:100%; border:none; cursor:pointer; font-family:"Changa",sans-serif; font-size:16px; transition:transform .15s ease, background-color .15s ease; }
+.contact-submit:hover{ transform:scale(.99); background-color:var(--primary-600); }
+
+/* ==========================================================================
+   Blog (frontend-rebuild) — plain-CSS translation of the Stitch blog design.
+   List page (/blog) + single post page (/blog/<slug>). RTL throughout.
+   ========================================================================== */
+
+/* --- Blog hero --- */
+.blog-hero{
+  padding:88px 18px 72px;
+  min-height:420px;
+  display:flex; align-items:center;
+  background:var(--primary);
+  color:#fff;
+}
+@media (min-width:768px){ .blog-hero{ min-height:520px; } }
+.blog-hero__inner{ width:100%; text-align:right; }
+.blog-hero__title{ font-size:28px; line-height:1.2; color:#fff; margin:0 0 16px; max-width:680px; }
+.blog-hero__sub{ color:rgba(255,255,255,.9); font-size:16px; line-height:1.85; margin:0; max-width:620px; }
+@media (min-width:768px){
+  .blog-hero__title{font-size:38px}
+  .blog-hero__sub{font-size:18px}
+}
+
+/* --- Thank-you hero (text-only tier: no imagery, same height band as Contact/Blog) --- */
+.thankyou-hero{
+  position:relative; width:100vw; margin:-28px calc(50% - 50vw) 0;
+  padding:64px 18px; min-height:420px;
+  display:flex; align-items:center;
+  text-align:right; color:#fff;
+  background:var(--primary);
+}
+@media (min-width:768px){ .thankyou-hero{ padding:96px 18px; min-height:520px; } }
+.thankyou-hero__inner{ max-width:640px; }
+.thankyou-hero h2{ font-family:"Changa", sans-serif; font-weight:800; font-size:28px; line-height:1.2; margin:0 0 12px; color:#fff; }
+.thankyou-hero p{ font-size:16px; line-height:1.85; margin:0 0 20px; color:rgba(255,255,255,.92); }
+@media (min-width:768px){
+  .thankyou-hero h2{font-size:38px}
+  .thankyou-hero p{font-size:18px}
+}
+.thankyou-hero .cta-row{ display:flex; }
+.thankyou-hero .btn{ background:#fff; color:var(--primary); border-color:#fff; }
+.thankyou-hero .btn:hover{ background:#f1f6ff; color:var(--primary-600); }
+
+/* --- Blog grid --- */
+.blog-grid-section{ max-width:1120px; margin:0 auto; padding:56px 18px 96px; }
+.blog-grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+@media (min-width:640px){ .blog-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1024px){ .blog-grid{ grid-template-columns:repeat(3,1fr); } }
+
+.blog-card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.blog-card:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(2,19,51,.12); }
+.blog-card__link{ display:block; text-decoration:none; color:inherit; }
+.blog-card__media{
+  position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--bg);
+}
+.blog-card__img{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+.blog-card:hover .blog-card__img{ transform:scale(1.06); }
+.blog-card__category{
+  position:absolute; top:12px; right:12px;
+  background:var(--primary-600); color:#fff;
+  padding:5px 12px; border-radius:10px; font-size:13px; font-weight:700;
+}
+.blog-card__body{ padding:24px; }
+.blog-card__meta{
+  display:flex; align-items:center; flex-wrap:wrap; gap:6px;
+  color:var(--muted); font-size:13px; margin-bottom:10px;
+}
+.blog-card__dot{ margin:0 2px; }
+.blog-icon{ flex:0 0 auto; }
+.blog-card__title{
+  font-family:"Changa",sans-serif; font-weight:800; font-size:20px;
+  line-height:1.5; margin:0 0 12px; color:var(--text);
+  transition:color .15s ease;
+}
+.blog-card:hover .blog-card__title{ color:var(--primary); }
+.blog-card__desc{
+  color:var(--muted); font-size:15px; line-height:1.8; margin:0 0 18px;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.blog-card__more{
+  display:inline-flex; align-items:center; gap:6px;
+  color:var(--primary); font-weight:800;
+}
+
+/* --- Empty state --- */
+.blog-empty{ padding:64px 18px 96px; }
+.blog-empty__card{
+  max-width:640px; margin:0 auto; text-align:center;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; box-shadow:var(--shadow); padding:48px 40px;
+}
+.blog-empty__icon{
+  width:80px; height:80px; margin:0 auto 24px; border-radius:999px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.blog-empty__title{
+  font-family:"Changa",sans-serif; font-weight:800; font-size:26px;
+  margin:0 0 16px; color:var(--text);
+}
+.blog-empty__text{ color:var(--muted); font-size:18px; line-height:1.9; margin:0 0 28px; }
+.blog-empty__btn{
+  display:inline-block; text-decoration:none;
+  font-family:"Changa",sans-serif; font-weight:800;
+  background:var(--primary); color:#fff;
+  padding:16px 32px; border-radius:14px; transition:background .15s ease;
+}
+.blog-empty__btn:hover{ background:var(--primary-600); }
+
+/* --- Single post --- */
+.blog-post__header{ background:var(--card); border-bottom:1px solid var(--border); }
+.blog-post__header-inner{ max-width:760px; margin:0 auto; padding:56px 18px 32px; text-align:right; }
+.blog-post__category{
+  display:inline-block;
+  background:var(--primary-50); color:var(--primary-600);
+  padding:6px 16px; border-radius:999px; font-size:14px; font-weight:700;
+  margin-bottom:16px;
+}
+.blog-post__title{ margin:0 0 16px; }
+.blog-post__desc{ color:var(--muted); font-size:19px; line-height:1.85; margin:0 0 16px; }
+.blog-post__meta{
+  display:flex; align-items:center; flex-wrap:wrap; gap:6px;
+  color:var(--muted); font-size:14px;
+}
+.blog-post__hero{ max-width:1024px; margin:0 auto; padding:0 18px 40px; }
+.blog-post__hero-img{
+  width:100%; aspect-ratio:16/9; object-fit:cover;
+  border-radius:18px; box-shadow:var(--shadow);
+}
+
+/* Post body / prose */
+.blog-post__body{ max-width:760px; margin:0 auto; padding:48px 18px; }
+.blog-prose{ color:var(--text); font-size:18px; line-height:1.95; text-align:right; }
+.blog-prose > *:first-child{ margin-top:0; }
+.blog-prose h2{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; line-height:1.5; margin:40px 0 16px; color:var(--text); }
+.blog-prose h3{ font-family:"Changa",sans-serif; font-weight:700; font-size:22px; line-height:1.5; margin:32px 0 14px; color:var(--text); }
+.blog-prose p{ margin:0 0 20px; }
+.blog-prose a{ color:var(--primary); text-decoration:none; }
+.blog-prose a:hover{ text-decoration:underline; }
+.blog-prose ul,.blog-prose ol{ margin:0 0 20px; padding-inline-start:24px; }
+.blog-prose li{ margin-bottom:8px; }
+.blog-prose img,.blog-prose video,.blog-prose iframe{
+  max-width:100%; height:auto; border-radius:12px; margin:28px 0; display:block;
+}
+.blog-prose video,.blog-prose iframe{ width:100%; }
+.blog-prose blockquote{
+  margin:24px 0; padding:8px 20px; border-inline-start:4px solid var(--primary);
+  background:var(--primary-50); color:var(--muted); border-radius:0 8px 8px 0;
+}
+.blog-prose table{ width:100%; border-collapse:collapse; margin:24px 0; font-size:16px; }
+.blog-prose th,.blog-prose td{ border:1px solid var(--border); padding:10px 14px; text-align:right; }
+.blog-prose th{ background:var(--bg); font-weight:700; }
+.blog-prose pre{ background:#0f172a; color:#e2e8f0; padding:18px; border-radius:12px; overflow-x:auto; margin:24px 0; }
+.blog-prose code{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:15px; }
+.blog-prose :not(pre) > code{ background:var(--bg); padding:2px 6px; border-radius:6px; }
+
+/* Post CTA */
+.blog-post__cta{ background:var(--bg); border-top:1px solid var(--border); padding:64px 18px; }
+.blog-post__cta-inner{ max-width:640px; margin:0 auto; text-align:center; }
+.blog-post__cta-title{ font-family:"Changa",sans-serif; font-weight:800; font-size:26px; margin:0 0 16px; color:var(--text); }
+.blog-post__cta-text{ color:var(--muted); font-size:18px; line-height:1.9; margin:0 0 28px; }
+.blog-post__cta-actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+.blog-post__cta-btn{
+  display:inline-block; text-decoration:none;
+  font-family:"Changa",sans-serif; font-weight:800; font-size:16px;
+  background:var(--primary); color:#fff;
+  padding:14px 32px; border-radius:14px;
+  transition:background .15s ease, transform .15s ease;
+}
+.blog-post__cta-btn:hover{ background:var(--primary-600); }
+.blog-post__cta-btn--wa{ background:var(--wa); color:#0a2e1e; }
+.blog-post__cta-btn--wa:hover{ background:#1da851; transform:translateY(-2px); }
+
+/* ==========================================================================
+   About page (من نحن) — plain-CSS BEM translation of the Stitch design.
+   Icons are inline SVG (Material Symbols is not loaded on this site). RTL.
+   ========================================================================== */
+
+/* --- Hero (full-bleed, lives in before_main) --- */
+.about-hero{
+  position:relative; isolation:isolate; overflow:hidden;
+  padding:64px 18px;
+  min-height:420px;
+  display:flex; align-items:center;
+  background:var(--primary);
+}
+@media (min-width:768px){ .about-hero{ padding:96px 18px; min-height:520px; } }
+.about-hero__inner{ width:100%; text-align:right; color:#fff; }
+.about-hero__title{
+  font-family:"Changa",sans-serif; font-weight:800; color:#fff;
+  font-size:28px; line-height:1.2; margin:0 0 16px; max-width:780px;
+}
+.about-hero__sub{ color:rgba(255,255,255,.9); font-size:16px; line-height:1.85; margin:0; max-width:680px; }
+@media (min-width:768px){
+  .about-hero__title{font-size:38px}
+  .about-hero__sub{font-size:18px}
+}
+
+/* --- Mission & Vision --- */
+.about-mv{ max-width:1120px; margin:0 auto; padding:64px 18px 24px; }
+.about-mv__grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+@media (min-width:768px){ .about-mv__grid{ grid-template-columns:1fr 1fr; } }
+.about-mv__card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:18px; box-shadow:var(--shadow); padding:36px 32px; text-align:right;
+}
+.about-mv__icon{
+  width:60px; height:60px; border-radius:16px; margin-bottom:20px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.about-mv__title{ font-family:"Changa",sans-serif; font-weight:800; font-size:24px; margin:0 0 14px; color:var(--text); }
+.about-mv__body{ color:var(--muted); font-size:16px; line-height:1.9; margin:0; }
+
+/* --- Values --- */
+.about-values{ max-width:1120px; margin:0 auto; padding:48px 18px; }
+.about-values__header{ text-align:center; margin-bottom:40px; }
+.about-values__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:30px; margin:0 0 14px; color:var(--text); }
+.about-values__rule{ display:block; width:64px; height:4px; border-radius:2px; margin:0 auto; background:var(--primary); }
+.about-values__grid{ display:grid; grid-template-columns:1fr; gap:24px; }
+@media (min-width:768px){ .about-values__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1024px){ .about-values__grid{ grid-template-columns:repeat(4,1fr); } }
+.about-values__card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; box-shadow:var(--shadow); padding:32px 24px; text-align:center;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.about-values__card:hover{ transform:translateY(-4px); box-shadow:0 12px 28px rgba(2,19,51,.12); }
+.about-values__icon{
+  width:64px; height:64px; border-radius:999px; margin:0 auto 18px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--primary-50); color:var(--primary);
+}
+.about-values__title{ font-family:"Changa",sans-serif; font-weight:700; font-size:19px; margin:0 0 12px; color:var(--text); }
+.about-values__body{ color:var(--muted); font-size:15px; line-height:1.8; margin:0; }
+
+/* --- Founding story (dark feature section): full-width statement, no photo
+   dependency. Heading + blue section-rule (the site's signature marker) over a
+   two-column text split inside the dark plaque. Tuned for field legibility —
+   bright outdoor light and cheap screens — with extra body contrast and
+   line-height headroom above the site's normal .82/1.95 baseline.
+   (live-mode accepted) --- */
+.about-story{ max-width:1120px; margin:24px auto; padding:0 18px; }
+.about-story__panel{
+  background:var(--text); color:#fff; border-radius:22px; overflow:hidden;
+  padding:56px 44px; text-align:center; border:1px solid rgba(255,255,255,.08);
+}
+.about-story__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:30px; line-height:1.25; margin:0 0 16px; color:#fff; }
+.about-story__rule{ width:96px; height:5px; background:var(--primary); border-radius:999px; margin:0 auto 32px auto; }
+.about-story__cols{ display:grid; grid-template-columns:1fr; gap:22px; text-align:right; }
+@media (min-width:700px){ .about-story__cols{ grid-template-columns:1fr 1fr; } }
+.about-story__body{ color:rgba(255,255,255,.88); font-size:17px; line-height:2; margin:0; }
+
+/* --- Final CTA --- */
+.about-cta{ max-width:1120px; margin:0 auto; padding:56px 18px 88px; }
+.about-cta__card{
+  background:var(--primary-50); border:1px solid var(--border);
+  border-radius:22px; padding:56px 40px; text-align:center;
+}
+.about-cta__heading{ font-family:"Changa",sans-serif; font-weight:800; font-size:28px; margin:0 0 16px; color:var(--text); }
+.about-cta__body{ color:var(--muted); font-size:18px; line-height:1.9; margin:0 auto 28px; max-width:680px; }
+.about-cta__btn{
+  display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+  font-family:"Changa",sans-serif; font-weight:800; font-size:16px;
+  background:var(--primary); color:#fff; padding:16px 36px; border-radius:14px;
+  transition:background .15s ease, transform .15s ease;
+}
+.about-cta__btn:hover{ background:var(--primary-600); transform:translateY(-2px); }
+
+/* ==========================================================================
+   Reduced motion: honor the OS "reduce motion" setting site-wide.
+   Neutralizes decorative hover lifts, scale presses, and chevron rotation.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
