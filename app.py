@@ -936,6 +936,16 @@ def sitemap():
     out.append("</urlset>")
     return Response("\n".join(out), mimetype="application/xml; charset=utf-8")
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template(
+        '404.html',
+        title="الصفحة غير موجودة",
+        company=COMPANY_NAME,
+        active_page=None,
+        meta_description="الصفحة التي تبحث عنها غير موجودة على موقع عزم لتجارة قطع الغيار ومستلزمات الطرق والجسور."
+    ), 404
+
 
 # --- Icon routes at root (fix mobile/Google 404s) ---
 @app.route('/favicon.ico')
