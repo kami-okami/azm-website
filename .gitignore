@@ -13,3 +13,11 @@ messages.db
 
 # VSCode settings (optional)
 .vscode/
+
+# Local-only project/design notes and tooling state
+CLAUDE.md
+DESIGN.md
+PRODUCT.md
+content/BLOG_WRITING_GUIDE.md
+.impeccable/
+.playwright-mcp/
