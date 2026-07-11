@@ -268,12 +268,12 @@ def set_security_headers(resp):
     csp = (
         "default-src 'self'; "
         # [CSP+META] allow Meta Pixel loader
-        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/ https://connect.facebook.net; "
+        "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/ https://connect.facebook.net https://www.googletagmanager.com; "
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com data:; "
         "img-src 'self' data: https:; "
         # [CSP+META] allow POSTs to Meta Graph + Pixel pings
-        "connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://graph.facebook.com https://www.facebook.com; "
+        "connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://graph.facebook.com https://www.facebook.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; "
         "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/ https://www.recaptcha.net/;"
     )
     resp.headers.setdefault("Content-Security-Policy", csp)
