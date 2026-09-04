@@ -5,7 +5,7 @@ category: أدلة فنية
 date: 2026-09-04
 hero_image: /static/images/blog/bridge-girders-iraq/hero.jpg
 description: كيف تُصنَّع الروافد الخرسانية مسبقة الصب ومسبقة الشد، ومراحل تصميمها الثلاث، وأنواع المقاطع القياسية ومدى الفضاء المناسب لكل منها.
-reading_minutes: 9
+reading_minutes: 8
 ---
 
 ‏تنفيذ جسر فوق طريق سريع مفتوح للحركة يضع المقاول أمام قيد صعب: لا مساحة كافية لنصب سقالات وقوالب تحت الجسر، ولا وقت لانتظار تصلّب الخرسانة في الموقع لأسابيع. الحل الذي اعتمدته معظم إدارات الطرق حول العالم منذ ستة عقود هو نقل عملية الصب بالكامل إلى المصنع، وترك الموقع لأعمال الرفع والربط فقط.
@@ -49,11 +49,11 @@ reading_minutes: 9
 
 ‏لحظة نقل قوة الشد إلى الرافدة داخل المصنع. الخرسانة هنا فتيّة ومقاومتها (f'ci) أقل من مقاومتها التصميمية، بينما قوة الشد في أقصى قيمها. النتيجة ضغط كبير في الليف السفلي وشد محتمل في الليف العلوي قرب منتصف الفضاء.
 
-‏تحدّ مواصفة AASHTO LRFD في الجدول 5.9.2.3.1b-1 إجهاد الشد المؤقت عند التحرير بقيمة 0.0948λ√f'ci بحد أقصى 0.2 ksi في المناطق التي لا يوجد فيها تسليح مربوط كافٍ لمقاومة قوة الشد، وترفع الحد إلى 0.24λ√f'ci في المناطق التي يتوفر فيها هذا التسليح (المرجع: WSDOT Bridge Design Manual, Table 5.2.1-1 المستند إلى AASHTO LRFD 5.9.2.3.1b — https://wsdot.wa.gov/publications/fulltext/Bridge/designmemos/05-2019.PDF).
+‏تحدّ مواصفة AASHTO LRFD في الجدول 5.9.2.3.1b-1 إجهاد الشد المؤقت عند التحرير بقيمة 0.0948λ√f'ci بحد أقصى 0.2 ksi في المناطق التي لا يوجد فيها تسليح مربوط كافٍ لمقاومة قوة الشد، وترفع الحد إلى 0.24λ√f'ci في المناطق التي يتوفر فيها هذا التسليح.
 
 ### ‏٢. مرحلة الخدمة (Service)
 
-‏بعد صب البلاطة وتشغيل الجسر تحت الأحمال الميتة والحية. عند هذه المرحلة يُحدَّد إجهاد الشد في منطقة الشد المسبقة الضغط بقيمة 0.19√f'c (ksi) للعناصر ذات فولاذ الشد المربوط والمعرّضة لظروف تآكل لا تتجاوز المعتدلة، وتنخفض القيمة إلى 0.0948√f'c في الظروف شديدة التآكل (AASHTO LRFD Table 5.9.2.3.2-1؛ نص الجدول متاح ضمن التعديلات الكاليفورنية على المواصفة: https://dot.ca.gov/-/media/dot-media/programs/engineering/documents/memotodesigner/f0007568-section-5-a11y.pdf).
+‏بعد صب البلاطة وتشغيل الجسر تحت الأحمال الميتة والحية. عند هذه المرحلة يُحدَّد إجهاد الشد في منطقة الشد المسبقة الضغط بقيمة 0.19√f'c (ksi) للعناصر ذات فولاذ الشد المربوط والمعرّضة لظروف تآكل لا تتجاوز المعتدلة، وتنخفض القيمة إلى 0.0948√f'c في الظروف شديدة التآكل.
 
 ### ‏٣. مرحلة المقاومة (Strength)
 
@@ -120,13 +120,3 @@ reading_minutes: 9
 - ‏افحص مسار النقل وسعة الرافعة قبل اعتماد طول الرافدة، فالقيد اللوجستي يسبق القيد الإنشائي في أغلب الحالات
 - ‏التحدّب عند الاستلام مؤشر طبيعي على انتقال قوة الشد، والانحراف المتوقع يجب أن يكون محسوباً ومدرجاً في مخططات التنفيذ
 - ‏عند تجاوز حدود النقل، ادرس الوصل بالشد اللاحق مبكراً في مرحلة التصميم لا بعد اعتماد المقطع، لأن مراحل التنفيذ الأربع تؤثر على تصميم المقطع نفسه
-
----
-
-**المصادر**
-
-- ‏AASHTO LRFD Bridge Design Specifications, Articles 5.9.2.3.1b و 5.9.2.3.2 — https://store.transportation.org
-- ‏WSDOT Bridge Design Manual, Table 5.2.1-1 (Allowable Stresses in Prestressed Concrete Members) — https://wsdot.wa.gov/publications/fulltext/Bridge/designmemos/05-2019.PDF
-- ‏California Amendments to AASHTO LRFD, Section 5: Concrete Structures — https://dot.ca.gov/-/media/dot-media/programs/engineering/documents/memotodesigner/f0007568-section-5-a11y.pdf
-- ‏PCI Design Manual, Precast/Prestressed Concrete Institute — https://www.pci.org
-- ‏Ghiami Azad, A. R., Bridge Engineering, Chapter 2: Precast–Pretensioned Concrete Girder Bridges, University of Tehran
